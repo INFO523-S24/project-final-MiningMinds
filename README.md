@@ -11,7 +11,7 @@ This is the MiningMinds final project repository for Dr. Greg Chism's course in 
 </ul>
 
 ## Resources used :
-Kaggle data - [Credit Card Fraud Detection] (https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+Kaggle data - [Credit Card Fraud Detection] (https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023)
 
 
 #### Disclosure:
