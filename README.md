@@ -1,6 +1,18 @@
 # project-final
+## MiningMinds - Credit Card Fraud Detection
+This is the MiningMinds final project repository for Dr. Greg Chism's course in INFO 523 - Data Mining - Spring 2024 at the University of Arizona. Our team is compromised of the following members:
+<ul>
+<li> Omid Zandi </li>
+<li> Roxana Akbarsharifi </li>
+<li> Nandhini Anne </li>
+<li> Deema Albluwi </li>
+<li> Sai Navya Reddy Busireddy </li>
+<li> Gowtham Gopalakrishnan </li>
+</ul>
 
-Final project repo for INFO 523 - Spring 2024.
+## Resources used :
+Kaggle data - [Credit Card Fraud Detection] (https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+
 
 #### Disclosure:
 Derived from the original data viz course by Mine Çetinkaya-Rundel @ Duke University
