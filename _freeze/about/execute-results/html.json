@@ -1,8 +1,8 @@
 {
-  "hash": "f1ffcdaf734d7b78f8df0c00339c88b1",
+  "hash": "90c8f051f3d9a2bc436c851286ebdfdf",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: About\nformat: html\neditor: visual\n---\n\nThis project was developed by **\\[MiningMinds\\]** For [INFO 523 - Data Mining and Discovery](https://datamineaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\n-   Omid Zandi: Second Year PhD Student in Hydrology and Atmospheric Sciences.\n\n-   Roxana Sharifi : Second Year Master’s Degree in Electrical and Computer Engineering.\n\n-   Deema Albluwi: Second Year PhD Student in Linguistics.\n\n-   Gowtham Gopalakrishnan: Master Student in Data Sciences.\n\n-   Nandhini Anne: Master Student in Data Sciences.\n\n-   Sai Navya Reddy Busireddy: Master Student in Data Sciences.\n\n",
+    "markdown": "---\ntitle: About\nformat: html\neditor: visual\n---\n\nThis project was developed by **\\[MiningMinds\\]** For [INFO 523 - Data Mining and Discovery](https://datamineaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\n-   Omid Zandi: Second Year PhD Student in Hydrology and Atmospheric Sciences.\n\n-   Roxana Sharifi : Second Year Master Student in Electrical and Computer Engineering.\n\n-   Deema Albluwi: Second Year PhD Student in Linguistics.\n\n-   Gowtham Gopalakrishnan: Master Student in Data Sciences.\n\n-   Nandhini Anne: Master Student in Data Sciences.\n\n-   Sai Navya Reddy Busireddy: Master Student in Data Sciences.\n\n",
     "supporting": [
       "about_files/figure-html"
     ],
