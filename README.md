@@ -15,4 +15,4 @@ Kaggle data - [Credit Card Fraud Detection] (https://www.kaggle.com/datasets/nel
 
 
 #### Disclosure:
-Derived from the original data viz course by Mine Çetinkaya-Rundel @ Duke University
+Derived from the original data viz course by Mine Çetinkaya-Rundel @ Duke University 
