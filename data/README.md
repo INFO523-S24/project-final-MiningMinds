@@ -13,7 +13,10 @@ We sourced the data for this project from [kaggle](https://www.kaggle.com/datase
 
 ## Data Types:
 
--   **Column**: data type
+-   **id**: int
+-   **V1-V28**: float
+-   **Amount**: float
+-   **Class**: int
 
 
 
