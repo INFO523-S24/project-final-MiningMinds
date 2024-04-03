@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: Project Title
+  title: "<img src='/images/credit_card_fraud.jpeg' alt='carcrash' style='width: 1.9em; height: 1.9em; border-radius: 50%'> <b> Fraud Detection </b>"
   navbar:
     right:
       - icon: github

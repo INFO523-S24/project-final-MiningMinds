@@ -5,12 +5,16 @@ editor: visual
 jupyter: python3
 ---
 
-This project was developed by **\[Team Name\]** For [INFO 523 - Data Mining and Discovery](https://datamineaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
+This project was developed by **\[MiningMinds\]** For [INFO 523 - Data Mining and Discovery](https://datamineaz.org/) at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.
 
--   Team member 1: One sentence description of Team member 1 (e.g., year, major, etc.).
+-   Omid Zandi: Second Year PhD Student in Hydrology and Atmospheric Sciences.
 
--   Team member 2: One sentence description of Team member 2 (e.g., year, major, etc.).
+-   Roxana Sharifi : Second Year Master’s Degree in Electrical and Computer Engineering.
 
--   Team member 3: One sentence description of Team member 3 (e.g., year, major, etc.).
+-   Deema Albluwi: Second Year PhD Student in Linguistics.
 
--   Team member 4: One sentence description of Team member 4 (e.g., year, major, etc.).
+-   Gowtham Gopalakrishnan: Master Student in Data Sciences.
+
+-   Nandhini Anne: Master Student in Data Sciences.
+
+-   Sai Navya Reddy Busireddy: Master Student in Data Sciences.

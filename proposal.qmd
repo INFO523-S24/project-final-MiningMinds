@@ -1,8 +1,8 @@
 ---
-title: "Proposal for Credit Card Fraud Detection"
+title: "Fraud Detection using Ensemble Learning"
 subtitle: "Proposal"
 author: 
-  - name: "Mining minds - Roxana Akbarsharifi, Team member 2,..."
+  - name: Roxana Akbarsharifi<br>Omid Zandi<br>Deema Albluwi<br>Gowtham Gopalakrishnan<br>Nandhini Anne<br>Sai Navya Reddy Busireddy
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Credit Card Fraud Detection Using Anomaly Detection Techniques"
@@ -52,10 +52,6 @@ df.head()
 print("Shape of the DataFrame:", df.shape)
 
 
-# Print the columns of the DataFrame
-print("Columns in the DataFrame:", df.columns.tolist())
-
-
 # Print the data types of each column
 # print("Data types of the columns:")
 # print(df.dtypes)
@@ -73,4 +69,12 @@ Our first research question focuses on identifying the best-performing anomaly d
 
 ## Analysis plan
 
--   A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+| Task Name | Assignee | Due | Summary |
+|----------|----------|----------|----------|
+| Exploratory Data Analysis | Sai & Nandhini | 04/07/2024 | Comparing the statistical distribution of the anonymized features, Exploring the relationship between the amount of transactions and fraudulent transactions |
+| Feature Selection and Engineering | Gowtham | 04/09/2024 | Performing PCA and selecting the number of PCAs, Exploring random forest feature importance |
+| Training the Base Learners | Deema | 04/14/2024 | Training one machine learning algorithm from each of the ensemble learning approaches (bagging, boosting, and stacking) along with artificial neural networks |
+| Hypertuning Base Learners | Roxana | 04/20/2024 | Hypertuning the base learners using grid search or random search |
+| Model Evaluation | Sai | 04/24/2024 | Evaluating models using categorical metrics, confusion metrics, and ROC curve |
+| Developing Stacked Generalization | Omid | 04/30/2024 | Selecting the metalearner and Testing the potential improvement upon the base learners |
+| Preparing the Final Report and Presentation | Nandhini | 04/05/2024 | Finalizing the results and practicing the oral presentation |
