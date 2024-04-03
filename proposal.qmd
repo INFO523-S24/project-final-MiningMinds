@@ -1,11 +1,11 @@
 ---
-title: "Proposal title"
+title: "Proposal for Credit Card Fraud Detection"
 subtitle: "Proposal"
 author: 
-  - name: "Team Name - Team member 1, Team member 2,..."
+  - name: "Mining minds - Roxana Akbarsharifi, Team member 2,..."
     affiliations:
       - name: "School of Information, University of Arizona"
-description: "Project description"
+description: "Credit Card Fraud Detection Using Anomaly Detection Techniques"
 format:
   html:
     code-tools: true
@@ -19,26 +19,57 @@ execute:
 jupyter: python3
 ---
 
+
+## High Level Goal
+
+The overarching goal is to evaluate the enhancement in machine learning models’ performance achieved by integrating various models through a novel ensemble method known as stacked generalization. To this end, we will apply the stacked model to a comlex classification problem aimed at detecting fraudulent credit card transactions.
+
+## Project Description and Motivation
+
+Our project is motivated by the goal of accurately identifying fraudulent transactions using ensemble learning approaches (baggin, boosting, and stacking). We plan to use advanced data mining and machine learning techniques to create a model capable of spotting transactions that stand out as potentially fraudulent. A key part of our project involves comparing different machine learning models to see which one performs best on each dataset we study. We're committed to understanding why certain models are more effective in specific situations. This approach will not only help us find the most effective way to detect fraud but also deepen our understanding of how these models work. Through this work, we aim to make a meaningful contribution to both the field of study and the practical efforts to secure financial transactions.
+
+## Dataset
+
+We chose a dataset comprising over 550,000 credit card transactions made by European cardholders in 2023. This dataset is particularly appealing because of its substantial size, the anonymity of its features, and its real-world relevance. It includes 31 features: a unique transaction ID, 28 anonymized attributes (V1-V28) that could encompass various transaction details such as time, location, and merchant category, the transaction amount, and a binary class indicating whether the transaction was fraudulent. The data's anonymization ensures privacy and ethical compliance, while the binary classification makes it suitable for supervised learning approaches in fraud detection.
+
 ```{python}
 #| label: load-pkgs
 #| message: false
 import numpy as np
+import pandas as pd
 ```
-
-## Dataset
 
 ```{python}
 #| label: load-dataset
-#| message: false
+df = pd.read_csv('./data/creditcard_2023.csv')
+df.head()
 ```
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
+```{python}
+#| label: data-overview
 
-Make sure to load the data and use inline code for some of this information.
+# Print the shape of the DataFrame
+print("Shape of the DataFrame:", df.shape)
 
-## Questions
 
-The two questions you want to answer.
+# Print the columns of the DataFrame
+print("Columns in the DataFrame:", df.columns.tolist())
+
+
+# Print the data types of each column
+# print("Data types of the columns:")
+# print(df.dtypes)
+
+
+# Use .info() to get a concise summary of the DataFrame
+print("DataFrame Information:")
+df.info()
+```
+
+
+## Research Questions
+
+Our first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique.
 
 ## Analysis plan
 
