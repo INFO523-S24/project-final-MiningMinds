@@ -4722,8 +4722,16 @@ vertical-align: -.125em;
   <li><a href="#high-level-goal" id="toc-high-level-goal" class="nav-link active" data-scroll-target="#high-level-goal">High Level Goal</a></li>
   <li><a href="#project-description-and-motivation" id="toc-project-description-and-motivation" class="nav-link" data-scroll-target="#project-description-and-motivation">Project Description and Motivation</a></li>
   <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
-  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">Research Questions</a></li>
-  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis plan</a></li>
+  <li><a href="#research-questions" id="toc-research-questions" class="nav-link" data-scroll-target="#research-questions">Research Questions</a>
+  <ul class="collapse">
+  <li><a href="#research-question-1" id="toc-research-question-1" class="nav-link" data-scroll-target="#research-question-1">Research Question 1:</a></li>
+  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan">Analysis Plan:</a></li>
+  <li><a href="#research-question-2" id="toc-research-question-2" class="nav-link" data-scroll-target="#research-question-2">Research Question 2:</a></li>
+  <li><a href="#analysis-plan-1" id="toc-analysis-plan-1" class="nav-link" data-scroll-target="#analysis-plan-1">Analysis Plan:</a></li>
+  </ul></li>
+  <li><a href="#plan-of-attack" id="toc-plan-of-attack" class="nav-link" data-scroll-target="#plan-of-attack">Plan of Attack</a></li>
+  <li><a href="#repo-organization" id="toc-repo-organization" class="nav-link" data-scroll-target="#repo-organization">Repo Organization</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
     </div>
@@ -4786,7 +4794,7 @@ vertical-align: -.125em;
 <div id="cell-load-dataset" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">&#39;./data/creditcard_2023.csv&#39;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="load-dataset" class="cell-output cell-output-display" data-execution_count="2">
+<div id="load-dataset" class="cell-output cell-output-display" data-execution_count="8">
 <div>
 
 
@@ -5004,10 +5012,36 @@ memory usage: 134.5 MB</code></pre>
 </section>
 <section id="research-questions" class="level2">
 <h2 class="anchored" data-anchor-id="research-questions">Research Questions</h2>
-<p>Our first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique.</p>
+<section id="research-question-1" class="level3">
+<h3 class="anchored" data-anchor-id="research-question-1">Research Question 1:</h3>
+<p>What is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, Artificial Neural Networks, for fraud detection in this specific dataset?</p>
 </section>
-<section id="analysis-plan" class="level2">
-<h2 class="anchored" data-anchor-id="analysis-plan">Analysis plan</h2>
+<section id="analysis-plan" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-plan">Analysis Plan:</h3>
+<ul>
+<li>Split the dataset into training and testing sets and Train individual anomaly detection models (Random Forest, XGBoost, Artificial Neural Networks) on the training set.</li>
+<li>Hypertuning the trained models.</li>
+<li>Evaluate the performance of each model on the testing set using metrics such as precision, recall, F1-score, and area under the ROC curve.</li>
+<li>Analyze the reasons behind the performance differences observed, potentially considering factors such as model complexity, feature importance, and dataset characteristics.</li>
+</ul>
+</section>
+<section id="research-question-2" class="level3">
+<h3 class="anchored" data-anchor-id="research-question-2">Research Question 2:</h3>
+<p>How does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?</p>
+</section>
+<section id="analysis-plan-1" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-plan-1">Analysis Plan:</h3>
+<ul>
+<li>Implement stacked generalization using the mlxtend library with the trained models from previous question.</li>
+<li>Split the base learners output into training and testing sets.</li>
+<li>Combine predictions from base classifiers using the stacking ensemble approach and train a meta-classifier on the combined predictions.</li>
+<li>Evaluate the performance of the stacked model and compare it with the base learners.</li>
+<li>Analyze the reasons behind the performance improvement, considering factors such as model diversity, ensemble learning principles, and the dataset’s characteristics.</li>
+</ul>
+</section>
+</section>
+<section id="plan-of-attack" class="level2">
+<h2 class="anchored" data-anchor-id="plan-of-attack">Plan of Attack</h2>
 <table class="table">
 <colgroup>
 <col style="width: 25%">
@@ -5068,6 +5102,31 @@ memory usage: 134.5 MB</code></pre>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="repo-organization" class="level2">
+<h2 class="anchored" data-anchor-id="repo-organization">Repo Organization</h2>
+<p>Project repository comprises of following folders :</p>
+<ul>
+<li><p><strong>.github/:</strong> Reserved for GitHub-related files like workflows, actions, and customized templates tailored for issue management.</p></li>
+<li><p><strong>_extra/:</strong> Acts as a repository for miscellaneous files that don’t fit into other project sections, offering flexibility for various supplementary documents.</p></li>
+<li><p><strong>_freeze/:</strong> Stores frozen environment files detailing the project’s setup and dependencies.</p></li>
+<li><p><strong>data/:</strong> Houses essential data files crucial for project operations, including input files, datasets, and other vital resources.</p></li>
+<li><p><strong>images/:</strong> Serves as a central repository for visual assets such as diagrams, charts, and screenshots essential for project documentation and presentation.</p></li>
+<li><p><strong>.gitignore:</strong> Defines exclusions from version control, streamlining the versioning process.</p></li>
+<li><p><strong>README.md:</strong> Serves as the primary source of project information, encompassing setup instructions, usage guidelines, and an overview of project objectives and scope.</p></li>
+<li><p><strong>_quarto.yml:</strong> Functions as the configuration file for Quarto, governing the construction and rendering of Quarto documents.</p></li>
+<li><p><strong>about.qmd:</strong> Provides supplementary contextual information about the project’s purpose and team members.</p></li>
+<li><p><strong>index.qmd:</strong> Acts as the main hub for the project, offering detailed descriptions including code snippets, visualizations, and outcomes.</p></li>
+<li><p><strong>presentation.qmd:</strong> Serves as a Quarto file for presenting the final project results in slideshow format.</p></li>
+<li><p><strong>project-final.Rproj:</strong> Project file for organization and management within the R environment.</p></li>
+<li><p><strong>proposal.qmd:</strong> Contains the project proposal, encompassing dataset details, metadata, project description, questions, and weekly plan updates.</p></li>
+<li><p><strong>requirements.txt:</strong> Specifies project dependencies and their versions essential for successful execution.</p></li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>[1] The Data source link is attached here: <a href="https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023">https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023</a></p>
+<p>[2] Github Link: <a href="https://github.com/INFO523-S24/project-final-MiningMinds">https://github.com/INFO523-S24/project-final-MiningMinds</a></p>
 
 
 <!-- -->
@@ -5758,19 +5817,77 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-71"><a href="#cb5-71"></a></span>
 <span id="cb5-72"><a href="#cb5-72"></a><span class="fu">## Research Questions</span></span>
 <span id="cb5-73"><a href="#cb5-73"></a></span>
-<span id="cb5-74"><a href="#cb5-74"></a>Our first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique.</span>
-<span id="cb5-75"><a href="#cb5-75"></a></span>
-<span id="cb5-76"><a href="#cb5-76"></a><span class="fu">## Analysis plan</span></span>
-<span id="cb5-77"><a href="#cb5-77"></a></span>
-<span id="cb5-78"><a href="#cb5-78"></a>| Task Name | Assignee | Due | Summary |</span>
-<span id="cb5-79"><a href="#cb5-79"></a>|----------|----------|----------|----------|</span>
-<span id="cb5-80"><a href="#cb5-80"></a>| Exploratory Data Analysis | Sai &amp; Nandhini | 04/07/2024 | Comparing the statistical distribution of the anonymized features, Exploring the relationship between the amount of transactions and fraudulent transactions |</span>
-<span id="cb5-81"><a href="#cb5-81"></a>| Feature Selection and Engineering | Gowtham | 04/09/2024 | Performing PCA and selecting the number of PCAs, Exploring random forest feature importance |</span>
-<span id="cb5-82"><a href="#cb5-82"></a>| Training the Base Learners | Deema | 04/14/2024 | Training one machine learning algorithm from each of the ensemble learning approaches (bagging, boosting, and stacking) along with artificial neural networks |</span>
-<span id="cb5-83"><a href="#cb5-83"></a>| Hypertuning Base Learners | Roxana | 04/20/2024 | Hypertuning the base learners using grid search or random search |</span>
-<span id="cb5-84"><a href="#cb5-84"></a>| Model Evaluation | Sai | 04/24/2024 | Evaluating models using categorical metrics, confusion metrics, and ROC curve |</span>
-<span id="cb5-85"><a href="#cb5-85"></a>| Developing Stacked Generalization | Omid | 04/30/2024 | Selecting the metalearner and Testing the potential improvement upon the base learners |</span>
-<span id="cb5-86"><a href="#cb5-86"></a>| Preparing the Final Report and Presentation | Nandhini | 04/05/2024 | Finalizing the results and practicing the oral presentation |</span>
+<span id="cb5-74"><a href="#cb5-74"></a><span class="fu">### Research Question 1:</span></span>
+<span id="cb5-75"><a href="#cb5-75"></a>What is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, Artificial Neural Networks, for fraud detection in this specific dataset?</span>
+<span id="cb5-76"><a href="#cb5-76"></a></span>
+<span id="cb5-77"><a href="#cb5-77"></a><span class="fu">### Analysis Plan:</span></span>
+<span id="cb5-78"><a href="#cb5-78"></a></span>
+<span id="cb5-79"><a href="#cb5-79"></a><span class="ss">- </span>Split the dataset into training and testing sets and </span>
+<span id="cb5-80"><a href="#cb5-80"></a>Train individual anomaly detection models (Random Forest, XGBoost, Artificial Neural Networks) on the training set.</span>
+<span id="cb5-81"><a href="#cb5-81"></a><span class="ss">- </span>Hypertuning the trained models.</span>
+<span id="cb5-82"><a href="#cb5-82"></a><span class="ss">- </span>Evaluate the performance of each model on the testing set using metrics such as precision, recall, F1-score, and area under the ROC curve.</span>
+<span id="cb5-83"><a href="#cb5-83"></a><span class="ss">- </span>Analyze the reasons behind the performance differences observed, potentially considering factors such as model complexity, feature importance, and dataset characteristics.</span>
+<span id="cb5-84"><a href="#cb5-84"></a></span>
+<span id="cb5-85"><a href="#cb5-85"></a><span class="fu">### Research Question 2:</span></span>
+<span id="cb5-86"><a href="#cb5-86"></a>How does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?</span>
+<span id="cb5-87"><a href="#cb5-87"></a></span>
+<span id="cb5-88"><a href="#cb5-88"></a><span class="fu">### Analysis Plan:</span></span>
+<span id="cb5-89"><a href="#cb5-89"></a></span>
+<span id="cb5-90"><a href="#cb5-90"></a><span class="ss">- </span>Implement stacked generalization using the mlxtend library with the trained models from previous question.</span>
+<span id="cb5-91"><a href="#cb5-91"></a><span class="ss">- </span>Split the base learners output into training and testing sets.</span>
+<span id="cb5-92"><a href="#cb5-92"></a><span class="ss">- </span>Combine predictions from base classifiers using the stacking ensemble approach and train a meta-classifier on the combined predictions.</span>
+<span id="cb5-93"><a href="#cb5-93"></a><span class="ss">- </span>Evaluate the performance of the stacked model and compare it with the base learners.</span>
+<span id="cb5-94"><a href="#cb5-94"></a><span class="ss">- </span>Analyze the reasons behind the performance improvement, considering factors such as model diversity, ensemble learning principles, and the dataset&#39;s characteristics.</span>
+<span id="cb5-95"><a href="#cb5-95"></a></span>
+<span id="cb5-96"><a href="#cb5-96"></a></span>
+<span id="cb5-97"><a href="#cb5-97"></a><span class="fu">## Plan of Attack</span></span>
+<span id="cb5-98"><a href="#cb5-98"></a></span>
+<span id="cb5-99"><a href="#cb5-99"></a>| Task Name | Assignee | Due | Summary |</span>
+<span id="cb5-100"><a href="#cb5-100"></a>|----------|----------|----------|----------|</span>
+<span id="cb5-101"><a href="#cb5-101"></a>| Exploratory Data Analysis | Sai &amp; Nandhini | 04/07/2024 | Comparing the statistical distribution of the anonymized features, Exploring the relationship between the amount of transactions and fraudulent transactions |</span>
+<span id="cb5-102"><a href="#cb5-102"></a>| Feature Selection and Engineering | Gowtham | 04/09/2024 | Performing PCA and selecting the number of PCAs, Exploring random forest feature importance |</span>
+<span id="cb5-103"><a href="#cb5-103"></a>| Training the Base Learners | Deema | 04/14/2024 | Training one machine learning algorithm from each of the ensemble learning approaches (bagging, boosting, and stacking) along with artificial neural networks |</span>
+<span id="cb5-104"><a href="#cb5-104"></a>| Hypertuning Base Learners | Roxana | 04/20/2024 | Hypertuning the base learners using grid search or random search |</span>
+<span id="cb5-105"><a href="#cb5-105"></a>| Model Evaluation | Sai | 04/24/2024 | Evaluating models using categorical metrics, confusion metrics, and ROC curve |</span>
+<span id="cb5-106"><a href="#cb5-106"></a>| Developing Stacked Generalization | Omid | 04/30/2024 | Selecting the metalearner and Testing the potential improvement upon the base learners |</span>
+<span id="cb5-107"><a href="#cb5-107"></a>| Preparing the Final Report and Presentation | Nandhini | 04/05/2024 | Finalizing the results and practicing the oral presentation |</span>
+<span id="cb5-108"><a href="#cb5-108"></a></span>
+<span id="cb5-109"><a href="#cb5-109"></a><span class="fu">## Repo Organization</span></span>
+<span id="cb5-110"><a href="#cb5-110"></a></span>
+<span id="cb5-111"><a href="#cb5-111"></a>Project repository comprises of following folders :</span>
+<span id="cb5-112"><a href="#cb5-112"></a></span>
+<span id="cb5-113"><a href="#cb5-113"></a><span class="ss">- </span>**.github/:** Reserved for GitHub-related files like workflows, actions, and customized templates tailored for issue management.</span>
+<span id="cb5-114"><a href="#cb5-114"></a></span>
+<span id="cb5-115"><a href="#cb5-115"></a><span class="ss">- </span>**\_extra/:** Acts as a repository for miscellaneous files that don&#39;t fit into other project sections, offering flexibility for various supplementary documents.</span>
+<span id="cb5-116"><a href="#cb5-116"></a></span>
+<span id="cb5-117"><a href="#cb5-117"></a><span class="ss">- </span>**\_freeze/:** Stores frozen environment files detailing the project’s setup and dependencies.</span>
+<span id="cb5-118"><a href="#cb5-118"></a></span>
+<span id="cb5-119"><a href="#cb5-119"></a><span class="ss">- </span>**data/:** Houses essential data files crucial for project operations, including input files, datasets, and other vital resources.</span>
+<span id="cb5-120"><a href="#cb5-120"></a></span>
+<span id="cb5-121"><a href="#cb5-121"></a><span class="ss">- </span>**images/:** Serves as a central repository for visual assets such as diagrams, charts, and screenshots essential for project documentation and presentation.</span>
+<span id="cb5-122"><a href="#cb5-122"></a></span>
+<span id="cb5-123"><a href="#cb5-123"></a><span class="ss">- </span>**.gitignore:** Defines exclusions from version control, streamlining the versioning process.</span>
+<span id="cb5-124"><a href="#cb5-124"></a></span>
+<span id="cb5-125"><a href="#cb5-125"></a><span class="ss">- </span>**README.md:** Serves as the primary source of project information, encompassing setup instructions, usage guidelines, and an overview of project objectives and scope.</span>
+<span id="cb5-126"><a href="#cb5-126"></a></span>
+<span id="cb5-127"><a href="#cb5-127"></a><span class="ss">- </span>**\_quarto.yml:** Functions as the configuration file for Quarto, governing the construction and rendering of Quarto documents.</span>
+<span id="cb5-128"><a href="#cb5-128"></a></span>
+<span id="cb5-129"><a href="#cb5-129"></a><span class="ss">- </span>**about.qmd:** Provides supplementary contextual information about the project&#39;s purpose and team members.</span>
+<span id="cb5-130"><a href="#cb5-130"></a></span>
+<span id="cb5-131"><a href="#cb5-131"></a><span class="ss">- </span>**index.qmd:** Acts as the main hub for the project, offering detailed descriptions including code snippets, visualizations, and outcomes.</span>
+<span id="cb5-132"><a href="#cb5-132"></a></span>
+<span id="cb5-133"><a href="#cb5-133"></a><span class="ss">- </span>**presentation.qmd:** Serves as a Quarto file for presenting the final project results in slideshow format.</span>
+<span id="cb5-134"><a href="#cb5-134"></a></span>
+<span id="cb5-135"><a href="#cb5-135"></a><span class="ss">- </span>**project-final.Rproj:** Project file for organization and management within the R environment.</span>
+<span id="cb5-136"><a href="#cb5-136"></a></span>
+<span id="cb5-137"><a href="#cb5-137"></a><span class="ss">- </span>**proposal.qmd:** Contains the project proposal, encompassing dataset details, metadata, project description, questions, and weekly plan updates.</span>
+<span id="cb5-138"><a href="#cb5-138"></a></span>
+<span id="cb5-139"><a href="#cb5-139"></a><span class="ss">- </span>**requirements.txt:** Specifies project dependencies and their versions essential for successful execution.</span>
+<span id="cb5-140"><a href="#cb5-140"></a></span>
+<span id="cb5-141"><a href="#cb5-141"></a><span class="fu">## References</span></span>
+<span id="cb5-142"><a href="#cb5-142"></a><span class="sc">\[</span>1<span class="sc">\]</span> The Data source link is attached here: <span class="co">[</span><span class="ot">https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023</span><span class="co">](https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023)</span></span>
+<span id="cb5-143"><a href="#cb5-143"></a></span>
+<span id="cb5-144"><a href="#cb5-144"></a><span class="sc">\[</span>2<span class="sc">\]</span> Github Link: <span class="co">[</span><span class="ot">https://github.com/INFO523-S24/project-final-MiningMinds</span><span class="co">](https://github.com/INFO523-S24/project-final-MiningMinds)</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

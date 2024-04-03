@@ -65,9 +65,30 @@ df.info()
 
 ## Research Questions
 
-Our first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique.
+### Research Question 1:
+What is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, Artificial Neural Networks, for fraud detection in this specific dataset?
 
-## Analysis plan
+### Analysis Plan:
+
+- Split the dataset into training and testing sets and 
+Train individual anomaly detection models (Random Forest, XGBoost, Artificial Neural Networks) on the training set.
+- Hypertuning the trained models.
+- Evaluate the performance of each model on the testing set using metrics such as precision, recall, F1-score, and area under the ROC curve.
+- Analyze the reasons behind the performance differences observed, potentially considering factors such as model complexity, feature importance, and dataset characteristics.
+
+### Research Question 2:
+How does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?
+
+### Analysis Plan:
+
+- Implement stacked generalization using the mlxtend library with the trained models from previous question.
+- Split the base learners output into training and testing sets.
+- Combine predictions from base classifiers using the stacking ensemble approach and train a meta-classifier on the combined predictions.
+- Evaluate the performance of the stacked model and compare it with the base learners.
+- Analyze the reasons behind the performance improvement, considering factors such as model diversity, ensemble learning principles, and the dataset's characteristics.
+
+
+## Plan of Attack
 
 | Task Name | Assignee | Due | Summary |
 |----------|----------|----------|----------|
@@ -78,3 +99,40 @@ Our first research question focuses on identifying the best-performing anomaly d
 | Model Evaluation | Sai | 04/24/2024 | Evaluating models using categorical metrics, confusion metrics, and ROC curve |
 | Developing Stacked Generalization | Omid | 04/30/2024 | Selecting the metalearner and Testing the potential improvement upon the base learners |
 | Preparing the Final Report and Presentation | Nandhini | 04/05/2024 | Finalizing the results and practicing the oral presentation |
+
+## Repo Organization
+
+Project repository comprises of following folders :
+
+- **.github/:** Reserved for GitHub-related files like workflows, actions, and customized templates tailored for issue management.
+
+- **\_extra/:** Acts as a repository for miscellaneous files that don't fit into other project sections, offering flexibility for various supplementary documents.
+
+- **\_freeze/:** Stores frozen environment files detailing the project’s setup and dependencies.
+
+- **data/:** Houses essential data files crucial for project operations, including input files, datasets, and other vital resources.
+
+- **images/:** Serves as a central repository for visual assets such as diagrams, charts, and screenshots essential for project documentation and presentation.
+
+- **.gitignore:** Defines exclusions from version control, streamlining the versioning process.
+
+- **README.md:** Serves as the primary source of project information, encompassing setup instructions, usage guidelines, and an overview of project objectives and scope.
+
+- **\_quarto.yml:** Functions as the configuration file for Quarto, governing the construction and rendering of Quarto documents.
+
+- **about.qmd:** Provides supplementary contextual information about the project's purpose and team members.
+
+- **index.qmd:** Acts as the main hub for the project, offering detailed descriptions including code snippets, visualizations, and outcomes.
+
+- **presentation.qmd:** Serves as a Quarto file for presenting the final project results in slideshow format.
+
+- **project-final.Rproj:** Project file for organization and management within the R environment.
+
+- **proposal.qmd:** Contains the project proposal, encompassing dataset details, metadata, project description, questions, and weekly plan updates.
+
+- **requirements.txt:** Specifies project dependencies and their versions essential for successful execution.
+
+## References
+\[1\] The Data source link is attached here: [https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023](https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023)
+
+\[2\] Github Link: [https://github.com/INFO523-S24/project-final-MiningMinds](https://github.com/INFO523-S24/project-final-MiningMinds)

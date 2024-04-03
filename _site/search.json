@@ -32,7 +32,7 @@
     "href": "proposal.html#research-questions",
     "title": "Fraud Detection using Ensemble Learning",
     "section": "Research Questions",
-    "text": "Research Questions\nOur first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique."
+    "text": "Research Questions\n\nResearch Question 1:\nWhat is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, Artificial Neural Networks, for fraud detection in this specific dataset?\n\n\nAnalysis Plan:\n\nSplit the dataset into training and testing sets and Train individual anomaly detection models (Random Forest, XGBoost, Artificial Neural Networks) on the training set.\nHypertuning the trained models.\nEvaluate the performance of each model on the testing set using metrics such as precision, recall, F1-score, and area under the ROC curve.\nAnalyze the reasons behind the performance differences observed, potentially considering factors such as model complexity, feature importance, and dataset characteristics.\n\n\n\nResearch Question 2:\nHow does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?\n\n\nAnalysis Plan:\n\nImplement stacked generalization using the mlxtend library with the trained models from previous question.\nSplit the base learners output into training and testing sets.\nCombine predictions from base classifiers using the stacking ensemble approach and train a meta-classifier on the combined predictions.\nEvaluate the performance of the stacked model and compare it with the base learners.\nAnalyze the reasons behind the performance improvement, considering factors such as model diversity, ensemble learning principles, and the dataset’s characteristics."
   },
   {
     "objectID": "proposal.html#analysis-plan",
@@ -131,5 +131,26 @@
     "title": "Project Title",
     "section": "",
     "text": "Add project abstract here."
+  },
+  {
+    "objectID": "proposal.html#plan-of-attack",
+    "href": "proposal.html#plan-of-attack",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "Plan of Attack",
+    "text": "Plan of Attack\n\n\n\n\n\n\n\n\n\nTask Name\nAssignee\nDue\nSummary\n\n\n\n\nExploratory Data Analysis\nSai & Nandhini\n04/07/2024\nComparing the statistical distribution of the anonymized features, Exploring the relationship between the amount of transactions and fraudulent transactions\n\n\nFeature Selection and Engineering\nGowtham\n04/09/2024\nPerforming PCA and selecting the number of PCAs, Exploring random forest feature importance\n\n\nTraining the Base Learners\nDeema\n04/14/2024\nTraining one machine learning algorithm from each of the ensemble learning approaches (bagging, boosting, and stacking) along with artificial neural networks\n\n\nHypertuning Base Learners\nRoxana\n04/20/2024\nHypertuning the base learners using grid search or random search\n\n\nModel Evaluation\nSai\n04/24/2024\nEvaluating models using categorical metrics, confusion metrics, and ROC curve\n\n\nDeveloping Stacked Generalization\nOmid\n04/30/2024\nSelecting the metalearner and Testing the potential improvement upon the base learners\n\n\nPreparing the Final Report and Presentation\nNandhini\n04/05/2024\nFinalizing the results and practicing the oral presentation"
+  },
+  {
+    "objectID": "proposal.html#repo-organization",
+    "href": "proposal.html#repo-organization",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "Repo Organization",
+    "text": "Repo Organization\nProject repository comprises of following folders :\n\n.github/: Reserved for GitHub-related files like workflows, actions, and customized templates tailored for issue management.\n_extra/: Acts as a repository for miscellaneous files that don’t fit into other project sections, offering flexibility for various supplementary documents.\n_freeze/: Stores frozen environment files detailing the project’s setup and dependencies.\ndata/: Houses essential data files crucial for project operations, including input files, datasets, and other vital resources.\nimages/: Serves as a central repository for visual assets such as diagrams, charts, and screenshots essential for project documentation and presentation.\n.gitignore: Defines exclusions from version control, streamlining the versioning process.\nREADME.md: Serves as the primary source of project information, encompassing setup instructions, usage guidelines, and an overview of project objectives and scope.\n_quarto.yml: Functions as the configuration file for Quarto, governing the construction and rendering of Quarto documents.\nabout.qmd: Provides supplementary contextual information about the project’s purpose and team members.\nindex.qmd: Acts as the main hub for the project, offering detailed descriptions including code snippets, visualizations, and outcomes.\npresentation.qmd: Serves as a Quarto file for presenting the final project results in slideshow format.\nproject-final.Rproj: Project file for organization and management within the R environment.\nproposal.qmd: Contains the project proposal, encompassing dataset details, metadata, project description, questions, and weekly plan updates.\nrequirements.txt: Specifies project dependencies and their versions essential for successful execution."
+  },
+  {
+    "objectID": "proposal.html#references",
+    "href": "proposal.html#references",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "References",
+    "text": "References\n[1] The Data source link is attached here: https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023\n[2] Github Link: https://github.com/INFO523-S24/project-final-MiningMinds"
   }
 ]
