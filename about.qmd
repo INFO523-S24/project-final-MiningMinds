@@ -9,7 +9,7 @@ This project was developed by **\[MiningMinds\]** For [INFO 523 - Data Mining an
 
 -   Omid Zandi: Second Year PhD Student in Hydrology and Atmospheric Sciences.
 
--   Roxana Sharifi : Second Year Master’s Degree in Electrical and Computer Engineering.
+-   Roxana Sharifi : Second Year Master Student in Electrical and Computer Engineering.
 
 -   Deema Albluwi: Second Year PhD Student in Linguistics.
 

@@ -2,7 +2,7 @@
 title: "Project Title"
 subtitle: "INFO 523 - Project Final"
 author: 
-  - name: "Team name - Team member 1, Team member 2,..."
+  - name: Roxana Akbarsharifi<br>Omid Zandi<br>Deema Albluwi<br>Gowtham Gopalakrishnan<br>Nandhini Anne<br>Sai Navya Reddy Busireddy
     affiliations:
       - name: "School of Information, University of Arizona"
 description: "Project description"

@@ -1,9 +1,10 @@
 {
-  "hash": "0e6b82ab6a634a8b8dc925668c0f975c",
+  "hash": "582b1622d3e1fe076bb31a1a71ff09f0",
   "result": {
-    "markdown": "---\ntitle: Project title\nsubtitle: INFO 523 - Project Final\nauthor: Team name\nformat: html\neditor: visual\n---\n\n## Abstract\n\nAdd project abstract here.\n\n",
+    "engine": "jupyter",
+    "markdown": "---\ntitle: Project Title\nsubtitle: INFO 523 - Project Final\nauthor:\n  - name: Roxana Akbarsharifi<br>Omid Zandi<br>Deema Albluwi<br>Gowtham Gopalakrishnan<br>Nandhini Anne<br>Sai Navya Reddy Busireddy\n    affiliations:\n      - name: 'School of Information, University of Arizona'\ndescription: Project description\nformat:\n  html:\n    code-tools: true\n    code-overflow: wrap\n    embed-resources: true\neditor: visual\nexecute:\n  warning: false\n  echo: false\n---\n\n## Abstract\n\nAdd project abstract here.\n\n",
     "supporting": [
-      "index_files"
+      "index_files/figure-html"
     ],
     "filters": [],
     "includes": {}
