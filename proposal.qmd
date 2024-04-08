@@ -26,11 +26,20 @@ The overarching goal is to evaluate the enhancement in machine learning modelsâ€
 
 ## Project Description and Motivation
 
-Our project is motivated by the goal of accurately identifying fraudulent transactions using ensemble learning approaches (baggin, boosting, and stacking). We plan to use advanced data mining and machine learning techniques to create a model capable of spotting transactions that stand out as potentially fraudulent. A key part of our project involves comparing different machine learning models to see which one performs best on each dataset we study. We're committed to understanding why certain models are more effective in specific situations. This approach will not only help us find the most effective way to detect fraud but also deepen our understanding of how these models work. Through this work, we aim to make a meaningful contribution to both the field of study and the practical efforts to secure financial transactions.
+Our project is motivated by the goal of accurately identifying fraudulent transactions using ensemble learning approaches (baggin, boosting, and stacking). We plan to use advanced data mining and machine learning techniques to create a model capable of spotting transactions that stand out as potentially fraudulent. A key part of our project involves comparing different machine learning models to see which one performs best on each dataset we study. We're committed to understanding why certain models are more effective in specific situations. Also, we aimed to test the efficiency of Stacked Generalization, commonly known as "stacking," which is an ensemble learning technique that combines multiple classification or regression models via a meta-classifier or a meta-regressor. The base level models are trained based on a complete training set, then the meta-model is trained on the outputs of the base level models as features. Figure 1 illustrates the overall workflow of stacking method.
+
+Through this work, we can make a meaningful contribution to both the field of study and the practical efforts to secure financial transactions.
+
+<div style="text-align: center;">
+  <img src="images/stacking.png" alt="stacking" width="400"/>
+  <figcaption>Fig 1. Overall Flowchart of Stacking method on the <a href="https://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/" target="_blank">mlxtend Library</a></figcaption>
+</div>
 
 ## Dataset
 
 We chose a dataset comprising over 550,000 credit card transactions made by European cardholders in 2023. This dataset is particularly appealing because of its substantial size, the anonymity of its features, and its real-world relevance. It includes 31 features: a unique transaction ID, 28 anonymized attributes (V1-V28) that could encompass various transaction details such as time, location, and merchant category, the transaction amount, and a binary class indicating whether the transaction was fraudulent. The data's anonymization ensures privacy and ethical compliance, while the binary classification makes it suitable for supervised learning approaches in fraud detection.
+
+Since the features are anonymized, it is impossbile to perform feature importance analysis, such as SHAP (SHapley Additive exPlanations) or permutation feature importance.
 
 ```{python}
 #| label: load-pkgs
@@ -70,6 +79,7 @@ What is the comparative performance of anomaly detection algorithms, including R
 
 ### Analysis Plan:
 
+- Anomaly detection datasets are highly imbalanced and the rare class (anomalies) is often more important, they require special sampling techniques. The most plausible technique is oversampling the minority class and Undersampling the majority class.
 - Split the dataset into training and testing sets and 
 Train individual anomaly detection models (Random Forest, XGBoost, Artificial Neural Networks) on the training set.
 - Hypertuning the trained models.
