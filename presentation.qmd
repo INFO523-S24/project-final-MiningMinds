@@ -1,20 +1,34 @@
 ---
-title: "Project title"
-subtitle: "INFO 523 - Spring 2023 - Project Final"
-author: "Author names"
+title: "Fraud Detection Using Ensemble Learning"
+subtitle: "Team : Mining Minds<br> INFO 523- Spring 2023 - Project Final"
+author: "Omid Zandi"<br>
+        "Nandhini Anne"<br>
+        "Sai Navya Reddy Busireddy"<br>
+        "Gowtham Gopalkrishnan"<br>
+        "Roxana Akbarsharifi"<br>
+        "Deema Albluwi"
 title-slide-attributes:
-  data-background-image: images/watercolour_sys02_img34_teacup-ocean.jpg
+  data-background-image: images/title_image.png
   data-background-size: stretch
-  data-background-opacity: "0.7"
+  data-background-opacity: "0.5"
   data-slide-number: none
 format:
   revealjs:
     theme:  ['data/customtheming.scss']
+    background-transition: fade
+    transition: slide
+    auto-animate-duration: 1.5
+    scrollable: true
+    logo: images/credit_card_fraud.jpeg
   
 editor: visual
 jupyter: python3
 execute:
   echo: false
+  warning: false
+  message: false
+editor_options:
+    chunk_output_type: console
 ---
 
 ```{python}
