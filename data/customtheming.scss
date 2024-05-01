@@ -1,3 +1,19 @@
-/*-- scss:defaults --*/
+// Add this to change the font and size of the title
+.reveal .slides .title h1 {
+    font-family: 'Your Desired Font', sans-serif;
+    font-size: 8px;
+}
 
-$body-bg: #ffffff;
+/-- scss:defaults --/
+$body-bg: #FFFFFF;
+$presentation-heading-color: #e28743;
+/* Defining variables */
+:root {
+  --title-font-size: 60px; /* Adjust this value as needed */
+}
+
+/-- scss:rules --/
+/* Styling title */
+.title {
+  font-size: var(--title-font-size) !important; /* Setting font size for title */
+}
