@@ -1,16 +1,11 @@
 ---
 title: "Fraud Detection Using Ensemble Learning"
-subtitle: "Team : Mining Minds<br> INFO 523- Spring 2023 - Project Final"
-author: "Omid Zandi"<br>
-        "Nandhini Anne"<br>
-        "Sai Navya Reddy Busireddy"<br>
-        "Gowtham Gopalkrishnan"<br>
-        "Roxana Akbarsharifi"<br>
-        "Deema Albluwi"
+subtitle: "Team : Mining Minds -INFO 523- Spring 2023 - Project Final"
+author: "Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi"
 title-slide-attributes:
-  data-background-image: images/title_image.png
+  data-background-image: images/title1.png
   data-background-size: stretch
-  data-background-opacity: "0.5"
+  data-background-opacity: "0.2"
   data-slide-number: none
 format:
   revealjs:
@@ -65,52 +60,79 @@ mtcars['speed'] = mtcars['horsepower'] / mtcars['weight']
 penguins = sns.load_dataset('penguins').dropna()
 ```
 
-# Using Quarto for presentations
 
-## Quarto
+## Introduction {style="font-size: 0.7em;"}
+::: incremental
 
--   The presentation is created using the Quarto CLI
+-   The primary goal of our project is to enhance machine learning models accuracy in detecting fraudulent credit card transactions using an ensemble learning technique known as stacked generalization.
 
--   `##` sets the start of a new slide
+-   The motivation behind our project is to improve the detection of fraudulent transactions, which remains a significant challenge in financial security.
 
-## Layouts
+-   By integrating multiple predictive models, the project aims to create a robust system that can more accurately identify fraudulent transactions, thus contributing to safer financial environments.
 
-You can use plain text
+-   Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will significantly enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.
 
-::: columns
-::: {.column width="40%"}
--   or bullet points[^1]
 :::
 
-::: {.column width="60%"}
-or in two columns
+## Dataset description {style="font-size: 0.7em;"}
+::: incremental
+-   The dataset comprises over 550,000 credit card transactions from European cardholders, collected in 2023.
+
+-   It includes 31 features with transaction details such as amount and time, anonymized to ensure privacy and ethical compliance.
+
+-   Features include a unique transaction ID and 28 anonymized attributes (V1-V28), representing various transaction details.
+
+-   The anonymization of features presents challenges in interpreting the data, while the class imbalance poses difficulties in model training and accuracy.
+
 :::
-:::
 
-[^1]: And add footnotes
 
--   like
 
--   this
+## Preview of the Dataset: First Few Transactions {style="font-size: 0.7em;"}
 
-## Code
+
+<br>
 
 ```{python}
-from sklearn.linear_model import LinearRegression
-import statsmodels.api as sm
+import numpy as np
 import pandas as pd
+df = pd.read_csv('./data/creditcard.csv')
+df.head()
 
-# Fit a linear regression model
-X = mtcars[['speed']]
-y = mtcars['mpg']
-model = LinearRegression().fit(X, y)
 
-# Summary of the model
-X2 = sm.add_constant(X)
-est = sm.OLS(y, X2)
-est2 = est.fit()
-print(est2.summary())
 ```
+
+## Research Questions {style="font-size: 0.7em;"}
+::: incremental
+
+-   What is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, KNN, for fraud detection in this specific dataset?
+
+-   How does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?
+
+:::
+
+## Question1: Analysis Plan {style="font-size: 0.7em;"}
+::: incremental
+
+-  <b>Model Training and Sampling Techniques:</b> Address dataset imbalance by oversampling the minority class and undersampling the majority. Split the data into training and testing sets, and train anomaly detection models including Random Forest, XGBoost, and KNN.
+
+-  <b>Model Optimization:</b> Hypertune the models to optimize performance, ensuring the best possible settings for each algorithm.
+
+-  <b>Performance Evaluation and Analysis:</b> Evaluate each model on the testing set using metrics like precision, recall, F1-score, and ROC area. Analyze performance differences to understand the impact of model complexity, feature importance, and dataset characteristics.
+
+:::
+
+## Question2: Analysis Plan {style="font-size: 0.7em;"}
+::: incremental
+
+-  <b>Stacked Generalization Setup:</b> Utilize the mlxtend library to implement stacked generalization. Train base models as specified, and split their output into training and testing sets for the meta-classifier.
+
+-  <b>Meta-classifier Training:</b> Combine predictions from base classifiers using the stacking method, and train a meta-classifier on these combined predictions to enhance prediction accuracy.
+
+-  <b>Evaluation and Analysis:</b> Assess the performance of the stacked model, compare it to the base models, and analyze the performance gains, focusing on factors like model diversity, ensemble principles, and dataset specifics.
+
+:::
+
 
 ## Plots
 
