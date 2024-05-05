@@ -21,3 +21,551 @@ jupyter: python3
 ## Abstract
 
 In this project, we aimed to apply various methods and their combinations to a complex and highly imbalanced classification problem. Initially, we constructed a balanced subset of our data, containing an equal number of fraud and non-fraud transactions using the "Random Majority Under Sampling Technique". This approach aids our models in better recognizing patterns indicative of fraudulent activities. A balanced subsample in our context refers to a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. Subsequently, we trained three machine learning algorithms: Random Forest, K-Nearest Neighbors, and XGBoost, and combined them using a stacked generalization approach based on the balanced dataset. We utilized a grid search method to hyper-tune the machine learning algorithms. More precisely, we evaluated the enhancement in performance of the three machine learning models achieved by integrating various models through a novel ensemble method known as stacked generalization, using logistic regression as the meta-learner. After evaluating the performance of the models based on the balanced dataset, we applied the models to the entire dataset. The main findings of this research are twofold: 1. The trained models exhibit high generalizability. 2. The stacked model performs as well as the best base learner.
+
+
+## Introduction
+
+
+```{python}
+#| label: Importing Libraries
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import matplotlib.patches as mpatches
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score, f1_score, confusion_matrix
+from sklearn.linear_model import LogisticRegression
+from mlxtend.classifier import StackingClassifier
+
+```
+
+
+In the first step, we should import the dataset and perform a Exploratory Data Analysis (EDA).
+
+```{python}
+#| label: Importing Dataset
+#| echo: false
+
+df = pd.read_csv('./data/creditcard.csv')
+print(df.head())
+```
+
+We have 28 columns that are anonymized due to privacy concerns. The other two columns are "Amount" and "Time." "Time" represents the number of seconds elapsed between this transaction and the first transaction in the dataset.
+
+Below you can see statistical summary of all numerical columns. Thank fully we don't have Nan values in the dataset.
+
+```{python}
+#| label: Summary
+print(df.describe())
+
+```
+
+The next step is to check the distribution of classes. Below you can see the barplots showing the non-fradulent and fradulent classes. Based on this figure, the dataset is highly imbalanced.
+
+
+```{python}
+#| label: Class Distribution
+
+# Creating a DataFrame
+class_counts_df = pd.DataFrame({
+    'Class': ['non-fradulent', 'fradulent'],
+    'Values': [df['Class'].value_counts()[0], df['Class'].value_counts()[1]]})
+
+# Creating the barplot
+plt.figure(figsize=(8, 4))
+bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
+
+# Adding labels and title
+plt.xlabel('Categories')
+plt.ylabel('Values')
+plt.title('Comparison of the Number of Classes')
+
+# Find the maximum value to adjust y limits accordingly
+max_value = class_counts_df['Values'].max()
+plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
+
+# Annotate the number of samples in each class
+for p in bar_plot.patches:  # iterate through the list of bars
+    bar_plot.annotate(format(p.get_height(), '.0f'), 
+                       (p.get_x() + p.get_width() / 2., p.get_height()), 
+                       ha = 'center', va = 'center', 
+                       size=10, xytext = (0, 8), 
+                       textcoords = 'offset points')
+
+
+```
+
+The first visualization that comes to mind is to examine whether the amount of transactions is related to their being fraudulent. Below, you can find the boxplots showing the distribution of transaction amounts for each class. This figure indicates that the amounts of fraudulent transactions are more dispersed.
+
+
+
+```{python}
+#| label: Amount Boxplots for each Class
+
+# Calculate quartiles and IQR to set appropriate y-axis limits
+q1 = np.percentile(df['Amount'], 25)
+q3 = np.percentile(df['Amount'], 75)
+iqr = q3 - q1
+
+# Define bounds to zoom in closer around the quartiles, reducing the range to focus on main data
+lower_bound = q1 - 0.5 * iqr
+upper_bound = q3 + 3 * iqr
+
+# Create the boxplots without outliers
+fig, ax = plt.subplots(figsize=(8, 6))
+df.boxplot(column='Amount', by='Class', ax=ax, showfliers=False)
+
+# Adding titles and labels
+plt.title('Transaction Amount by Fraudulence')
+plt.suptitle('')  # Suppress the automatic title
+plt.ylabel('Transaction Amount')
+
+# Change x-axis labels from '0', '1' to 'Non-Fraudulent', 'Fraudulent'
+ax.set_xticklabels(['Non-Fraudulent', 'Fraudulent'])
+
+# Format y-axis to show dollar signs and set y-axis limits to focus around the IQR
+ax.set_yticklabels(['${:,.0f}'.format(y) for y in ax.get_yticks()])
+plt.ylim(lower_bound, upper_bound)
+
+# Remove vertical grid lines
+ax.xaxis.grid(False)  # Disable x-axis grid lines
+ax.yaxis.grid(True)   # Keep y-axis grid lines for better readability
+
+# Show plot
+plt.tight_layout()
+plt.show()
+
+```
+
+Observing the distributions allows us to understand the skewness of the classes. We have to implement techniques to reduce skewness in these distributions. Hence, we normalize the "Amount" and "Time" columns.
+
+```{python}
+scaler = StandardScaler()
+
+df['scaled_amount'] = scaler.fit_transform(df['Amount'].values.reshape(-1,1))
+df['scaled_time'] = scaler.fit_transform(df['Time'].values.reshape(-1,1))
+
+df.drop(['Time','Amount'], axis=1, inplace=True)
+
+# Move Class column to the end
+cols = [col for col in df if col != 'Class'] + ['Class']
+df = df[cols]
+
+```
+
+
+t is crucial to construct a balanced subset of our data, containing an equal number of fraud and non-fraud transactions. This approach helps our models in better recognizing patterns that indicate fraudulent activities. In our context, a balanced subsample is a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. This ensures our sample has an even representation of both classes.
+More precisely, There are 492 cases of fraud in our dataset so we can randomly get 492 cases of non-fraud to create our new sub dataframe. We concat the 492 cases of fraud and non fraud, creating a new sub-sample.
+
+```{python}
+#| label: Random undersampling
+
+# Shuffling the dataset
+df = df.sample(frac=1)
+
+# amount of fraud classes 492 rows.
+fraud_df = df.loc[df['Class'] == 1]
+non_fraud_df = df.loc[df['Class'] == 0][:492]
+
+balanced_df = pd.concat([fraud_df, non_fraud_df])
+
+# Shuffle dataframe rows
+new_df = balanced_df.sample(frac=1, random_state=42)
+
+# Creating a DataFrame
+class_counts_df = pd.DataFrame({
+    'Class': ['non-fradulent', 'fradulent'],
+    'Values': [balanced_df['Class'].value_counts()[0], balanced_df['Class'].value_counts()[1]]})
+
+# Creating the barplot
+plt.figure(figsize=(8, 4))
+bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
+
+# Adding labels and title
+plt.xlabel('Categories')
+plt.ylabel('Values')
+plt.title('Comparison of the Number of Classes')
+
+# Find the maximum value to adjust y limits accordingly
+max_value = class_counts_df['Values'].max()
+plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
+
+# Annotate the number of samples in each class
+for p in bar_plot.patches:  # iterate through the list of bars
+    bar_plot.annotate(format(p.get_height(), '.0f'), 
+                       (p.get_x() + p.get_width() / 2., p.get_height()), 
+                       ha = 'center', va = 'center', 
+                       size=10, xytext = (0, 8), 
+                       textcoords = 'offset points')
+
+plt.show()
+
+```
+
+## Exploratory Data Analysis
+
+In this step, we will explore the distribution of each variable with respect to each class. The figure shows a series of histograms overlayed with kernel density estimates (KDEs), which compare the distributions of variables from two classes "Fraud" and "Non-Fraud" transactions. Distributions of V1, V3, V4, V10, V11, V14, and V17 show notable differences in their skewness and central tendency (mean/median location), indicating that these variables could be significant in distinguishing between Fraud and Non-Fraud transactions, as the behavior (central tendency and dispersion) of these variables differs substantially between the two classes. The clear differences in distribution characteristics for many of the variables suggest they could be effective features in a machine learning model designed to classify transactions as fraudulent or non-fraudulent.
+
+```{python}
+#| label: EDA-distributions
+
+# Pre-compute class-specific datasets
+non_fraud_df = new_df[new_df['Class'] == 0].drop('Class', axis=1)
+fraud_df = new_df[new_df['Class'] == 1].drop('Class', axis=1)
+
+# Setup the figure and axes
+fig, axes = plt.subplots(5, 6, figsize=(16, 10))  # Adjust the grid dimensions based on the number of columns
+axes = axes.flatten()  # Flatten the array for easy iteration
+
+for i, col in enumerate(new_df.columns[:-1]):  # Assuming the last column is 'Class' and it's dropped
+    sns.histplot(data=non_fraud_df[col], bins=50, kde=True, color='blue', ax=axes[i], label='Non-Fraud' if i == 0 else "")
+    sns.histplot(data=fraud_df[col], bins=50, kde=True, color='red', ax=axes[i], label='Fraud' if i == 0 else "")
+    axes[i].set_title(f'Distribution of {col}', fontsize=10)
+    axes[i].set_xlabel('')  # Clear x-labels to reduce clutter
+    axes[i].set_ylabel('')  # Optionally clear y-labels for the same reason
+    if i == 0:  # Add legend only to the first subplot
+        axes[i].legend()
+
+# Adjust layout to prevent label/title overlap
+plt.tight_layout()
+plt.show()
+
+```
+
+To illustrate the multivariate distribution of classes, we can create scatter plots for each class using the first two principal components of the PCA. The plot shows two distinct groups or clusters of points. The blue points, representing "No Fraud" transactions, are primarily clustered towards the lower left of the plot. The red points, representing "Fraud" transactions, are more scattered but tend to be grouped in certain areas, notably on the right side and the top of the plot.
+This clustering suggests that PCA has been effective in capturing some of the underlying patterns that distinguish between fraudulent and non-fraudulent transactions. This plot shows us that classification models should perform well in distinguishing fraud cases from non-fraud cases.
+
+```{python}
+#| label: PCA
+
+# New_df is from the random undersample data (fewer instances)
+X = new_df.drop('Class', axis=1)
+y = new_df['Class']
+
+# PCA Implementation
+X_reduced_pca = PCA(n_components=2, random_state=42).fit_transform(X.values)
+
+# PCA scatter plot
+f, ax = plt.subplots(1, 1, figsize=(8, 6))  # Adjust the figsize as needed for a single plot
+
+blue_patch = mpatches.Patch(color='#0A0AFF', label='No Fraud')
+red_patch = mpatches.Patch(color='#AF0000', label='Fraud')
+
+ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 0), cmap='coolwarm', label='No Fraud', linewidths=2)
+ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 1), cmap='coolwarm', label='Fraud', linewidths=2)
+ax.set_title('PCA', fontsize=14)
+
+ax.grid(True)
+
+ax.legend(handles=[blue_patch, red_patch])
+
+```
+
+
+## Training and Testing ML Algorithms
+
+Now we will train three types of classifiers (Random Forest, K-Nearest Neighbor, and XGBoost) and combine them using stacked generalization and evaluate their accuracy in detecting fraud transactions. In the first step, we have to split our data into training and testing sets and separate the features from the labels. Then, we tune the hyperparemeters of each algorithms using grid search method. We use Accuracy, Precision, Recall, and F1_score along with ROC curve for model evaluation.
+
+Below the categorical metrics and confusion matrix based on the test dataset are reported.
+
+```{python}
+#| label: Training and Hypertuning
+
+X = new_df.drop('Class', axis=1).values
+y = new_df['Class'].values
+
+# Split the data
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+# Parameters for Random Forest
+rf_params = {
+    'n_estimators': [10, 50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# Parameters for K-Nearest Neighbors
+knears_params = {
+    'n_neighbors': list(range(2, 5, 1)),
+    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
+}
+
+# Parameters for XGBoost
+xgb_params = {
+    'n_estimators': [100, 200],
+    'max_depth': [3, 5, 7, 9],
+    'learning_rate': [0.01, 0.1, 0.2],
+    'subsample': [0.7, 0.8, 0.9]
+}
+
+# Setup GridSearchCV for Random Forest
+grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_rf.fit(X_train, y_train)
+rf_best = grid_rf.best_estimator_
+
+# Setup GridSearchCV for K-Nearest Neighbors
+grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_knears.fit(X_train, y_train)
+knears_best = grid_knears.best_estimator_
+
+# Setup GridSearchCV for XGBoost
+grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_xgb.fit(X_train, y_train)
+xgb_best = grid_xgb.best_estimator_
+
+classifiers = {
+    "RandomForest": rf_best,
+    "KNearest": knears_best,
+    "XGBoost": xgb_best
+    }
+
+for key, classifier in classifiers.items():
+
+    y_pred = classifier.predict(X_test)
+
+    # Calculating performance metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
+
+    # Plotting the confusion matrix using Matplotlib
+    fig, ax = plt.subplots()
+    ax.matshow(cm, cmap='viridis', alpha=0.3)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='xx-large')
+
+    # Correcting the axis inversion
+    ax.invert_xaxis()
+    ax.invert_yaxis()
+
+    # Setting tick positions explicitly
+    ax.set_xticks([0, 1])  # Assuming there are two classes
+    ax.set_yticks([0, 1])
+
+    # Adding corrected labels
+    labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
+    ax.set_xticklabels(labels, fontsize=15)
+    ax.set_yticklabels(labels, fontsize=15)
+
+    # Adding axis labels and title
+    plt.xlabel('Predictions', fontsize=18)
+    plt.ylabel('Observations', fontsize=18)
+    plt.title(key, fontsize=18)
+
+    plt.show()
+    
+    # print("Classifiers: ", key, "has", round(accuracy, 2), "accuracy")
+    # print("Classifiers: ", key, "has", round(precision, 2), "precision")
+    # print("Classifiers: ", key, "has", round(recall, 2), "recall")
+    # print("Classifiers: ", key, "has", round(f1, 2), "f1 score")
+
+
+```
+
+| Metric | RF | KNN | XGBoost |
+|----------|----------|----------|----------|
+| Accuracy | 0.95 | 0.93 | 0.94 |
+| Precision | 0.98 | 0.98 | 0.98 |
+| Recall | 0.93 | 0.9 | 0.92 |
+| F1-Score | 0.95 | 0.94 | 0.95 |
+
+The ensemble learning approaches including XGBoost and RF are more accurate than KNN. In the next step, we train the stacking model with a logistic regression as the metalearner.
+
+```{python}
+#| label: Training the Stacking Model
+
+# Meta-classifier
+lr = LogisticRegression(random_state=42)
+
+# Stacking classifier
+stack_clf = StackingClassifier(classifiers=[rf_best, knears_best, xgb_best], meta_classifier=lr)
+stack_clf.fit(X_train, y_train)
+
+classifiers = {
+    "Stacked Model": stack_clf
+    }
+
+for key, classifier in classifiers.items():
+
+    y_pred = classifier.predict(X_test)
+
+    # Calculating performance metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
+
+    # Plotting the confusion matrix using Matplotlib
+    fig, ax = plt.subplots()
+    ax.matshow(cm, cmap='viridis', alpha=0.3)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='xx-large')
+
+    # Correcting the axis inversion
+    ax.invert_xaxis()
+    ax.invert_yaxis()
+
+    # Setting tick positions explicitly
+    ax.set_xticks([0, 1])  # Assuming there are two classes
+    ax.set_yticks([0, 1])
+
+    # Adding corrected labels
+    labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
+    ax.set_xticklabels(labels, fontsize=15)
+    ax.set_yticklabels(labels, fontsize=15)
+
+    # Adding axis labels and title
+    plt.xlabel('Predictions', fontsize=18)
+    plt.ylabel('Observations', fontsize=18)
+    plt.title(key, fontsize=18)
+
+    plt.show()
+    
+    print("Classifiers: ", key, "has", round(accuracy, 2), "accuracy")
+    print("Classifiers: ", key, "has", round(precision, 2), "precision")
+    print("Classifiers: ", key, "has", round(recall, 2), "recall")
+    print("Classifiers: ", key, "has", round(f1, 2), "f1 score")
+
+```
+
+Based on the performance evaluation of the stacking model, its effectiveness is comparable to that of the XGBoost technique.
+
+## ROC curve
+
+The ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.97. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.971, but still outperforms the KNN's AUC of 0.974. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance.
+
+```{python}
+#| label: ROC Curve
+
+rf_probs_test = rf_best.predict_proba(X_test)[:, 1]
+knears_probs_test = knears_best.predict_proba(X_test)[:, 1]
+xgb_probs_test = xgb_best.predict_proba(X_test)[:, 1]
+stack_probs_test = stack_clf.predict_proba(X_test)[:, 1]
+
+rf_fpr_test, rf_tpr_test, _ = roc_curve(y_test, rf_probs_test)
+knears_fpr_test, knears_tpr_test, _ = roc_curve(y_test, knears_probs_test)
+xgb_fpr_test, xgb_tpr_test, _ = roc_curve(y_test, xgb_probs_test)
+stack_fpr_test, stack_tpr_test, _ = roc_curve(y_test, stack_probs_test)
+
+def plot_roc_curve():
+    plt.figure(figsize=(10, 6))
+    plt.plot(rf_fpr_test, rf_tpr_test, label='Random Forest (AUC = %0.3f)' % roc_auc_score(y_test, rf_probs_test))
+    plt.plot(knears_fpr_test, knears_tpr_test, label='KNN (AUC = %0.3f)' % roc_auc_score(y_test, knears_probs_test))
+    plt.plot(xgb_fpr_test, xgb_tpr_test, label='XGBoost (AUC = %0.3f)' % roc_auc_score(y_test, xgb_probs_test))
+    plt.plot(stack_fpr_test, stack_tpr_test, label='Stacked Classifier (AUC = %0.3f)' % roc_auc_score(y_test, stack_probs_test))
+    plt.plot([0, 1], [0, 1], 'r--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curves for Test Data')
+    plt.legend(loc="lower right")
+    plt.show()
+
+plot_roc_curve()
+
+```
+
+## Evaluation on the Whole Dataset
+
+| Metric | RF | KNN | XGBoost | Stacked |
+|----------|----------|----------|----------|----------|
+| Accuracy | 0.98 | 0.98 | 0.97 | 0.97 |
+| Precision | 0.08 | 0.08 | 0.05 | 0.05 |
+| Recall | 0.96 | 0.91 | 0.99 | 0.99 |
+| F1-Score | 0.14 | 0.14 | 0.09 | 0.09 |
+
+```{python}
+
+X = df.drop('Class', axis=1).values
+y = df['Class'].values
+
+
+classifiers = {
+    "RandomForest": rf_best,
+    "KNearest": knears_best,
+    "XGBoost": xgb_best,
+    "Stacked Model": stack_clf
+    }
+
+for key, classifier in classifiers.items():
+
+    y_pred = classifier.predict(X)
+
+    # Calculating performance metrics
+    accuracy = accuracy_score(y, y_pred)
+    precision = precision_score(y, y_pred)
+    recall = recall_score(y, y_pred)
+    f1 = f1_score(y, y_pred)
+    cm = confusion_matrix(y, y_pred)
+
+    # Plotting the confusion matrix using Matplotlib
+    fig, ax = plt.subplots()
+    ax.matshow(cm, cmap='viridis', alpha=0.3)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='xx-large')
+
+    # Correcting the axis inversion
+    ax.invert_xaxis()
+    ax.invert_yaxis()
+
+    # Setting tick positions explicitly
+    ax.set_xticks([0, 1])  # Assuming there are two classes
+    ax.set_yticks([0, 1])
+
+    # Adding corrected labels
+    labels = ['Non-Fraudulent', 'Fraudulent'] 
+    ax.set_xticklabels(labels, fontsize=15)
+    ax.set_yticklabels(labels, fontsize=15)
+
+    # Adding axis labels and title
+    plt.xlabel('Predictions', fontsize=18)
+    plt.ylabel('Observations', fontsize=18)
+    plt.title(key, fontsize=18)
+
+    plt.show()
+    
+    # print("Classifiers: ", key, "has", round(accuracy, 2), "accuracy")
+    # print("Classifiers: ", key, "has", round(precision, 2), "precision")
+    # print("Classifiers: ", key, "has", round(recall, 2), "recall")
+    # print("Classifiers: ", key, "has", round(f1, 2), "f1 score")
+
+
+```
+
+The classification results provided in the table display performance metrics—Accuracy, Precision, Recall, and F1-Score—for four classifiers: Random Forest (RF), K-Nearest Neighbors (KNN), XGBoost, and a Stacked classifier. Here’s an analysis of each metric and what it suggests about the classifiers:
+
+Accuracy:
+All classifiers show very high accuracy scores, with RF and KNN at 0.98 and XGBoost and the Stacked classifier at 0.97. High accuracy indicates that the models are effective at identifying both positive and negative classes overall.
+
+Precision:
+Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.
+
+Recall:
+Recall is exceptionally high for all models, with RF at 0.96, KNN at 0.91, and both XGBoost and the Stacked classifier at 0.99. High recall means that the models are highly capable of identifying most of the actual positive cases. In scenarios where missing a positive case (e.g., a fraudulent transaction) is costly, high recall is very desirable.
+
+F1-Score:
+The F1-Score, which balances Precision and Recall, is quite low across all models, ranging from 0.09 to 0.14. The low F1-Scores reflect the imbalance between high Recall and low Precision, indicating that the models are not very efficient at precision-recall balance. This suggests that many of the positive predictions made by the models are incorrect, but they manage to catch most of the true positives.
+
+Interpretation and Recommendations:
+The high Recall and low Precision suggest that these models, as configured, might be suitable in contexts where failing to detect a positive case has severe consequences, even if it results in a higher number of false positives.
+The low Precision and resulting low F1-Scores imply a significant trade-off has been made to maximize Recall. This could be problematic in scenarios where the cost of false positives is high (e.g., blocking legitimate transactions in fraud detection).
+
+
+## Implications For Future
+
+There are several ways to enhance the model, with the most effective method being the use of the SMOTE approach. SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.
+Additionally, using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results.
