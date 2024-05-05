@@ -235,21 +235,21 @@
     "href": "presentation.html#knn-classifier",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "KNN Classifier",
-    "text": "KNN Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKNN has 0.44 accuracy\nKNN has 0.0 precision\nKNN has 0.0 recall\nKNN has 0.0 f1 score"
+    "text": "KNN Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKNN has 0.96 accuracy\nKNN has 0.99 precision\nKNN has 0.95 recall\nKNN has 0.97 f1 score"
   },
   {
     "objectID": "presentation.html#xgboost-classifier",
     "href": "presentation.html#xgboost-classifier",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "XGBoost Classifier",
-    "text": "XGBoost Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXGBoost has 0.45 accuracy\nXGBoost has 0.62 precision\nXGBoost has 0.05 recall\nXGBoost has 0.08 f1 score"
+    "text": "XGBoost Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXGBoost has 0.97 accuracy\nXGBoost has 0.98 precision\nXGBoost has 0.96 recall\nXGBoost has 0.97 f1 score"
   },
   {
     "objectID": "presentation.html#stacked-model",
     "href": "presentation.html#stacked-model",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "Stacked Model",
-    "text": "Stacked Model\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.94 accuracy\nClassifiers:  Stacked Model has 0.98 precision\nClassifiers:  Stacked Model has 0.91 recall\nClassifiers:  Stacked Model has 0.94 f1 score"
+    "text": "Stacked Model\n\nPlot\n\n\n::: {#cell-Training the stacked model .cell execution_count=13}\n\n\n\n\n\n\n\n\n\n\nMetrics\n\n\n\nMetric\nRF\nKNN\nXGBoost\nStacked\n\n\n\n\nAccuracy\n0.98\n0.98\n0.97\n0.97\n\n\nPrecision\n0.08\n0.08\n0.05\n0.05\n\n\nRecall\n0.96\n0.91\n0.99\n0.99\n\n\nF1-Score\n0.14\n0.14\n0.09\n0.09\n\n\n\n:::"
   },
   {
     "objectID": "presentation.html#roc-curve",
@@ -334,5 +334,26 @@
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "EDA",
     "text": "EDA\n\nKernel Density Plots\n\n\n::: {#cell-Kernel Density Plots .cell execution_count=8}\n\n\n\n\n\n\n\n\n\n\nPCA\n\n\n\n\n\n\n\n\n\n:::"
+  },
+  {
+    "objectID": "presentation.html#classification-models",
+    "href": "presentation.html#classification-models",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Classification Models",
+    "text": "Classification Models\n\nPlot\n\n\n::: {#cell-Confusion Matrix and Statistics .cell execution_count=12}\n\n\n\n\n\n\n\n\n\n\nMetrics\n\n\n\nMetric\nRF\nKNN\nXGBoost\n\n\n\n\nAccuracy\n0.95\n0.93\n0.94\n\n\nPrecision\n0.98\n0.98\n0.98\n\n\nRecall\n0.93\n0.9\n0.92\n\n\nF1-Score\n0.95\n0.94\n0.95\n\n\n\n:::"
+  },
+  {
+    "objectID": "presentation.html#evaluation-using-the-whole-dataset",
+    "href": "presentation.html#evaluation-using-the-whole-dataset",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Evaluation using the Whole Dataset",
+    "text": "Evaluation using the Whole Dataset\n\nWhole Dataset\n\n\n::: {#cell-Whole Dataset .cell execution_count=15}\n\n\n\n\n\n\n\n\n\n\nMetrics\n\n\n\nMetric\nRF\nKNN\nXGBoost\nStacked\n\n\n\n\nAccuracy\n0.98\n0.98\n0.97\n0.97\n\n\nPrecision\n0.08\n0.08\n0.05\n0.05\n\n\nRecall\n0.96\n0.91\n0.99\n0.99\n\n\nF1-Score\n0.14\n0.14\n0.09\n0.09\n\n\n\nAnalysis\n::: incremental - Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives."
+  },
+  {
+    "objectID": "presentation.html#future-implications",
+    "href": "presentation.html#future-implications",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Future Implications",
+    "text": "Future Implications\n\nSMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.\nusing a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results."
   }
 ]

@@ -620,13 +620,130 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 <p>:::</p>
 </section>
-<section id="randomforest-classifier" class="slide level2" style="font-size: 0.7em;">
-<h2>RandomForest Classifier</h2>
+<section id="classification-models" class="slide level2" style="font-size: 0.7em;">
+<h2>Classification Models</h2>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li><li><a href="#tabset-2-2">Metrics</a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<div id="0bf26b55" class="cell" data-execution_count="14">
+<p>::: {#cell-Confusion Matrix and Statistics .cell execution_count=12}</p>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/confusion-matrix-and-statistics-output-1.png" id="confusion-matrix-and-statistics"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3 id="metrics">Metrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>RF</th>
+<th>KNN</th>
+<th>XGBoost</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Accuracy</td>
+<td>0.95</td>
+<td>0.93</td>
+<td>0.94</td>
+</tr>
+<tr class="even">
+<td>Precision</td>
+<td>0.98</td>
+<td>0.98</td>
+<td>0.98</td>
+</tr>
+<tr class="odd">
+<td>Recall</td>
+<td>0.93</td>
+<td>0.9</td>
+<td>0.92</td>
+</tr>
+<tr class="even">
+<td>F1-Score</td>
+<td>0.95</td>
+<td>0.94</td>
+<td>0.95</td>
+</tr>
+</tbody>
+</table>
+<p>:::</p>
+</section>
+<section id="stacked-model" class="slide level2" style="font-size: 0.7em;">
+<h2>Stacked Model</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<p>::: {#cell-Training the stacked model .cell execution_count=13}</p>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/training-the-stacked-model-output-1.png" id="training-the-stacked-model"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3 id="metrics-1">Metrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>RF</th>
+<th>KNN</th>
+<th>XGBoost</th>
+<th>Stacked</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Accuracy</td>
+<td>0.98</td>
+<td>0.98</td>
+<td>0.97</td>
+<td>0.97</td>
+</tr>
+<tr class="even">
+<td>Precision</td>
+<td>0.08</td>
+<td>0.08</td>
+<td>0.05</td>
+<td>0.05</td>
+</tr>
+<tr class="odd">
+<td>Recall</td>
+<td>0.96</td>
+<td>0.91</td>
+<td>0.99</td>
+<td>0.99</td>
+</tr>
+<tr class="even">
+<td>F1-Score</td>
+<td>0.14</td>
+<td>0.14</td>
+<td>0.09</td>
+<td>0.09</td>
+</tr>
+</tbody>
+</table>
+<p>:::</p>
+</section>
+<section id="roc-curve" class="slide level2" style="font-size: 0.7em;">
+<h2>ROC curve</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Analysis</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div id="2018f935" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -636,123 +753,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 </div>
 </div>
-<div id="tabset-2-2">
-<div id="035bdae3" class="cell" data-execution_count="15">
-<div class="cell-output cell-output-stdout">
-<pre><code>Random Forest has 0.49 accuracy
-Random Forest has 1.0 precision
-Random Forest has 0.09 recall
-Random Forest has 0.17 f1 score</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="knn-classifier" class="slide level2" style="font-size: 0.7em;">
-<h2>KNN Classifier</h2>
-<div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li><li><a href="#tabset-3-2">Metrics</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1">
-<div id="8dee696b" class="cell" data-execution_count="16">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-17-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-3-2">
-<div id="0507663a" class="cell" data-execution_count="17">
-<div class="cell-output cell-output-stdout">
-<pre><code>KNN has 0.44 accuracy
-KNN has 0.0 precision
-KNN has 0.0 recall
-KNN has 0.0 f1 score</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="xgboost-classifier" class="slide level2" style="font-size: 0.7em;">
-<h2>XGBoost Classifier</h2>
-<div class="panel-tabset">
-<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Metrics</a></li></ul>
-<div class="tab-content">
-<div id="tabset-4-1">
-<div id="c9380d56" class="cell" data-execution_count="18">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-19-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 <div id="tabset-4-2">
-<div id="e8dfee91" class="cell" data-execution_count="19">
-<div class="cell-output cell-output-stdout">
-<pre><code>XGBoost has 0.45 accuracy
-XGBoost has 0.62 precision
-XGBoost has 0.05 recall
-XGBoost has 0.08 f1 score</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="stacked-model" class="slide level2" style="font-size: 0.7em;">
-<h2>Stacked Model</h2>
-<div class="panel-tabset">
-<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Metrics</a></li></ul>
-<div class="tab-content">
-<div id="tabset-5-1">
-<div id="15ed8c11" class="cell" data-execution_count="20">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-21-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-5-2">
-<div id="b51c22ac" class="cell" data-execution_count="21">
-<div class="cell-output cell-output-stdout">
-<pre><code>Classifiers:  Stacked Model has 0.94 accuracy
-Classifiers:  Stacked Model has 0.98 precision
-Classifiers:  Stacked Model has 0.91 recall
-Classifiers:  Stacked Model has 0.94 f1 score</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="roc-curve" class="slide level2" style="font-size: 0.7em;">
-<h2>ROC curve</h2>
-<div class="panel-tabset">
-<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Plot</a></li><li><a href="#tabset-6-2">Analysis</a></li></ul>
-<div class="tab-content">
-<div id="tabset-6-1">
-<div id="444a387a" class="cell" data-execution_count="22">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-23-output-1.png"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-6-2">
 <div>
 <ul>
 <li class="fragment"><b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.</li>
@@ -762,6 +763,75 @@ Classifiers:  Stacked Model has 0.94 f1 score</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="evaluation-using-the-whole-dataset" class="slide level2" style="font-size: 0.7em;">
+<h2>Evaluation using the Whole Dataset</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Whole Dataset</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<p>::: {#cell-Whole Dataset .cell execution_count=15}</p>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/whole-dataset-output-1.png" id="whole-dataset"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3 id="metrics-2">Metrics</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>RF</th>
+<th>KNN</th>
+<th>XGBoost</th>
+<th>Stacked</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Accuracy</td>
+<td>0.98</td>
+<td>0.98</td>
+<td>0.97</td>
+<td>0.97</td>
+</tr>
+<tr class="even">
+<td>Precision</td>
+<td>0.08</td>
+<td>0.08</td>
+<td>0.05</td>
+<td>0.05</td>
+</tr>
+<tr class="odd">
+<td>Recall</td>
+<td>0.96</td>
+<td>0.91</td>
+<td>0.99</td>
+<td>0.99</td>
+</tr>
+<tr class="even">
+<td>F1-Score</td>
+<td>0.14</td>
+<td>0.14</td>
+<td>0.09</td>
+<td>0.09</td>
+</tr>
+</tbody>
+</table>
+<h3 id="analysis-1">Analysis</h3>
+<p>::: incremental - Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.</p>
+</section>
+<section id="future-implications" class="slide level2" style="font-size: 0.7em;">
+<h2>Future Implications</h2>
+<ul>
+<li><p>SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.</p></li>
+<li><p>using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results.</p></li>
+</ul>
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
