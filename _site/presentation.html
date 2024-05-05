@@ -366,8 +366,8 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <section id="preview-of-the-dataset-first-few-transactions" class="slide level2" style="font-size: 0.7em;">
 <h2>Preview of the Dataset: First Few Transactions</h2>
 <p><br></p>
-<div id="884ae90e" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="3">
+<p>::: {#cell-Reading the dataset .cell execution_count=4}</p>
+<div id="reading-the-dataset" class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -537,7 +537,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <p>5 rows × 31 columns</p>
 </div>
 </div>
-</div>
+<p>:::</p>
 </section>
 <section id="research-questions" class="slide level2" style="font-size: 0.7em;">
 <h2>Research Questions</h2>
@@ -571,7 +571,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <section id="random-undersampling" class="slide level2" style="font-size: 0.7em;">
 <h2>Random Undersampling</h2>
 <div>
-<p>::: {#cell-Original dataset .cell execution_count=4}</p>
+<p>::: {#cell-Original dataset .cell execution_count=6}</p>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -580,7 +580,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 </div>
 </div>
-<p>::: {#cell-Undersampled dataset .cell execution_count=5}</p>
+<p>::: {#cell-Undersampled dataset .cell execution_count=7}</p>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -597,7 +597,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Kernel Density Plots</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<p>::: {#cell-Kernel Density Plots .cell execution_count=6}</p>
+<p>::: {#cell-Kernel Density Plots .cell execution_count=8}</p>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -608,6 +608,17 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 </div>
 </div>
+<h3 id="pca">PCA</h3>
+<div id="cell-PCA" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/pca-output-1.png" id="pca"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>:::</p>
 </section>
 <section id="randomforest-classifier" class="slide level2" style="font-size: 0.7em;">
 <h2>RandomForest Classifier</h2>
@@ -615,23 +626,23 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li><li><a href="#tabset-2-2">Metrics</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<div id="874d3f4f" class="cell" data-execution_count="11">
+<div id="0bf26b55" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-12-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-15-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-2-2">
-<div id="48a3011f" class="cell" data-execution_count="12">
+<div id="035bdae3" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code>Random Forest has 0.49 accuracy
-Random Forest has 0.85 precision
-Random Forest has 0.1 recall
-Random Forest has 0.18 f1 score</code></pre>
+Random Forest has 1.0 precision
+Random Forest has 0.09 recall
+Random Forest has 0.17 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -644,18 +655,18 @@ Random Forest has 0.18 f1 score</code></pre>
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li><li><a href="#tabset-3-2">Metrics</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1">
-<div id="25d648eb" class="cell" data-execution_count="13">
+<div id="8dee696b" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-14-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-17-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-3-2">
-<div id="a8a8b1e3" class="cell" data-execution_count="14">
+<div id="0507663a" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>KNN has 0.44 accuracy
 KNN has 0.0 precision
@@ -673,23 +684,23 @@ KNN has 0.0 f1 score</code></pre>
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Metrics</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1">
-<div id="47fe1ec3" class="cell" data-execution_count="15">
+<div id="c9380d56" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-16-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-19-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-4-2">
-<div id="83297ff6" class="cell" data-execution_count="16">
+<div id="e8dfee91" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
-<pre><code>XGBoost has 0.47 accuracy
-XGBoost has 0.86 precision
+<pre><code>XGBoost has 0.45 accuracy
+XGBoost has 0.62 precision
 XGBoost has 0.05 recall
-XGBoost has 0.1 f1 score</code></pre>
+XGBoost has 0.08 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -702,23 +713,23 @@ XGBoost has 0.1 f1 score</code></pre>
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Metrics</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1">
-<div id="81b251de" class="cell" data-execution_count="17">
+<div id="15ed8c11" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-18-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-21-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
 <div id="tabset-5-2">
-<div id="0eefe76f" class="cell" data-execution_count="18">
+<div id="b51c22ac" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-stdout">
-<pre><code>Classifiers:  Stacked Model has 0.92 accuracy
+<pre><code>Classifiers:  Stacked Model has 0.94 accuracy
 Classifiers:  Stacked Model has 0.98 precision
-Classifiers:  Stacked Model has 0.88 recall
-Classifiers:  Stacked Model has 0.93 f1 score</code></pre>
+Classifiers:  Stacked Model has 0.91 recall
+Classifiers:  Stacked Model has 0.94 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -731,11 +742,11 @@ Classifiers:  Stacked Model has 0.93 f1 score</code></pre>
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Plot</a></li><li><a href="#tabset-6-2">Analysis</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1">
-<div id="be8ef481" class="cell" data-execution_count="19">
+<div id="444a387a" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-20-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-23-output-1.png"></p>
 </figure>
 </div>
 </div>

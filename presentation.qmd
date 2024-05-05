@@ -85,6 +85,8 @@ plt.rcParams['figure.figsize'] = (6, 6 * 0.618)
 <br>
 
 ```{python}
+#| label: Importing Libraries
+
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -101,11 +103,31 @@ from sklearn.linear_model import LogisticRegression
 from mlxtend.classifier import StackingClassifier
 import joblib
 
+```
+```{python}
+#| label: Reading the dataset
+
 df = pd.read_csv('./data/creditcard.csv')
 df.head()
 
-
 ```
+
+
+```{python}
+#| label: Scaling Time and Amount
+scaler = StandardScaler()
+
+df['scaled_amount'] = scaler.fit_transform(df['Amount'].values.reshape(-1,1))
+df['scaled_time'] = scaler.fit_transform(df['Time'].values.reshape(-1,1))
+
+df.drop(['Time','Amount'], axis=1, inplace=True)
+
+# Move Class column to the end
+cols = [col for col in df if col != 'Class'] + ['Class']
+df = df[cols]
+```
+
+
 
 ## Research Questions {style="font-size: 0.7em;"}
 ::: incremental
@@ -177,6 +199,7 @@ plt.show()
 
 ```
 
+
 ```{python}
 #| label: Undersampled dataset
 
@@ -226,6 +249,7 @@ plt.show()
 ```
 
 
+
 :::
 
 ## EDA  {style="font-size: 0.7em;"}
@@ -257,6 +281,33 @@ plt.show()
 ```
 
 
+### PCA
+```{python}
+#| label: PCA
+
+# New_df is from the random undersample data (fewer instances)
+X = new_df.drop('Class', axis=1)
+y = new_df['Class']
+
+# PCA Implementation
+X_reduced_pca = PCA(n_components=2, random_state=42).fit_transform(X.values)
+
+# PCA scatter plot
+f, ax = plt.subplots(1, 1, figsize=(8, 6))  # Adjust the figsize as needed for a single plot
+
+blue_patch = mpatches.Patch(color='#0A0AFF', label='No Fraud')
+red_patch = mpatches.Patch(color='#AF0000', label='Fraud')
+
+ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 0), cmap='coolwarm', label='No Fraud', linewidths=2)
+ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 1), cmap='coolwarm', label='Fraud', linewidths=2)
+ax.set_title('PCA', fontsize=14)
+
+ax.grid(True)
+
+ax.legend(handles=[blue_patch, red_patch])
+```
+
+:::
 
 
 ## RandomForest Classifier  {style="font-size: 0.7em;"}

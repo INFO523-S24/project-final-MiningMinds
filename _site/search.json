@@ -165,7 +165,7 @@
     "href": "presentation.html#preview-of-the-dataset-first-few-transactions",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "Preview of the Dataset: First Few Transactions",
-    "text": "Preview of the Dataset: First Few Transactions\n\n\n\n\n\n\n\n\n\n\nTime\nV1\nV2\nV3\nV4\nV5\nV6\nV7\nV8\nV9\n...\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\nAmount\nClass\n\n\n\n\n0\n0.0\n-1.359807\n-0.072781\n2.536347\n1.378155\n-0.338321\n0.462388\n0.239599\n0.098698\n0.363787\n...\n-0.018307\n0.277838\n-0.110474\n0.066928\n0.128539\n-0.189115\n0.133558\n-0.021053\n149.62\n0\n\n\n1\n0.0\n1.191857\n0.266151\n0.166480\n0.448154\n0.060018\n-0.082361\n-0.078803\n0.085102\n-0.255425\n...\n-0.225775\n-0.638672\n0.101288\n-0.339846\n0.167170\n0.125895\n-0.008983\n0.014724\n2.69\n0\n\n\n2\n1.0\n-1.358354\n-1.340163\n1.773209\n0.379780\n-0.503198\n1.800499\n0.791461\n0.247676\n-1.514654\n...\n0.247998\n0.771679\n0.909412\n-0.689281\n-0.327642\n-0.139097\n-0.055353\n-0.059752\n378.66\n0\n\n\n3\n1.0\n-0.966272\n-0.185226\n1.792993\n-0.863291\n-0.010309\n1.247203\n0.237609\n0.377436\n-1.387024\n...\n-0.108300\n0.005274\n-0.190321\n-1.175575\n0.647376\n-0.221929\n0.062723\n0.061458\n123.50\n0\n\n\n4\n2.0\n-1.158233\n0.877737\n1.548718\n0.403034\n-0.407193\n0.095921\n0.592941\n-0.270533\n0.817739\n...\n-0.009431\n0.798278\n-0.137458\n0.141267\n-0.206010\n0.502292\n0.219422\n0.215153\n69.99\n0\n\n\n\n\n5 rows × 31 columns"
+    "text": "Preview of the Dataset: First Few Transactions\n\n::: {#cell-Reading the dataset .cell execution_count=4}\n\n\n\n\n\n\n\n\nTime\nV1\nV2\nV3\nV4\nV5\nV6\nV7\nV8\nV9\n...\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\nAmount\nClass\n\n\n\n\n0\n0.0\n-1.359807\n-0.072781\n2.536347\n1.378155\n-0.338321\n0.462388\n0.239599\n0.098698\n0.363787\n...\n-0.018307\n0.277838\n-0.110474\n0.066928\n0.128539\n-0.189115\n0.133558\n-0.021053\n149.62\n0\n\n\n1\n0.0\n1.191857\n0.266151\n0.166480\n0.448154\n0.060018\n-0.082361\n-0.078803\n0.085102\n-0.255425\n...\n-0.225775\n-0.638672\n0.101288\n-0.339846\n0.167170\n0.125895\n-0.008983\n0.014724\n2.69\n0\n\n\n2\n1.0\n-1.358354\n-1.340163\n1.773209\n0.379780\n-0.503198\n1.800499\n0.791461\n0.247676\n-1.514654\n...\n0.247998\n0.771679\n0.909412\n-0.689281\n-0.327642\n-0.139097\n-0.055353\n-0.059752\n378.66\n0\n\n\n3\n1.0\n-0.966272\n-0.185226\n1.792993\n-0.863291\n-0.010309\n1.247203\n0.237609\n0.377436\n-1.387024\n...\n-0.108300\n0.005274\n-0.190321\n-1.175575\n0.647376\n-0.221929\n0.062723\n0.061458\n123.50\n0\n\n\n4\n2.0\n-1.158233\n0.877737\n1.548718\n0.403034\n-0.407193\n0.095921\n0.592941\n-0.270533\n0.817739\n...\n-0.009431\n0.798278\n-0.137458\n0.141267\n-0.206010\n0.502292\n0.219422\n0.215153\n69.99\n0\n\n\n\n\n5 rows × 31 columns\n\n\n:::"
   },
   {
     "objectID": "presentation.html#research-questions",
@@ -228,7 +228,7 @@
     "href": "presentation.html#randomforest-classifier",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "RandomForest Classifier",
-    "text": "RandomForest Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRandom Forest has 0.49 accuracy\nRandom Forest has 0.85 precision\nRandom Forest has 0.1 recall\nRandom Forest has 0.18 f1 score"
+    "text": "RandomForest Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRandom Forest has 0.49 accuracy\nRandom Forest has 1.0 precision\nRandom Forest has 0.09 recall\nRandom Forest has 0.17 f1 score"
   },
   {
     "objectID": "presentation.html#knn-classifier",
@@ -242,14 +242,14 @@
     "href": "presentation.html#xgboost-classifier",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "XGBoost Classifier",
-    "text": "XGBoost Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXGBoost has 0.47 accuracy\nXGBoost has 0.86 precision\nXGBoost has 0.05 recall\nXGBoost has 0.1 f1 score"
+    "text": "XGBoost Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXGBoost has 0.45 accuracy\nXGBoost has 0.62 precision\nXGBoost has 0.05 recall\nXGBoost has 0.08 f1 score"
   },
   {
     "objectID": "presentation.html#stacked-model",
     "href": "presentation.html#stacked-model",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "Stacked Model",
-    "text": "Stacked Model\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.92 accuracy\nClassifiers:  Stacked Model has 0.98 precision\nClassifiers:  Stacked Model has 0.88 recall\nClassifiers:  Stacked Model has 0.93 f1 score"
+    "text": "Stacked Model\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.94 accuracy\nClassifiers:  Stacked Model has 0.98 precision\nClassifiers:  Stacked Model has 0.91 recall\nClassifiers:  Stacked Model has 0.94 f1 score"
   },
   {
     "objectID": "presentation.html#roc-curve",
@@ -326,13 +326,13 @@
     "href": "presentation.html#random-undersampling",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "Random Undersampling",
-    "text": "Random Undersampling\n\n::: {#cell-Original dataset .cell execution_count=4}\n\n\n\n\n\n\n\n\n::: {#cell-Undersampled dataset .cell execution_count=5}\n\n\n\n\n\n\n\n:::\n:::"
+    "text": "Random Undersampling\n\n::: {#cell-Original dataset .cell execution_count=6}\n\n\n\n\n\n\n\n\n::: {#cell-Undersampled dataset .cell execution_count=7}\n\n\n\n\n\n\n\n:::\n:::"
   },
   {
     "objectID": "presentation.html#eda",
     "href": "presentation.html#eda",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "EDA",
-    "text": "EDA\n\nKernel Density Plots\n\n\n::: {#cell-Kernel Density Plots .cell execution_count=6}"
+    "text": "EDA\n\nKernel Density Plots\n\n\n::: {#cell-Kernel Density Plots .cell execution_count=8}\n\n\n\n\n\n\n\n\n\n\nPCA\n\n\n\n\n\n\n\n\n\n:::"
   }
 ]
