@@ -2,127 +2,211 @@
   {
     "objectID": "proposal.html",
     "href": "proposal.html",
-    "title": "Proposal for Credit Card Fraud Detection",
+    "title": "Fraud Detection using Ensemble Learning",
     "section": "",
     "text": "The overarching goal is to evaluate the enhancement in machine learning models’ performance achieved by integrating various models through a novel ensemble method known as stacked generalization. To this end, we will apply the stacked model to a comlex classification problem aimed at detecting fraudulent credit card transactions."
   },
   {
     "objectID": "proposal.html#high-level-goal",
     "href": "proposal.html#high-level-goal",
-    "title": "Proposal for Credit Card Fraud Detection",
+    "title": "Fraud Detection using Ensemble Learning",
     "section": "",
     "text": "The overarching goal is to evaluate the enhancement in machine learning models’ performance achieved by integrating various models through a novel ensemble method known as stacked generalization. To this end, we will apply the stacked model to a comlex classification problem aimed at detecting fraudulent credit card transactions."
   },
   {
     "objectID": "proposal.html#project-description-and-motivation",
     "href": "proposal.html#project-description-and-motivation",
-    "title": "Proposal for Credit Card Fraud Detection",
+    "title": "Fraud Detection using Ensemble Learning",
     "section": "Project Description and Motivation",
-    "text": "Project Description and Motivation\nOur project is motivated by the goal of accurately identifying fraudulent transactions using ensemble learning approaches (baggin, boosting, and stacking). We plan to use advanced data mining and machine learning techniques to create a model capable of spotting transactions that stand out as potentially fraudulent. A key part of our project involves comparing different machine learning models to see which one performs best on each dataset we study. We’re committed to understanding why certain models are more effective in specific situations. This approach will not only help us find the most effective way to detect fraud but also deepen our understanding of how these models work. Through this work, we aim to make a meaningful contribution to both the field of study and the practical efforts to secure financial transactions."
+    "text": "Project Description and Motivation\nOur project is motivated by the goal of accurately identifying fraudulent transactions using ensemble learning approaches (baggin, boosting, and stacking). We plan to use advanced data mining and machine learning techniques to create a model capable of spotting transactions that stand out as potentially fraudulent. A key part of our project involves comparing different machine learning models to see which one performs best on each dataset we study. We’re committed to understanding why certain models are more effective in specific situations.\nAlso, we aimed to test the efficiency of Stacked Generalization, commonly known as “stacking,” which is an ensemble learning technique that combines multiple classification or regression models via a meta-classifier or a meta-regressor. The base level models are trained based on a complete training set, then the meta-model is trained on the outputs of the base level models as features. Figure 1 illustrates the overall workflow of stacking method.\nThrough this work, we can make a meaningful contribution to both the field of study and the practical efforts to secure financial transactions.\n\n\n\nFig 1. Overall Flowchart of Stacking method on the mlxtend Library"
   },
   {
     "objectID": "proposal.html#dataset",
     "href": "proposal.html#dataset",
-    "title": "Proposal for Credit Card Fraud Detection",
+    "title": "Fraud Detection using Ensemble Learning",
     "section": "Dataset",
-    "text": "Dataset\nWe chose a dataset comprising over 550,000 credit card transactions made by European cardholders in 2023. This dataset is particularly appealing because of its substantial size, the anonymity of its features, and its real-world relevance. It includes 31 features: a unique transaction ID, 28 anonymized attributes (V1-V28) that could encompass various transaction details such as time, location, and merchant category, the transaction amount, and a binary class indicating whether the transaction was fraudulent. The data’s anonymization ensures privacy and ethical compliance, while the binary classification makes it suitable for supervised learning approaches in fraud detection.\n\nimport numpy as np\nimport pandas as pd\n\n\ndf = pd.read_csv('./data/creditcard_2023.csv')\ndf.head()\n\n\n\n\n\n\n\n\nid\nV1\nV2\nV3\nV4\nV5\nV6\nV7\nV8\nV9\n...\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\nAmount\nClass\n\n\n\n\n0\n0\n-0.260648\n-0.469648\n2.496266\n-0.083724\n0.129681\n0.732898\n0.519014\n-0.130006\n0.727159\n...\n-0.110552\n0.217606\n-0.134794\n0.165959\n0.126280\n-0.434824\n-0.081230\n-0.151045\n17982.10\n0\n\n\n1\n1\n0.985100\n-0.356045\n0.558056\n-0.429654\n0.277140\n0.428605\n0.406466\n-0.133118\n0.347452\n...\n-0.194936\n-0.605761\n0.079469\n-0.577395\n0.190090\n0.296503\n-0.248052\n-0.064512\n6531.37\n0\n\n\n2\n2\n-0.260272\n-0.949385\n1.728538\n-0.457986\n0.074062\n1.419481\n0.743511\n-0.095576\n-0.261297\n...\n-0.005020\n0.702906\n0.945045\n-1.154666\n-0.605564\n-0.312895\n-0.300258\n-0.244718\n2513.54\n0\n\n\n3\n3\n-0.152152\n-0.508959\n1.746840\n-1.090178\n0.249486\n1.143312\n0.518269\n-0.065130\n-0.205698\n...\n-0.146927\n-0.038212\n-0.214048\n-1.893131\n1.003963\n-0.515950\n-0.165316\n0.048424\n5384.44\n0\n\n\n\n\n4 rows × 31 columns\n\n\n\n\n# Print the shape of the DataFrame\nprint(\"Shape of the DataFrame:\", df.shape)\n\n\n# Print the columns of the DataFrame\nprint(\"Columns in the DataFrame:\", df.columns.tolist())\n\n\n# Print the data types of each column\n# print(\"Data types of the columns:\")\n# print(df.dtypes)\n\n\n# Use .info() to get a concise summary of the DataFrame\nprint(\"DataFrame Information:\")\ndf.info()\n\nShape of the DataFrame: (4, 31)\nColumns in the DataFrame: ['id', 'V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12', 'V13', 'V14', 'V15', 'V16', 'V17', 'V18', 'V19', 'V20', 'V21', 'V22', 'V23', 'V24', 'V25', 'V26', 'V27', 'V28', 'Amount', 'Class']\nDataFrame Information:\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 4 entries, 0 to 3\nData columns (total 31 columns):\n #   Column  Non-Null Count  Dtype  \n---  ------  --------------  -----  \n 0   id      4 non-null      int64  \n 1   V1      4 non-null      float64\n 2   V2      4 non-null      float64\n 3   V3      4 non-null      float64\n 4   V4      4 non-null      float64\n 5   V5      4 non-null      float64\n 6   V6      4 non-null      float64\n 7   V7      4 non-null      float64\n 8   V8      4 non-null      float64\n 9   V9      4 non-null      float64\n 10  V10     4 non-null      float64\n 11  V11     4 non-null      float64\n 12  V12     4 non-null      float64\n 13  V13     4 non-null      float64\n 14  V14     4 non-null      float64\n 15  V15     4 non-null      float64\n 16  V16     4 non-null      float64\n 17  V17     4 non-null      float64\n 18  V18     4 non-null      float64\n 19  V19     4 non-null      float64\n 20  V20     4 non-null      float64\n 21  V21     4 non-null      float64\n 22  V22     4 non-null      float64\n 23  V23     4 non-null      float64\n 24  V24     4 non-null      float64\n 25  V25     4 non-null      float64\n 26  V26     4 non-null      float64\n 27  V27     4 non-null      float64\n 28  V28     4 non-null      float64\n 29  Amount  4 non-null      float64\n 30  Class   4 non-null      int64  \ndtypes: float64(29), int64(2)\nmemory usage: 1.1 KB"
+    "text": "Dataset\nWe chose a dataset comprising over 550,000 credit card transactions made by European cardholders in 2023. This dataset is particularly appealing because of its substantial size, the anonymity of its features, and its real-world relevance. It includes 31 features: a unique transaction ID, 28 anonymized attributes (V1-V28) that could encompass various transaction details such as time, location, and merchant category, the transaction amount, and a binary class indicating whether the transaction was fraudulent. The data’s anonymization ensures privacy and ethical compliance, while the binary classification makes it suitable for supervised learning approaches in fraud detection.\nOne of the disadvantages of the the dataset is that since the features are anonymized, feature importance analysis, such as SHAP (SHapley Additive exPlanations) or permutation feature importance, does not provide any useful information about interpretability of the machine learnig models. Also, the imbalance of the data is an issue, making it a challenging problem.\n\nimport numpy as np\nimport pandas as pd\n\n\ndf = pd.read_csv('./data/creditcard_2023.csv')\ndf.head()\n\n\n\n\n\n\n\n\nid\nV1\nV2\nV3\nV4\nV5\nV6\nV7\nV8\nV9\n...\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\nAmount\nClass\n\n\n\n\n0\n0\n-0.260648\n-0.469648\n2.496266\n-0.083724\n0.129681\n0.732898\n0.519014\n-0.130006\n0.727159\n...\n-0.110552\n0.217606\n-0.134794\n0.165959\n0.126280\n-0.434824\n-0.081230\n-0.151045\n17982.10\n0\n\n\n1\n1\n0.985100\n-0.356045\n0.558056\n-0.429654\n0.277140\n0.428605\n0.406466\n-0.133118\n0.347452\n...\n-0.194936\n-0.605761\n0.079469\n-0.577395\n0.190090\n0.296503\n-0.248052\n-0.064512\n6531.37\n0\n\n\n2\n2\n-0.260272\n-0.949385\n1.728538\n-0.457986\n0.074062\n1.419481\n0.743511\n-0.095576\n-0.261297\n...\n-0.005020\n0.702906\n0.945045\n-1.154666\n-0.605564\n-0.312895\n-0.300258\n-0.244718\n2513.54\n0\n\n\n3\n3\n-0.152152\n-0.508959\n1.746840\n-1.090178\n0.249486\n1.143312\n0.518269\n-0.065130\n-0.205698\n...\n-0.146927\n-0.038212\n-0.214048\n-1.893131\n1.003963\n-0.515950\n-0.165316\n0.048424\n5384.44\n0\n\n\n4\n4\n-0.206820\n-0.165280\n1.527053\n-0.448293\n0.106125\n0.530549\n0.658849\n-0.212660\n1.049921\n...\n-0.106984\n0.729727\n-0.161666\n0.312561\n-0.414116\n1.071126\n0.023712\n0.419117\n14278.97\n0\n\n\n\n\n5 rows × 31 columns\n\n\n\n\n# Print the shape of the DataFrame\nprint(\"Shape of the DataFrame:\", df.shape)\n\n\n# Print the data types of each column\n# print(\"Data types of the columns:\")\n# print(df.dtypes)\n\n\n# Use .info() to get a concise summary of the DataFrame\nprint(\"DataFrame Information:\")\ndf.info()\n\nShape of the DataFrame: (568630, 31)\nDataFrame Information:\n&lt;class 'pandas.core.frame.DataFrame'&gt;\nRangeIndex: 568630 entries, 0 to 568629\nData columns (total 31 columns):\n #   Column  Non-Null Count   Dtype  \n---  ------  --------------   -----  \n 0   id      568630 non-null  int64  \n 1   V1      568630 non-null  float64\n 2   V2      568630 non-null  float64\n 3   V3      568630 non-null  float64\n 4   V4      568630 non-null  float64\n 5   V5      568630 non-null  float64\n 6   V6      568630 non-null  float64\n 7   V7      568630 non-null  float64\n 8   V8      568630 non-null  float64\n 9   V9      568630 non-null  float64\n 10  V10     568630 non-null  float64\n 11  V11     568630 non-null  float64\n 12  V12     568630 non-null  float64\n 13  V13     568630 non-null  float64\n 14  V14     568630 non-null  float64\n 15  V15     568630 non-null  float64\n 16  V16     568630 non-null  float64\n 17  V17     568630 non-null  float64\n 18  V18     568630 non-null  float64\n 19  V19     568630 non-null  float64\n 20  V20     568630 non-null  float64\n 21  V21     568630 non-null  float64\n 22  V22     568630 non-null  float64\n 23  V23     568630 non-null  float64\n 24  V24     568630 non-null  float64\n 25  V25     568630 non-null  float64\n 26  V26     568630 non-null  float64\n 27  V27     568630 non-null  float64\n 28  V28     568630 non-null  float64\n 29  Amount  568630 non-null  float64\n 30  Class   568630 non-null  int64  \ndtypes: float64(29), int64(2)\nmemory usage: 134.5 MB"
   },
   {
     "objectID": "proposal.html#research-questions",
     "href": "proposal.html#research-questions",
-    "title": "Proposal for Credit Card Fraud Detection",
+    "title": "Fraud Detection using Ensemble Learning",
     "section": "Research Questions",
-    "text": "Research Questions\nOur first research question focuses on identifying the best-performing anomaly detection algorithm for this specific dataset and understanding the reasons behind its performance. We are particularly interested in exploring the effectiveness of various machine learning models, including but not limited to Random Forest, XGBoost, and Artificial Neural Networks and comparing these against ensemble techniques like stacking. The stacked generalization will combine multiple models to see if a meta-classifier can improve fraud detection performance by learning from the predictions of base classifiers. This approach not only tests the individual strengths of various algorithms but also explores the synergy between them, potentially leading to a more accurate and reliable fraud detection system. The mlxtend library is adopted to develop the stacked generalization technique."
+    "text": "Research Questions\n\nResearch Question 1:\nWhat is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, KNN, for fraud detection in this specific dataset?\n\n\nAnalysis Plan:\n\nAnomaly detection datasets are highly imbalanced and the rare class (anomalies) is often more important, they require special sampling techniques. The most plausible technique is oversampling the minority class and Undersampling the majority class.\nSplit the dataset into training and testing sets and train individual anomaly detection models (Random Forest, XGBoost, KNN) on the training set.\nHypertuning the trained models.\nEvaluate the performance of each model on the testing set using metrics such as precision, recall, F1-score, and area under the ROC curve.\nAnalyze the reasons behind the performance differences observed, potentially considering factors such as model complexity, feature importance, and dataset characteristics.\n\n\n\nResearch Question 2:\nHow does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?\n\n\nAnalysis Plan:\n\nImplement stacked generalization using the mlxtend library with the trained models from previous question.\nSplit the base learners output into training and testing sets.\nCombine predictions from base classifiers using the stacking ensemble approach and train a meta-classifier on the combined predictions.\nEvaluate the performance of the stacked model and compare it with the base learners.\nAnalyze the reasons behind the performance improvement, considering factors such as model diversity, ensemble learning principles, and the dataset’s characteristics."
   },
   {
-    "objectID": "proposal.html#analysis-plan",
-    "href": "proposal.html#analysis-plan",
-    "title": "Proposal for Credit Card Fraud Detection",
-    "section": "Analysis plan",
-    "text": "Analysis plan\n\nA plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any)."
+    "objectID": "proposal.html#plan-of-attack",
+    "href": "proposal.html#plan-of-attack",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "Plan of Attack",
+    "text": "Plan of Attack\n\n\n\n\n\n\n\n\n\nTask Name\nAssignee\nDue\nSummary\n\n\n\n\nExploratory Data Analysis\nSai & Nandhini\n04/07/2024\nComparing the statistical distribution of the anonymized features, Exploring the relationship between the amount of transactions and fraudulent transactions\n\n\nFeature Selection and Engineering\nGowtham\n04/09/2024\nPerforming PCA and selecting the number of PCAs, Exploring random forest feature importance\n\n\nTraining the Base Learners\nDeema\n04/14/2024\nTraining one machine learning algorithm from each of the ensemble learning approaches (bagging, boosting, and stacking) along with artificial neural networks\n\n\nHypertuning Base Learners\nRoxana\n04/20/2024\nHypertuning the base learners using grid search or random search\n\n\nModel Evaluation\nSai\n04/24/2024\nEvaluating models using categorical metrics, confusion metrics, and ROC curve\n\n\nDeveloping Stacked Generalization\nOmid\n04/30/2024\nSelecting the metalearner and Testing the potential improvement upon the base learners\n\n\nPreparing the Final Report and Presentation\nNandhini\n04/05/2024\nFinalizing the results and practicing the oral presentation"
+  },
+  {
+    "objectID": "proposal.html#repo-organization",
+    "href": "proposal.html#repo-organization",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "Repo Organization",
+    "text": "Repo Organization\nProject repository comprises of following folders :\n\n.github/: Reserved for GitHub-related files like workflows, actions, and customized templates tailored for issue management.\n_extra/: Acts as a repository for miscellaneous files that don’t fit into other project sections, offering flexibility for various supplementary documents.\n_freeze/: Stores frozen environment files detailing the project’s setup and dependencies.\ndata/: Houses essential data files crucial for project operations, including input files, datasets, and other vital resources.\nimages/: Serves as a central repository for visual assets such as diagrams, charts, and screenshots essential for project documentation and presentation.\n.gitignore: Defines exclusions from version control, streamlining the versioning process.\nREADME.md: Serves as the primary source of project information, encompassing setup instructions, usage guidelines, and an overview of project objectives and scope.\n_quarto.yml: Functions as the configuration file for Quarto, governing the construction and rendering of Quarto documents.\nabout.qmd: Provides supplementary contextual information about the project’s purpose and team members.\nindex.qmd: Acts as the main hub for the project, offering detailed descriptions including code snippets, visualizations, and outcomes.\npresentation.qmd: Serves as a Quarto file for presenting the final project results in slideshow format.\nproject-final.Rproj: Project file for organization and management within the R environment.\nproposal.qmd: Contains the project proposal, encompassing dataset details, metadata, project description, questions, and weekly plan updates.\nrequirements.txt: Specifies project dependencies and their versions essential for successful execution."
+  },
+  {
+    "objectID": "proposal.html#references",
+    "href": "proposal.html#references",
+    "title": "Fraud Detection using Ensemble Learning",
+    "section": "References",
+    "text": "References\n[1] The Data source link is attached here: https://www.kaggle.com/datasets/nelgiriyewithana/credit-card-fraud-detection-dataset-2023\n[2] Github Link: https://github.com/INFO523-S24/project-final-MiningMinds"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Project Title",
     "section": "",
-    "text": "Add project abstract here."
+    "text": "In this project, we aimed to apply various methods and their combinations to a complex and highly imbalanced classification problem. Initially, we constructed a balanced subset of our data, containing an equal number of fraud and non-fraud transactions using the “Random Majority Under Sampling Technique”. This approach aids our models in better recognizing patterns indicative of fraudulent activities. A balanced subsample in our context refers to a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. Subsequently, we trained three machine learning algorithms: Random Forest, K-Nearest Neighbors, and XGBoost, and combined them using a stacked generalization approach based on the balanced dataset. We utilized a grid search method to hyper-tune the machine learning algorithms. More precisely, we evaluated the enhancement in performance of the three machine learning models achieved by integrating various models through a novel ensemble method known as stacked generalization, using logistic regression as the meta-learner. After evaluating the performance of the models based on the balanced dataset, we applied the models to the entire dataset. The main findings of this research are twofold: 1. The trained models exhibit high generalizability. 2. The stacked model performs as well as the best base learner."
   },
   {
     "objectID": "index.html#abstract",
     "href": "index.html#abstract",
     "title": "Project Title",
     "section": "",
-    "text": "Add project abstract here."
+    "text": "In this project, we aimed to apply various methods and their combinations to a complex and highly imbalanced classification problem. Initially, we constructed a balanced subset of our data, containing an equal number of fraud and non-fraud transactions using the “Random Majority Under Sampling Technique”. This approach aids our models in better recognizing patterns indicative of fraudulent activities. A balanced subsample in our context refers to a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. Subsequently, we trained three machine learning algorithms: Random Forest, K-Nearest Neighbors, and XGBoost, and combined them using a stacked generalization approach based on the balanced dataset. We utilized a grid search method to hyper-tune the machine learning algorithms. More precisely, we evaluated the enhancement in performance of the three machine learning models achieved by integrating various models through a novel ensemble method known as stacked generalization, using logistic regression as the meta-learner. After evaluating the performance of the models based on the balanced dataset, we applied the models to the entire dataset. The main findings of this research are twofold: 1. The trained models exhibit high generalizability. 2. The stacked model performs as well as the best base learner."
   },
   {
-    "objectID": "presentation.html#quarto",
-    "href": "presentation.html#quarto",
-    "title": "Project title",
-    "section": "Quarto",
-    "text": "Quarto\n\nThe presentation is created using the Quarto CLI\n## sets the start of a new slide"
+    "objectID": "index.html#introduction",
+    "href": "index.html#introduction",
+    "title": "Project Title",
+    "section": "Introduction",
+    "text": "Introduction\nIn the first step, we should import the dataset and perform a Exploratory Data Analysis (EDA).\n\n\n   Time        V1        V2        V3        V4        V5        V6        V7  \\\n0   0.0 -1.359807 -0.072781  2.536347  1.378155 -0.338321  0.462388  0.239599   \n1   0.0  1.191857  0.266151  0.166480  0.448154  0.060018 -0.082361 -0.078803   \n2   1.0 -1.358354 -1.340163  1.773209  0.379780 -0.503198  1.800499  0.791461   \n3   1.0 -0.966272 -0.185226  1.792993 -0.863291 -0.010309  1.247203  0.237609   \n4   2.0 -1.158233  0.877737  1.548718  0.403034 -0.407193  0.095921  0.592941   \n\n         V8        V9  ...       V21       V22       V23       V24       V25  \\\n0  0.098698  0.363787  ... -0.018307  0.277838 -0.110474  0.066928  0.128539   \n1  0.085102 -0.255425  ... -0.225775 -0.638672  0.101288 -0.339846  0.167170   \n2  0.247676 -1.514654  ...  0.247998  0.771679  0.909412 -0.689281 -0.327642   \n3  0.377436 -1.387024  ... -0.108300  0.005274 -0.190321 -1.175575  0.647376   \n4 -0.270533  0.817739  ... -0.009431  0.798278 -0.137458  0.141267 -0.206010   \n\n        V26       V27       V28  Amount  Class  \n0 -0.189115  0.133558 -0.021053  149.62      0  \n1  0.125895 -0.008983  0.014724    2.69      0  \n2 -0.139097 -0.055353 -0.059752  378.66      0  \n3 -0.221929  0.062723  0.061458  123.50      0  \n4  0.502292  0.219422  0.215153   69.99      0  \n\n[5 rows x 31 columns]\n\n\nWe have 28 columns that are anonymized due to privacy concerns. The other two columns are “Amount” and “Time.” “Time” represents the number of seconds elapsed between this transaction and the first transaction in the dataset.\nBelow you can see statistical summary of all numerical columns. Thank fully we don’t have Nan values in the dataset.\n\n\n                Time            V1            V2            V3            V4  \\\ncount  284807.000000  2.848070e+05  2.848070e+05  2.848070e+05  2.848070e+05   \nmean    94813.859575  1.168375e-15  3.416908e-16 -1.379537e-15  2.074095e-15   \nstd     47488.145955  1.958696e+00  1.651309e+00  1.516255e+00  1.415869e+00   \nmin         0.000000 -5.640751e+01 -7.271573e+01 -4.832559e+01 -5.683171e+00   \n25%     54201.500000 -9.203734e-01 -5.985499e-01 -8.903648e-01 -8.486401e-01   \n50%     84692.000000  1.810880e-02  6.548556e-02  1.798463e-01 -1.984653e-02   \n75%    139320.500000  1.315642e+00  8.037239e-01  1.027196e+00  7.433413e-01   \nmax    172792.000000  2.454930e+00  2.205773e+01  9.382558e+00  1.687534e+01   \n\n                 V5            V6            V7            V8            V9  \\\ncount  2.848070e+05  2.848070e+05  2.848070e+05  2.848070e+05  2.848070e+05   \nmean   9.604066e-16  1.487313e-15 -5.556467e-16  1.213481e-16 -2.406331e-15   \nstd    1.380247e+00  1.332271e+00  1.237094e+00  1.194353e+00  1.098632e+00   \nmin   -1.137433e+02 -2.616051e+01 -4.355724e+01 -7.321672e+01 -1.343407e+01   \n25%   -6.915971e-01 -7.682956e-01 -5.540759e-01 -2.086297e-01 -6.430976e-01   \n50%   -5.433583e-02 -2.741871e-01  4.010308e-02  2.235804e-02 -5.142873e-02   \n75%    6.119264e-01  3.985649e-01  5.704361e-01  3.273459e-01  5.971390e-01   \nmax    3.480167e+01  7.330163e+01  1.205895e+02  2.000721e+01  1.559499e+01   \n\n       ...           V21           V22           V23           V24  \\\ncount  ...  2.848070e+05  2.848070e+05  2.848070e+05  2.848070e+05   \nmean   ...  1.654067e-16 -3.568593e-16  2.578648e-16  4.473266e-15   \nstd    ...  7.345240e-01  7.257016e-01  6.244603e-01  6.056471e-01   \nmin    ... -3.483038e+01 -1.093314e+01 -4.480774e+01 -2.836627e+00   \n25%    ... -2.283949e-01 -5.423504e-01 -1.618463e-01 -3.545861e-01   \n50%    ... -2.945017e-02  6.781943e-03 -1.119293e-02  4.097606e-02   \n75%    ...  1.863772e-01  5.285536e-01  1.476421e-01  4.395266e-01   \nmax    ...  2.720284e+01  1.050309e+01  2.252841e+01  4.584549e+00   \n\n                V25           V26           V27           V28         Amount  \\\ncount  2.848070e+05  2.848070e+05  2.848070e+05  2.848070e+05  284807.000000   \nmean   5.340915e-16  1.683437e-15 -3.660091e-16 -1.227390e-16      88.349619   \nstd    5.212781e-01  4.822270e-01  4.036325e-01  3.300833e-01     250.120109   \nmin   -1.029540e+01 -2.604551e+00 -2.256568e+01 -1.543008e+01       0.000000   \n25%   -3.171451e-01 -3.269839e-01 -7.083953e-02 -5.295979e-02       5.600000   \n50%    1.659350e-02 -5.213911e-02  1.342146e-03  1.124383e-02      22.000000   \n75%    3.507156e-01  2.409522e-01  9.104512e-02  7.827995e-02      77.165000   \nmax    7.519589e+00  3.517346e+00  3.161220e+01  3.384781e+01   25691.160000   \n\n               Class  \ncount  284807.000000  \nmean        0.001727  \nstd         0.041527  \nmin         0.000000  \n25%         0.000000  \n50%         0.000000  \n75%         0.000000  \nmax         1.000000  \n\n[8 rows x 31 columns]\n\n\nThe next step is to check the distribution of classes. Below you can see the barplots showing the non-fradulent and fradulent classes. Based on this figure, the dataset is highly imbalanced.\n::: {#cell-Class Distribution .cell execution_count=4}\n\n\n\n\n\n\n\n:::\nThe first visualization that comes to mind is to examine whether the amount of transactions is related to their being fraudulent. Below, you can find the boxplots showing the distribution of transaction amounts for each class. This figure indicates that the amounts of fraudulent transactions are more dispersed.\n::: {#cell-Amount Boxplots for each Class .cell execution_count=5}\n\n\n\n\n\n\n\n:::\nObserving the distributions allows us to understand the skewness of the classes. We have to implement techniques to reduce skewness in these distributions. Hence, we normalize the “Amount” and “Time” columns.\nt is crucial to construct a balanced subset of our data, containing an equal number of fraud and non-fraud transactions. This approach helps our models in better recognizing patterns that indicate fraudulent activities. In our context, a balanced subsample is a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. This ensures our sample has an even representation of both classes. More precisely, There are 492 cases of fraud in our dataset so we can randomly get 492 cases of non-fraud to create our new sub dataframe. We concat the 492 cases of fraud and non fraud, creating a new sub-sample.\n::: {#cell-Random undersampling .cell execution_count=7}\n\n\n\n\n\n\n\n:::"
   },
   {
-    "objectID": "presentation.html#layouts",
-    "href": "presentation.html#layouts",
-    "title": "Project title",
-    "section": "Layouts",
-    "text": "Layouts\nYou can use plain text\n\n\n\nor bullet points1\n\n\nor in two columns\n\n\n\nlike\nthis\n\nAnd add footnotes"
+    "objectID": "index.html#exploratory-data-analysis",
+    "href": "index.html#exploratory-data-analysis",
+    "title": "Project Title",
+    "section": "Exploratory Data Analysis",
+    "text": "Exploratory Data Analysis\nIn this step, we will explore the distribution of each variable with respect to each class. The figure shows a series of histograms overlayed with kernel density estimates (KDEs), which compare the distributions of variables from two classes “Fraud” and “Non-Fraud” transactions. Distributions of V1, V3, V4, V10, V11, V14, and V17 show notable differences in their skewness and central tendency (mean/median location), indicating that these variables could be significant in distinguishing between Fraud and Non-Fraud transactions, as the behavior (central tendency and dispersion) of these variables differs substantially between the two classes. The clear differences in distribution characteristics for many of the variables suggest they could be effective features in a machine learning model designed to classify transactions as fraudulent or non-fraudulent.\n\n\n\n\n\n\n\n\n\nTo illustrate the multivariate distribution of classes, we can create scatter plots for each class using the first two principal components of the PCA. The plot shows two distinct groups or clusters of points. The blue points, representing “No Fraud” transactions, are primarily clustered towards the lower left of the plot. The red points, representing “Fraud” transactions, are more scattered but tend to be grouped in certain areas, notably on the right side and the top of the plot. This clustering suggests that PCA has been effective in capturing some of the underlying patterns that distinguish between fraudulent and non-fraudulent transactions. This plot shows us that classification models should perform well in distinguishing fraud cases from non-fraud cases."
   },
   {
-    "objectID": "presentation.html#code",
-    "href": "presentation.html#code",
-    "title": "Project title",
-    "section": "Code",
-    "text": "Code\n\n\n                            OLS Regression Results                            \n==============================================================================\nDep. Variable:                    mpg   R-squared:                       0.073\nModel:                            OLS   Adj. R-squared:                  0.070\nMethod:                 Least Squares   F-statistic:                     30.59\nDate:                Tue, 05 Dec 2023   Prob (F-statistic):           5.84e-08\nTime:                        15:26:39   Log-Likelihood:                -1346.4\nNo. Observations:                 392   AIC:                             2697.\nDf Residuals:                     390   BIC:                             2705.\nDf Model:                           1                                         \nCovariance Type:            nonrobust                                         \n==============================================================================\n                 coef    std err          t      P&gt;|t|      [0.025      0.975]\n------------------------------------------------------------------------------\nconst         35.8015      2.266     15.800      0.000      31.347      40.257\nspeed       -354.7055     64.129     -5.531      0.000    -480.788    -228.623\n==============================================================================\nOmnibus:                       27.687   Durbin-Watson:                   0.589\nProb(Omnibus):                  0.000   Jarque-Bera (JB):               18.976\nSkew:                           0.420   Prob(JB):                     7.57e-05\nKurtosis:                       2.323   Cond. No.                         169.\n==============================================================================\n\nNotes:\n[1] Standard Errors assume that the covariance matrix of the errors is correctly specified."
+    "objectID": "index.html#training-and-testing-base-ml-algorithms",
+    "href": "index.html#training-and-testing-base-ml-algorithms",
+    "title": "Project Title",
+    "section": "Training and Testing Base ML Algorithms",
+    "text": "Training and Testing Base ML Algorithms\nNow we will train three types of classifiers (Random Forest, K-Nearest Neighbor, and XGBoost) and combine them using stacked generalization and evaluate their accuracy in detecting fraud transactions. In the first step, we have to split our data into training and testing sets and separate the features from the labels. Then, we tune the hyperparemeters of each algorithms using grid search method. We use Accuracy, Precision, Recall, and F1_score along with ROC curve for model evaluation.\nBelow the categorical metrics and confusion matrix based on the test dataset are reported.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMetric\nRF\nKNN\nXGBoost\n\n\n\n\nAccuracy\n0.95\n0.93\n0.94\n\n\nPrecision\n0.98\n0.98\n0.98\n\n\nRecall\n0.93\n0.9\n0.92\n\n\nF1-Score\n0.95\n0.94\n0.95\n\n\n\nThe ensemble learning approaches including XGBoost and RF are more accurate than KNN. Random Forest seems to be the most balanced model with high marks across all metrics, making it potentially the best choice if you need a model that performs well across different aspects of classification. XGBoost also performs robustly, especially in balancing Precision and Recall, making it suitable for scenarios where both false positives and false negatives carry significant costs. KNN, while slightly lagging behind in Recall and Accuracy, still shows commendable performance and could be preferred for its simplicity and effectiveness in certain contexts where model interpretability and computational efficiency are more critical."
   },
   {
-    "objectID": "presentation.html#plots",
-    "href": "presentation.html#plots",
-    "title": "Project title",
-    "section": "Plots",
-    "text": "Plots"
+    "objectID": "index.html#stacked-generalization",
+    "href": "index.html#stacked-generalization",
+    "title": "Project Title",
+    "section": "Stacked Generalization",
+    "text": "Stacked Generalization\nIn the next step, we train the stacking model with a logistic regression as the metalearner.\n::: {#cell-Training the Stacking Model .cell execution_count=11}\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.95 accuracy\nClassifiers:  Stacked Model has 0.99 precision\nClassifiers:  Stacked Model has 0.92 recall\nClassifiers:  Stacked Model has 0.95 f1 score\n\n:::\nBased on the performance evaluation of the stacking model, its effectiveness is comparable to that of the XGBoost technique."
   },
   {
-    "objectID": "presentation.html#plot-and-text",
-    "href": "presentation.html#plot-and-text",
-    "title": "Project title",
-    "section": "Plot and text",
-    "text": "Plot and text\n\n\n\nSome text\ngoes here"
+    "objectID": "index.html#comparing-models-using-roc-curve",
+    "href": "index.html#comparing-models-using-roc-curve",
+    "title": "Project Title",
+    "section": "Comparing Models Using ROC Curve",
+    "text": "Comparing Models Using ROC Curve\nThe ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.97. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.971, but still outperforms the KNN’s AUC of 0.974. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance.\n::: {#cell-ROC Curve .cell execution_count=12}\n\n\n\n\n\n\n\n:::"
   },
   {
-    "objectID": "presentation.html#tables",
-    "href": "presentation.html#tables",
-    "title": "Project title",
-    "section": "Tables",
-    "text": "Tables\nIf you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,\n\n\n\n\n\n\n\n\n\n\n\n\nspecies\n\n\n\nisland\n\n\n\nbill_length_mm\n\n\n\nbill_depth_mm\n\n\n\nflipper_length_mm\n\n\n\nbody_mass_g\n\n\n\nsex\n\n\n\n\n\n\n\n\n\n\n\n0\n\n\n\nAdelie\n\n\n\nTorgersen\n\n\n\n39.1\n\n\n\n18.7\n\n\n\n181.0\n\n\n\n3750.0\n\n\n\nMale\n\n\n\n\n\n\n\n1\n\n\n\nAdelie\n\n\n\nTorgersen\n\n\n\n39.5\n\n\n\n17.4\n\n\n\n186.0\n\n\n\n3800.0\n\n\n\nFemale\n\n\n\n\n\n\n\n2\n\n\n\nAdelie\n\n\n\nTorgersen\n\n\n\n40.3\n\n\n\n18.0\n\n\n\n195.0\n\n\n\n3250.0\n\n\n\nFemale\n\n\n\n\n\n\n\n4\n\n\n\nAdelie\n\n\n\nTorgersen\n\n\n\n36.7\n\n\n\n19.3\n\n\n\n193.0\n\n\n\n3450.0\n\n\n\nFemale\n\n\n\n\n\n\n\n5\n\n\n\nAdelie\n\n\n\nTorgersen\n\n\n\n39.3\n\n\n\n20.6\n\n\n\n190.0\n\n\n\n3650.0\n\n\n\nMale"
+    "objectID": "index.html#evaluation-on-the-whole-dataset",
+    "href": "index.html#evaluation-on-the-whole-dataset",
+    "title": "Project Title",
+    "section": "Evaluation on the Whole Dataset",
+    "text": "Evaluation on the Whole Dataset\n\n\n\nMetric\nRF\nKNN\nXGBoost\nStacked\n\n\n\n\nAccuracy\n0.98\n0.98\n0.97\n0.97\n\n\nPrecision\n0.08\n0.08\n0.05\n0.05\n\n\nRecall\n0.96\n0.91\n0.99\n0.99\n\n\nF1-Score\n0.14\n0.14\n0.09\n0.09\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThe classification results provided in the table display performance metrics—Accuracy, Precision, Recall, and F1-Score—for four classifiers: Random Forest (RF), K-Nearest Neighbors (KNN), XGBoost, and a Stacked classifier. Here’s an analysis of each metric and what it suggests about the classifiers:\nAccuracy: All classifiers show very high accuracy scores, with RF and KNN at 0.98 and XGBoost and the Stacked classifier at 0.97. High accuracy indicates that the models are effective at identifying both positive and negative classes overall.\nPrecision: Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.\nRecall: Recall is exceptionally high for all models, with RF at 0.96, KNN at 0.91, and both XGBoost and the Stacked classifier at 0.99. High recall means that the models are highly capable of identifying most of the actual positive cases. In scenarios where missing a positive case (e.g., a fraudulent transaction) is costly, high recall is very desirable.\nF1-Score: The F1-Score, which balances Precision and Recall, is quite low across all models, ranging from 0.09 to 0.14. The low F1-Scores reflect the imbalance between high Recall and low Precision, indicating that the models are not very efficient at precision-recall balance. This suggests that many of the positive predictions made by the models are incorrect, but they manage to catch most of the true positives.\nInterpretation and Recommendations: The high Recall and low Precision suggest that these models, as configured, might be suitable in contexts where failing to detect a positive case has severe consequences, even if it results in a higher number of false positives. The low Precision and resulting low F1-Scores imply a significant trade-off has been made to maximize Recall. This could be problematic in scenarios where the cost of false positives is high (e.g., blocking legitimate transactions in fraud detection)."
   },
   {
-    "objectID": "presentation.html#images",
-    "href": "presentation.html#images",
-    "title": "Project title",
-    "section": "Images",
-    "text": "Images\n\nImage credit: Danielle Navarro, Percolate."
-  },
-  {
-    "objectID": "presentation.html#math-expressions",
-    "href": "presentation.html#math-expressions",
-    "title": "Project title",
-    "section": "Math Expressions",
-    "text": "Math Expressions\nYou can write LaTeX math expressions inside a pair of dollar signs, e.g. $\\alpha+\\beta$ renders \\(\\alpha + \\beta\\). You can use the display style with double dollar signs:\n$$\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i$$\n\\[\n\\bar{X}=\\frac{1}{n}\\sum_{i=1}^nX_i\n\\]\nLimitations:\n\nThe source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting $$ must appear in the very beginning of a line, followed immediately by a non-space character, and the ending $$ must be at the end of a line, led by a non-space character;\nThere should not be spaces after the opening $ or before the closing $."
-  },
-  {
-    "objectID": "presentation.html#feeling-adventurous",
-    "href": "presentation.html#feeling-adventurous",
-    "title": "Project title",
-    "section": "Feeling adventurous?",
-    "text": "Feeling adventurous?\n\nYou are welcomed to use the default styling of the slides. In fact, that’s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.\nBut some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs."
+    "objectID": "index.html#implications-for-future",
+    "href": "index.html#implications-for-future",
+    "title": "Project Title",
+    "section": "Implications For Future",
+    "text": "Implications For Future\nThere are several ways to enhance the model, with the most effective method being the use of the SMOTE approach. SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated. Additionally, using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results."
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "This project was developed by [Team Name] For INFO 523 - Data Mining and Discovery at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nTeam member 1: One sentence description of Team member 1 (e.g., year, major, etc.).\nTeam member 2: One sentence description of Team member 2 (e.g., year, major, etc.).\nTeam member 3: One sentence description of Team member 3 (e.g., year, major, etc.).\nTeam member 4: One sentence description of Team member 4 (e.g., year, major, etc.)."
+    "text": "This project was developed by [MiningMinds] For INFO 523 - Data Mining and Discovery at the University of Arizona, taught by Dr. Greg Chism. The team is comprised of the following team members.\n\nOmid Zandi: Second Year PhD Student in Hydrology and Atmospheric Sciences.\nRoxana Sharifi : Second Year Master Student in Electrical and Computer Engineering.\nDeema Albluwi: Second Year PhD Student in Linguistics.\nGowtham Gopalakrishnan: Master Student in Data Sciences.\nNandhini Anne: Master Student in Data Sciences.\nSai Navya Reddy Busireddy: Master Student in Data Sciences."
+  },
+  {
+    "objectID": "presentation.html#introduction",
+    "href": "presentation.html#introduction",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Introduction",
+    "text": "Introduction\n\n\nThe primary goal of our project is to enhance machine learning models accuracy in detecting fraudulent credit card transactions using an ensemble learning technique known as stacked generalization.\nThe motivation behind our project is to improve the detection of fraudulent transactions, which remains a significant challenge in financial security.\nBy integrating multiple predictive models, the project aims to create a robust system that can more accurately identify fraudulent transactions, thus contributing to safer financial environments.\nDespite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will significantly enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios."
+  },
+  {
+    "objectID": "presentation.html#dataset-description",
+    "href": "presentation.html#dataset-description",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Dataset description",
+    "text": "Dataset description\n\n\nThe dataset comprises over 550,000 credit card transactions from European cardholders, collected in 2023.\nIt includes 31 features with transaction details such as amount and time, anonymized to ensure privacy and ethical compliance.\nFeatures include a unique transaction ID and 28 anonymized attributes (V1-V28), representing various transaction details.\nThe anonymization of features presents challenges in interpreting the data, while the class imbalance poses difficulties in model training and accuracy."
+  },
+  {
+    "objectID": "presentation.html#preview-of-the-dataset-first-few-transactions",
+    "href": "presentation.html#preview-of-the-dataset-first-few-transactions",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Preview of the Dataset: First Few Transactions",
+    "text": "Preview of the Dataset: First Few Transactions\n\n\n\n\n\n\n\n\n\n\nTime\nV1\nV2\nV3\nV4\nV5\nV6\nV7\nV8\nV9\n...\nV21\nV22\nV23\nV24\nV25\nV26\nV27\nV28\nAmount\nClass\n\n\n\n\n0\n0.0\n-1.359807\n-0.072781\n2.536347\n1.378155\n-0.338321\n0.462388\n0.239599\n0.098698\n0.363787\n...\n-0.018307\n0.277838\n-0.110474\n0.066928\n0.128539\n-0.189115\n0.133558\n-0.021053\n149.62\n0\n\n\n1\n0.0\n1.191857\n0.266151\n0.166480\n0.448154\n0.060018\n-0.082361\n-0.078803\n0.085102\n-0.255425\n...\n-0.225775\n-0.638672\n0.101288\n-0.339846\n0.167170\n0.125895\n-0.008983\n0.014724\n2.69\n0\n\n\n2\n1.0\n-1.358354\n-1.340163\n1.773209\n0.379780\n-0.503198\n1.800499\n0.791461\n0.247676\n-1.514654\n...\n0.247998\n0.771679\n0.909412\n-0.689281\n-0.327642\n-0.139097\n-0.055353\n-0.059752\n378.66\n0\n\n\n3\n1.0\n-0.966272\n-0.185226\n1.792993\n-0.863291\n-0.010309\n1.247203\n0.237609\n0.377436\n-1.387024\n...\n-0.108300\n0.005274\n-0.190321\n-1.175575\n0.647376\n-0.221929\n0.062723\n0.061458\n123.50\n0\n\n\n4\n2.0\n-1.158233\n0.877737\n1.548718\n0.403034\n-0.407193\n0.095921\n0.592941\n-0.270533\n0.817739\n...\n-0.009431\n0.798278\n-0.137458\n0.141267\n-0.206010\n0.502292\n0.219422\n0.215153\n69.99\n0\n\n\n\n\n5 rows × 31 columns"
+  },
+  {
+    "objectID": "presentation.html#research-questions",
+    "href": "presentation.html#research-questions",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Research Questions",
+    "text": "Research Questions\n\n\nWhat is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, KNN, for fraud detection in this specific dataset?\nHow does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?"
+  },
+  {
+    "objectID": "presentation.html#question1-analysis-plan",
+    "href": "presentation.html#question1-analysis-plan",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Question1: Analysis Plan",
+    "text": "Question1: Analysis Plan\n\n\nModel Training and Sampling Techniques: Address dataset imbalance by oversampling the minority class and undersampling the majority. Split the data into training and testing sets, and train anomaly detection models including Random Forest, XGBoost, and KNN.\nModel Optimization: Hypertune the models to optimize performance, ensuring the best possible settings for each algorithm.\nPerformance Evaluation and Analysis: Evaluate each model on the testing set using metrics like precision, recall, F1-score, and ROC area. Analyze performance differences to understand the impact of model complexity, feature importance, and dataset characteristics."
+  },
+  {
+    "objectID": "presentation.html#question2-analysis-plan",
+    "href": "presentation.html#question2-analysis-plan",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Question2: Analysis Plan",
+    "text": "Question2: Analysis Plan\n\n\nStacked Generalization Setup: Utilize the mlxtend library to implement stacked generalization. Train base models as specified, and split their output into training and testing sets for the meta-classifier.\nMeta-classifier Training: Combine predictions from base classifiers using the stacking method, and train a meta-classifier on these combined predictions to enhance prediction accuracy.\nEvaluation and Analysis: Assess the performance of the stacked model, compare it to the base models, and analyze the performance gains, focusing on factors like model diversity, ensemble principles, and dataset specifics."
+  },
+  {
+    "objectID": "presentation.html#randomforest-classifier",
+    "href": "presentation.html#randomforest-classifier",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "RandomForest Classifier",
+    "text": "RandomForest Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRandom Forest has 0.94 accuracy\nRandom Forest has 0.99 precision\nRandom Forest has 0.91 recall\nRandom Forest has 0.95 f1 score"
+  },
+  {
+    "objectID": "presentation.html#knn-classifier",
+    "href": "presentation.html#knn-classifier",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "KNN Classifier",
+    "text": "KNN Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nKNN has 0.63 accuracy\nKNN has 0.69 precision\nKNN has 0.62 recall\nKNN has 0.65 f1 score"
+  },
+  {
+    "objectID": "presentation.html#xgboost-classifier",
+    "href": "presentation.html#xgboost-classifier",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "XGBoost Classifier",
+    "text": "XGBoost Classifier\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nXGBoost has 0.94 accuracy\nXGBoost has 0.97 precision\nXGBoost has 0.93 recall\nXGBoost has 0.95 f1 score"
+  },
+  {
+    "objectID": "presentation.html#stacked-model",
+    "href": "presentation.html#stacked-model",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "Stacked Model",
+    "text": "Stacked Model\n\nPlotMetrics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.94 accuracy\nClassifiers:  Stacked Model has 0.97 precision\nClassifiers:  Stacked Model has 0.93 recall\nClassifiers:  Stacked Model has 0.95 f1 score"
+  },
+  {
+    "objectID": "presentation.html#roc-curve",
+    "href": "presentation.html#roc-curve",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "ROC curve",
+    "text": "ROC curve\n\nPlotAnalysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nExcellent Performance: The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.\nKNN Underperforms: The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset."
+  },
+  {
+    "objectID": "presentation.html#section",
+    "href": "presentation.html#section",
+    "title": "Fraud Detection Using Ensemble Learning",
+    "section": "",
+    "text": "💵 MiningMinds"
   }
 ]

@@ -1,0 +1,2420 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>  Fraud Detection </title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title"><img src="./images/credit_card_fraud.jpeg" alt="carcrash" style="width: 1.9em; height: 1.9em; border-radius: 50%"> <b> Fraud Detection </b></span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Project</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proposal.html"> 
+<span class="menu-text">Proposal</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./presentation.html"> 
+<span class="menu-text">Presentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/INFO523-S24/project-final-MiningMinds"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+
+<div id="cell-0" class="cell" data-execution_count="187">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> mpatches</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, cross_val_score, GridSearchCV</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score, f1_score, confusion_matrix</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mlxtend.classifier <span class="im">import</span> StackingClassifier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-1" class="cell" data-execution_count="188">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'./data/creditcard.csv'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="188">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Time</th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V21</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">Amount</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.0</td>
+<td>-1.359807</td>
+<td>-0.072781</td>
+<td>2.536347</td>
+<td>1.378155</td>
+<td>-0.338321</td>
+<td>0.462388</td>
+<td>0.239599</td>
+<td>0.098698</td>
+<td>0.363787</td>
+<td>...</td>
+<td>-0.018307</td>
+<td>0.277838</td>
+<td>-0.110474</td>
+<td>0.066928</td>
+<td>0.128539</td>
+<td>-0.189115</td>
+<td>0.133558</td>
+<td>-0.021053</td>
+<td>149.62</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.0</td>
+<td>1.191857</td>
+<td>0.266151</td>
+<td>0.166480</td>
+<td>0.448154</td>
+<td>0.060018</td>
+<td>-0.082361</td>
+<td>-0.078803</td>
+<td>0.085102</td>
+<td>-0.255425</td>
+<td>...</td>
+<td>-0.225775</td>
+<td>-0.638672</td>
+<td>0.101288</td>
+<td>-0.339846</td>
+<td>0.167170</td>
+<td>0.125895</td>
+<td>-0.008983</td>
+<td>0.014724</td>
+<td>2.69</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.0</td>
+<td>-1.358354</td>
+<td>-1.340163</td>
+<td>1.773209</td>
+<td>0.379780</td>
+<td>-0.503198</td>
+<td>1.800499</td>
+<td>0.791461</td>
+<td>0.247676</td>
+<td>-1.514654</td>
+<td>...</td>
+<td>0.247998</td>
+<td>0.771679</td>
+<td>0.909412</td>
+<td>-0.689281</td>
+<td>-0.327642</td>
+<td>-0.139097</td>
+<td>-0.055353</td>
+<td>-0.059752</td>
+<td>378.66</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1.0</td>
+<td>-0.966272</td>
+<td>-0.185226</td>
+<td>1.792993</td>
+<td>-0.863291</td>
+<td>-0.010309</td>
+<td>1.247203</td>
+<td>0.237609</td>
+<td>0.377436</td>
+<td>-1.387024</td>
+<td>...</td>
+<td>-0.108300</td>
+<td>0.005274</td>
+<td>-0.190321</td>
+<td>-1.175575</td>
+<td>0.647376</td>
+<td>-0.221929</td>
+<td>0.062723</td>
+<td>0.061458</td>
+<td>123.50</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2.0</td>
+<td>-1.158233</td>
+<td>0.877737</td>
+<td>1.548718</td>
+<td>0.403034</td>
+<td>-0.407193</td>
+<td>0.095921</td>
+<td>0.592941</td>
+<td>-0.270533</td>
+<td>0.817739</td>
+<td>...</td>
+<td>-0.009431</td>
+<td>0.798278</td>
+<td>-0.137458</td>
+<td>0.141267</td>
+<td>-0.206010</td>
+<td>0.502292</td>
+<td>0.219422</td>
+<td>0.215153</td>
+<td>69.99</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-2" class="cell" data-execution_count="189">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.isnull().<span class="bu">sum</span>().<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="189">
+<pre><code>0</code></pre>
+</div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="190">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="190">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Time</th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V21</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">Amount</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>284807.000000</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>...</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>2.848070e+05</td>
+<td>284807.000000</td>
+<td>284807.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>94813.859575</td>
+<td>3.918649e-15</td>
+<td>5.682686e-16</td>
+<td>-8.761736e-15</td>
+<td>2.811118e-15</td>
+<td>-1.552103e-15</td>
+<td>2.040130e-15</td>
+<td>-1.698953e-15</td>
+<td>-1.893285e-16</td>
+<td>-3.147640e-15</td>
+<td>...</td>
+<td>1.473120e-16</td>
+<td>8.042109e-16</td>
+<td>5.282512e-16</td>
+<td>4.456271e-15</td>
+<td>1.426896e-15</td>
+<td>1.701640e-15</td>
+<td>-3.662252e-16</td>
+<td>-1.217809e-16</td>
+<td>88.349619</td>
+<td>0.001727</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>47488.145955</td>
+<td>1.958696e+00</td>
+<td>1.651309e+00</td>
+<td>1.516255e+00</td>
+<td>1.415869e+00</td>
+<td>1.380247e+00</td>
+<td>1.332271e+00</td>
+<td>1.237094e+00</td>
+<td>1.194353e+00</td>
+<td>1.098632e+00</td>
+<td>...</td>
+<td>7.345240e-01</td>
+<td>7.257016e-01</td>
+<td>6.244603e-01</td>
+<td>6.056471e-01</td>
+<td>5.212781e-01</td>
+<td>4.822270e-01</td>
+<td>4.036325e-01</td>
+<td>3.300833e-01</td>
+<td>250.120109</td>
+<td>0.041527</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>0.000000</td>
+<td>-5.640751e+01</td>
+<td>-7.271573e+01</td>
+<td>-4.832559e+01</td>
+<td>-5.683171e+00</td>
+<td>-1.137433e+02</td>
+<td>-2.616051e+01</td>
+<td>-4.355724e+01</td>
+<td>-7.321672e+01</td>
+<td>-1.343407e+01</td>
+<td>...</td>
+<td>-3.483038e+01</td>
+<td>-1.093314e+01</td>
+<td>-4.480774e+01</td>
+<td>-2.836627e+00</td>
+<td>-1.029540e+01</td>
+<td>-2.604551e+00</td>
+<td>-2.256568e+01</td>
+<td>-1.543008e+01</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>54201.500000</td>
+<td>-9.203734e-01</td>
+<td>-5.985499e-01</td>
+<td>-8.903648e-01</td>
+<td>-8.486401e-01</td>
+<td>-6.915971e-01</td>
+<td>-7.682956e-01</td>
+<td>-5.540759e-01</td>
+<td>-2.086297e-01</td>
+<td>-6.430976e-01</td>
+<td>...</td>
+<td>-2.283949e-01</td>
+<td>-5.423504e-01</td>
+<td>-1.618463e-01</td>
+<td>-3.545861e-01</td>
+<td>-3.171451e-01</td>
+<td>-3.269839e-01</td>
+<td>-7.083953e-02</td>
+<td>-5.295979e-02</td>
+<td>5.600000</td>
+<td>0.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>84692.000000</td>
+<td>1.810880e-02</td>
+<td>6.548556e-02</td>
+<td>1.798463e-01</td>
+<td>-1.984653e-02</td>
+<td>-5.433583e-02</td>
+<td>-2.741871e-01</td>
+<td>4.010308e-02</td>
+<td>2.235804e-02</td>
+<td>-5.142873e-02</td>
+<td>...</td>
+<td>-2.945017e-02</td>
+<td>6.781943e-03</td>
+<td>-1.119293e-02</td>
+<td>4.097606e-02</td>
+<td>1.659350e-02</td>
+<td>-5.213911e-02</td>
+<td>1.342146e-03</td>
+<td>1.124383e-02</td>
+<td>22.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>139320.500000</td>
+<td>1.315642e+00</td>
+<td>8.037239e-01</td>
+<td>1.027196e+00</td>
+<td>7.433413e-01</td>
+<td>6.119264e-01</td>
+<td>3.985649e-01</td>
+<td>5.704361e-01</td>
+<td>3.273459e-01</td>
+<td>5.971390e-01</td>
+<td>...</td>
+<td>1.863772e-01</td>
+<td>5.285536e-01</td>
+<td>1.476421e-01</td>
+<td>4.395266e-01</td>
+<td>3.507156e-01</td>
+<td>2.409522e-01</td>
+<td>9.104512e-02</td>
+<td>7.827995e-02</td>
+<td>77.165000</td>
+<td>0.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>172792.000000</td>
+<td>2.454930e+00</td>
+<td>2.205773e+01</td>
+<td>9.382558e+00</td>
+<td>1.687534e+01</td>
+<td>3.480167e+01</td>
+<td>7.330163e+01</td>
+<td>1.205895e+02</td>
+<td>2.000721e+01</td>
+<td>1.559499e+01</td>
+<td>...</td>
+<td>2.720284e+01</td>
+<td>1.050309e+01</td>
+<td>2.252841e+01</td>
+<td>4.584549e+00</td>
+<td>7.519589e+00</td>
+<td>3.517346e+00</td>
+<td>3.161220e+01</td>
+<td>3.384781e+01</td>
+<td>25691.160000</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+<p>8 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="191">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Understand the distribution of the target variable</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">'Class'</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0    284315
+1       492
+Name: Class, dtype: int64</code></pre>
+</div>
+</div>
+<div id="cell-5" class="cell" data-execution_count="192">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[<span class="st">'Class'</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="192">
+<pre><code>pandas.core.series.Series</code></pre>
+</div>
+</div>
+<div id="cell-6" class="cell" data-execution_count="193">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a DataFrame</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>class_counts_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Class'</span>: [<span class="st">'non-fradulent'</span>, <span class="st">'fradulent'</span>],</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Values'</span>: [df[<span class="st">'Class'</span>].value_counts()[<span class="dv">0</span>], df[<span class="st">'Class'</span>].value_counts()[<span class="dv">1</span>]]})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-7" class="cell" data-execution_count="194">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the barplot</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="op">=</span> sns.barplot(x<span class="op">=</span><span class="st">'Class'</span>, y<span class="op">=</span><span class="st">'Values'</span>, data<span class="op">=</span>class_counts_df, palette<span class="op">=</span>[<span class="st">'skyblue'</span>, <span class="st">'red'</span>])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding labels and title</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Categories'</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Values'</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Comparison of the Number of Classes'</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the maximum value to adjust y limits accordingly</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>max_value <span class="op">=</span> class_counts_df[<span class="st">'Values'</span>].<span class="bu">max</span>()</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, max_value <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> max_value)  <span class="co"># Increase upper limit by 10% of the max value</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotate the number of samples in each class</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> bar_plot.patches:  <span class="co"># iterate through the list of bars</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    bar_plot.annotate(<span class="bu">format</span>(p.get_height(), <span class="st">'.0f'</span>), </span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                       (p.get_x() <span class="op">+</span> p.get_width() <span class="op">/</span> <span class="fl">2.</span>, p.get_height()), </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                       ha <span class="op">=</span> <span class="st">'center'</span>, va <span class="op">=</span> <span class="st">'center'</span>, </span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                       size<span class="op">=</span><span class="dv">10</span>, xytext <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">8</span>), </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>                       textcoords <span class="op">=</span> <span class="st">'offset points'</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/n3/jhw9z8757c53pxf50v6qm8hw0000gn/T/ipykernel_26085/1592047682.py:3: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-9-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Observing the distributions allows us to understand the skewness of the classes. We have to implement techniques to reduce skewness in these distributions.</p>
+<div id="cell-9" class="cell" data-execution_count="195">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate quartiles and IQR to set appropriate y-axis limits</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> np.percentile(df[<span class="st">'Amount'</span>], <span class="dv">25</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> np.percentile(df[<span class="st">'Amount'</span>], <span class="dv">75</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>iqr <span class="op">=</span> q3 <span class="op">-</span> q1</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define bounds to zoom in closer around the quartiles, reducing the range to focus on main data</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>lower_bound <span class="op">=</span> q1 <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> iqr</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>upper_bound <span class="op">=</span> q3 <span class="op">+</span> <span class="dv">3</span> <span class="op">*</span> iqr</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the boxplots without outliers</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>df.boxplot(column<span class="op">=</span><span class="st">'Amount'</span>, by<span class="op">=</span><span class="st">'Class'</span>, ax<span class="op">=</span>ax, showfliers<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding titles and labels</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Transaction Amount by Fraudulence'</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">''</span>)  <span class="co"># Suppress the automatic title</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Transaction Amount'</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Change x-axis labels from '0', '1' to 'Non-Fraudulent', 'Fraudulent'</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="st">'Non-Fraudulent'</span>, <span class="st">'Fraudulent'</span>])</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Format y-axis to show dollar signs and set y-axis limits to focus around the IQR</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>ax.set_yticklabels([<span class="st">'$</span><span class="sc">{:,.0f}</span><span class="st">'</span>.<span class="bu">format</span>(y) <span class="cf">for</span> y <span class="kw">in</span> ax.get_yticks()])</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>plt.ylim(lower_bound, upper_bound)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove vertical grid lines</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>ax.xaxis.grid(<span class="va">False</span>)  <span class="co"># Disable x-axis grid lines</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>ax.yaxis.grid(<span class="va">True</span>)   <span class="co"># Keep y-axis grid lines for better readability</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Show plot</span></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/n3/jhw9z8757c53pxf50v6qm8hw0000gn/T/ipykernel_26085/350226092.py:23: UserWarning: FixedFormatter should only be used together with FixedLocator
+  ax.set_yticklabels(['${:,.0f}'.format(y) for y in ax.get_yticks()])</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-10-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It is crucial to construct a balanced subset of our data, containing an equal number of fraud and non-fraud transactions. This approach helps our models in better recognizing patterns that indicate fraudulent activities. In our context, a balanced subsample is a dataset with an equal proportion of fraud and non-fraud transactions, achieving a 50/50 ratio. This ensures our sample has an even representation of both classes. More precisely, There are 492 cases of fraud in our dataset so we can randomly get 492 cases of non-fraud to create our new sub dataframe. We concat the 492 cases of fraud and non fraud, creating a new sub-sample.</p>
+<div id="cell-11" class="cell" data-execution_count="196">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'scaled_amount'</span>] <span class="op">=</span> scaler.fit_transform(df[<span class="st">'Amount'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'scaled_time'</span>] <span class="op">=</span> scaler.fit_transform(df[<span class="st">'Time'</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>df.drop([<span class="st">'Time'</span>,<span class="st">'Amount'</span>], axis<span class="op">=</span><span class="dv">1</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Move Class column to the end</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> df <span class="cf">if</span> col <span class="op">!=</span> <span class="st">'Class'</span>] <span class="op">+</span> [<span class="st">'Class'</span>]</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[cols]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-12" class="cell" data-execution_count="197">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="197">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">V10</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">scaled_amount</th>
+<th data-quarto-table-cell-role="th">scaled_time</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-1.359807</td>
+<td>-0.072781</td>
+<td>2.536347</td>
+<td>1.378155</td>
+<td>-0.338321</td>
+<td>0.462388</td>
+<td>0.239599</td>
+<td>0.098698</td>
+<td>0.363787</td>
+<td>0.090794</td>
+<td>...</td>
+<td>0.277838</td>
+<td>-0.110474</td>
+<td>0.066928</td>
+<td>0.128539</td>
+<td>-0.189115</td>
+<td>0.133558</td>
+<td>-0.021053</td>
+<td>0.244964</td>
+<td>-1.996583</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.191857</td>
+<td>0.266151</td>
+<td>0.166480</td>
+<td>0.448154</td>
+<td>0.060018</td>
+<td>-0.082361</td>
+<td>-0.078803</td>
+<td>0.085102</td>
+<td>-0.255425</td>
+<td>-0.166974</td>
+<td>...</td>
+<td>-0.638672</td>
+<td>0.101288</td>
+<td>-0.339846</td>
+<td>0.167170</td>
+<td>0.125895</td>
+<td>-0.008983</td>
+<td>0.014724</td>
+<td>-0.342475</td>
+<td>-1.996583</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-1.358354</td>
+<td>-1.340163</td>
+<td>1.773209</td>
+<td>0.379780</td>
+<td>-0.503198</td>
+<td>1.800499</td>
+<td>0.791461</td>
+<td>0.247676</td>
+<td>-1.514654</td>
+<td>0.207643</td>
+<td>...</td>
+<td>0.771679</td>
+<td>0.909412</td>
+<td>-0.689281</td>
+<td>-0.327642</td>
+<td>-0.139097</td>
+<td>-0.055353</td>
+<td>-0.059752</td>
+<td>1.160686</td>
+<td>-1.996562</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-0.966272</td>
+<td>-0.185226</td>
+<td>1.792993</td>
+<td>-0.863291</td>
+<td>-0.010309</td>
+<td>1.247203</td>
+<td>0.237609</td>
+<td>0.377436</td>
+<td>-1.387024</td>
+<td>-0.054952</td>
+<td>...</td>
+<td>0.005274</td>
+<td>-0.190321</td>
+<td>-1.175575</td>
+<td>0.647376</td>
+<td>-0.221929</td>
+<td>0.062723</td>
+<td>0.061458</td>
+<td>0.140534</td>
+<td>-1.996562</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-1.158233</td>
+<td>0.877737</td>
+<td>1.548718</td>
+<td>0.403034</td>
+<td>-0.407193</td>
+<td>0.095921</td>
+<td>0.592941</td>
+<td>-0.270533</td>
+<td>0.817739</td>
+<td>0.753074</td>
+<td>...</td>
+<td>0.798278</td>
+<td>-0.137458</td>
+<td>0.141267</td>
+<td>-0.206010</td>
+<td>0.502292</td>
+<td>0.219422</td>
+<td>0.215153</td>
+<td>-0.073403</td>
+<td>-1.996541</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-13" class="cell" data-execution_count="198">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="198">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">V10</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">scaled_amount</th>
+<th data-quarto-table-cell-role="th">scaled_time</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>-1.359807</td>
+<td>-0.072781</td>
+<td>2.536347</td>
+<td>1.378155</td>
+<td>-0.338321</td>
+<td>0.462388</td>
+<td>0.239599</td>
+<td>0.098698</td>
+<td>0.363787</td>
+<td>0.090794</td>
+<td>...</td>
+<td>0.277838</td>
+<td>-0.110474</td>
+<td>0.066928</td>
+<td>0.128539</td>
+<td>-0.189115</td>
+<td>0.133558</td>
+<td>-0.021053</td>
+<td>0.244964</td>
+<td>-1.996583</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.191857</td>
+<td>0.266151</td>
+<td>0.166480</td>
+<td>0.448154</td>
+<td>0.060018</td>
+<td>-0.082361</td>
+<td>-0.078803</td>
+<td>0.085102</td>
+<td>-0.255425</td>
+<td>-0.166974</td>
+<td>...</td>
+<td>-0.638672</td>
+<td>0.101288</td>
+<td>-0.339846</td>
+<td>0.167170</td>
+<td>0.125895</td>
+<td>-0.008983</td>
+<td>0.014724</td>
+<td>-0.342475</td>
+<td>-1.996583</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>-1.358354</td>
+<td>-1.340163</td>
+<td>1.773209</td>
+<td>0.379780</td>
+<td>-0.503198</td>
+<td>1.800499</td>
+<td>0.791461</td>
+<td>0.247676</td>
+<td>-1.514654</td>
+<td>0.207643</td>
+<td>...</td>
+<td>0.771679</td>
+<td>0.909412</td>
+<td>-0.689281</td>
+<td>-0.327642</td>
+<td>-0.139097</td>
+<td>-0.055353</td>
+<td>-0.059752</td>
+<td>1.160686</td>
+<td>-1.996562</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>-0.966272</td>
+<td>-0.185226</td>
+<td>1.792993</td>
+<td>-0.863291</td>
+<td>-0.010309</td>
+<td>1.247203</td>
+<td>0.237609</td>
+<td>0.377436</td>
+<td>-1.387024</td>
+<td>-0.054952</td>
+<td>...</td>
+<td>0.005274</td>
+<td>-0.190321</td>
+<td>-1.175575</td>
+<td>0.647376</td>
+<td>-0.221929</td>
+<td>0.062723</td>
+<td>0.061458</td>
+<td>0.140534</td>
+<td>-1.996562</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>-1.158233</td>
+<td>0.877737</td>
+<td>1.548718</td>
+<td>0.403034</td>
+<td>-0.407193</td>
+<td>0.095921</td>
+<td>0.592941</td>
+<td>-0.270533</td>
+<td>0.817739</td>
+<td>0.753074</td>
+<td>...</td>
+<td>0.798278</td>
+<td>-0.137458</td>
+<td>0.141267</td>
+<td>-0.206010</td>
+<td>0.502292</td>
+<td>0.219422</td>
+<td>0.215153</td>
+<td>-0.073403</td>
+<td>-1.996541</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<p>In this stage of the project, we will apply “Random Under Sampling,” to achieve a more balanced dataset, helping with preventing overfitting.</p>
+<div id="cell-15" class="cell" data-execution_count="199">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffling the dataset</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># amount of fraud classes 492 rows.</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>fraud_df <span class="op">=</span> df.loc[df[<span class="st">'Class'</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>non_fraud_df <span class="op">=</span> df.loc[df[<span class="st">'Class'</span>] <span class="op">==</span> <span class="dv">0</span>][:<span class="dv">492</span>]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>balanced_df <span class="op">=</span> pd.concat([fraud_df, non_fraud_df])</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Shuffle dataframe rows</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> balanced_df.sample(frac<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>new_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="199">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">V10</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">scaled_amount</th>
+<th data-quarto-table-cell-role="th">scaled_time</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">72118</td>
+<td>1.170328</td>
+<td>0.549986</td>
+<td>0.171870</td>
+<td>2.460679</td>
+<td>0.228055</td>
+<td>0.389606</td>
+<td>-0.353332</td>
+<td>0.264391</td>
+<td>-0.226924</td>
+<td>0.123007</td>
+<td>...</td>
+<td>-0.071007</td>
+<td>-0.109370</td>
+<td>-0.929504</td>
+<td>0.389937</td>
+<td>0.146148</td>
+<td>0.035768</td>
+<td>0.044857</td>
+<td>-0.341235</td>
+<td>-0.847452</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">258403</td>
+<td>-5.976119</td>
+<td>-7.196980</td>
+<td>-5.388316</td>
+<td>5.104799</td>
+<td>4.676533</td>
+<td>-5.566870</td>
+<td>-4.291180</td>
+<td>0.876531</td>
+<td>-1.075478</td>
+<td>-3.272569</td>
+<td>...</td>
+<td>-0.136262</td>
+<td>0.848177</td>
+<td>-0.269916</td>
+<td>-1.095060</td>
+<td>-0.710905</td>
+<td>0.565846</td>
+<td>-1.034107</td>
+<td>0.830204</td>
+<td>1.344004</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">227245</td>
+<td>2.046054</td>
+<td>-1.524928</td>
+<td>-1.385173</td>
+<td>-1.836657</td>
+<td>0.895704</td>
+<td>4.004895</td>
+<td>-1.997509</td>
+<td>1.110208</td>
+<td>0.328428</td>
+<td>0.665140</td>
+<td>...</td>
+<td>0.588905</td>
+<td>0.277639</td>
+<td>0.718120</td>
+<td>-0.409860</td>
+<td>-0.229864</td>
+<td>0.054657</td>
+<td>-0.035441</td>
+<td>-0.173316</td>
+<td>1.056690</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6899</td>
+<td>-2.661802</td>
+<td>5.856393</td>
+<td>-7.653616</td>
+<td>6.379742</td>
+<td>-0.060712</td>
+<td>-3.131550</td>
+<td>-3.103570</td>
+<td>1.778492</td>
+<td>-3.831154</td>
+<td>-7.191604</td>
+<td>...</td>
+<td>-0.435901</td>
+<td>-0.384766</td>
+<td>-0.286016</td>
+<td>1.007934</td>
+<td>0.413196</td>
+<td>0.280284</td>
+<td>0.303937</td>
+<td>-0.349231</td>
+<td>-1.809631</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">263324</td>
+<td>-0.848290</td>
+<td>2.719882</td>
+<td>-6.199070</td>
+<td>3.044437</td>
+<td>-3.301910</td>
+<td>-1.992117</td>
+<td>-3.734902</td>
+<td>1.520079</td>
+<td>-2.548788</td>
+<td>-4.533515</td>
+<td>...</td>
+<td>0.805258</td>
+<td>0.199119</td>
+<td>0.035206</td>
+<td>0.012159</td>
+<td>0.601658</td>
+<td>0.137468</td>
+<td>-0.171397</td>
+<td>0.155087</td>
+<td>1.391532</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<p>Let’s check if the number of samples in each class are equal.</p>
+<div id="cell-17" class="cell" data-execution_count="200">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a DataFrame</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>class_counts_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Class'</span>: [<span class="st">'non-fradulent'</span>, <span class="st">'fradulent'</span>],</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Values'</span>: [balanced_df[<span class="st">'Class'</span>].value_counts()[<span class="dv">0</span>], balanced_df[<span class="st">'Class'</span>].value_counts()[<span class="dv">1</span>]]})</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating the barplot</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>bar_plot <span class="op">=</span> sns.barplot(x<span class="op">=</span><span class="st">'Class'</span>, y<span class="op">=</span><span class="st">'Values'</span>, data<span class="op">=</span>class_counts_df, palette<span class="op">=</span>[<span class="st">'skyblue'</span>, <span class="st">'red'</span>])</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Adding labels and title</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Categories'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Values'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Comparison of the Number of Classes'</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the maximum value to adjust y limits accordingly</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>max_value <span class="op">=</span> class_counts_df[<span class="st">'Values'</span>].<span class="bu">max</span>()</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="dv">0</span>, max_value <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> max_value)  <span class="co"># Increase upper limit by 10% of the max value</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Annotate the number of samples in each class</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> bar_plot.patches:  <span class="co"># iterate through the list of bars</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    bar_plot.annotate(<span class="bu">format</span>(p.get_height(), <span class="st">'.0f'</span>), </span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>                       (p.get_x() <span class="op">+</span> p.get_width() <span class="op">/</span> <span class="fl">2.</span>, p.get_height()), </span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>                       ha <span class="op">=</span> <span class="st">'center'</span>, va <span class="op">=</span> <span class="st">'center'</span>, </span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>                       size<span class="op">=</span><span class="dv">10</span>, xytext <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">8</span>), </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>                       textcoords <span class="op">=</span> <span class="st">'offset points'</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/n3/jhw9z8757c53pxf50v6qm8hw0000gn/T/ipykernel_26085/2458748591.py:8: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-15-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-18" class="cell" data-execution_count="201">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pre-compute class-specific datasets</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>non_fraud_df <span class="op">=</span> new_df[new_df[<span class="st">'Class'</span>] <span class="op">==</span> <span class="dv">0</span>].drop(<span class="st">'Class'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fraud_df <span class="op">=</span> new_df[new_df[<span class="st">'Class'</span>] <span class="op">==</span> <span class="dv">1</span>].drop(<span class="st">'Class'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup the figure and axes</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">5</span>, <span class="dv">6</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">10</span>))  <span class="co"># Adjust the grid dimensions based on the number of columns</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()  <span class="co"># Flatten the array for easy iteration</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(new_df.columns[:<span class="op">-</span><span class="dv">1</span>]):  <span class="co"># Assuming the last column is 'Class' and it's dropped</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    sns.histplot(data<span class="op">=</span>non_fraud_df[col], bins<span class="op">=</span><span class="dv">50</span>, kde<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'blue'</span>, ax<span class="op">=</span>axes[i], label<span class="op">=</span><span class="st">'Non-Fraud'</span> <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">""</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    sns.histplot(data<span class="op">=</span>fraud_df[col], bins<span class="op">=</span><span class="dv">50</span>, kde<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'red'</span>, ax<span class="op">=</span>axes[i], label<span class="op">=</span><span class="st">'Fraud'</span> <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">""</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(<span class="ss">f'Distribution of </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    axes[i].set_xlabel(<span class="st">''</span>)  <span class="co"># Clear x-labels to reduce clutter</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="st">''</span>)  <span class="co"># Optionally clear y-labels for the same reason</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:  <span class="co"># Add legend only to the first subplot</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        axes[i].legend()</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout to prevent label/title overlap</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-16-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="cell-19" class="cell" data-execution_count="202">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># New_df is from the random undersample data (fewer instances)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> new_df.drop(<span class="st">'Class'</span>, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> new_df[<span class="st">'Class'</span>]</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA Implementation</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>X_reduced_pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit_transform(X.values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-20" class="cell" data-execution_count="203">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA scatter plot</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>f, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))  <span class="co"># Adjust the figsize as needed for a single plot</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>blue_patch <span class="op">=</span> mpatches.Patch(color<span class="op">=</span><span class="st">'#0A0AFF'</span>, label<span class="op">=</span><span class="st">'No Fraud'</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>red_patch <span class="op">=</span> mpatches.Patch(color<span class="op">=</span><span class="st">'#AF0000'</span>, label<span class="op">=</span><span class="st">'Fraud'</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>ax.scatter(X_reduced_pca[:,<span class="dv">0</span>], X_reduced_pca[:,<span class="dv">1</span>], c<span class="op">=</span>(y <span class="op">==</span> <span class="dv">0</span>), cmap<span class="op">=</span><span class="st">'coolwarm'</span>, label<span class="op">=</span><span class="st">'No Fraud'</span>, linewidths<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>ax.scatter(X_reduced_pca[:,<span class="dv">0</span>], X_reduced_pca[:,<span class="dv">1</span>], c<span class="op">=</span>(y <span class="op">==</span> <span class="dv">1</span>), cmap<span class="op">=</span><span class="st">'coolwarm'</span>, label<span class="op">=</span><span class="st">'Fraud'</span>, linewidths<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'PCA'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[blue_patch, red_patch])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot shows us that classification models should perform well in distinguishing fraud cases from non-fraud cases.</p>
+<p>Now we will train three types of classifiers (Random Forest, K-Nearest Neighbor, and XGBoost) and combine them using stacked generalization and evaluate their accuracy in detecting fraud transactions. In the first step, we have to split our data into training and testing sets and separate the features from the labels.</p>
+<div id="cell-23" class="cell" data-execution_count="204">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> new_df.drop(<span class="st">'Class'</span>, axis<span class="op">=</span><span class="dv">1</span>).values</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> new_df[<span class="st">'Class'</span>].values</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-24" class="cell" data-execution_count="205">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(y_train <span class="op">==</span> <span class="dv">1</span>).<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="205">
+<pre><code>382</code></pre>
+</div>
+</div>
+<div id="cell-25" class="cell" data-execution_count="209">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(y_test <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="209">
+<pre><code>87</code></pre>
+</div>
+</div>
+<p>Initially we have to hypertune the models using grid search.</p>
+<div id="cell-27" class="cell" data-execution_count="207">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for Random Forest</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>rf_params <span class="op">=</span> {</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="va">None</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>],</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_split'</span>: [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>],</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_leaf'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>]</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for K-Nearest Neighbors</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>knears_params <span class="op">=</span> {</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_neighbors'</span>: <span class="bu">list</span>(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">1</span>)),</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'algorithm'</span>: [<span class="st">'auto'</span>, <span class="st">'ball_tree'</span>, <span class="st">'kd_tree'</span>, <span class="st">'brute'</span>]</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for XGBoost</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>xgb_params <span class="op">=</span> {</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>],</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: [<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>],</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: [<span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>]</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup GridSearchCV for Random Forest</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>grid_rf <span class="op">=</span> GridSearchCV(RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>), rf_params, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>grid_rf.fit(X_train, y_train)</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>rf_best <span class="op">=</span> grid_rf.best_estimator_</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup GridSearchCV for K-Nearest Neighbors</span></span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>grid_knears <span class="op">=</span> GridSearchCV(KNeighborsClassifier(), knears_params, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>grid_knears.fit(X_train, y_train)</span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>knears_best <span class="op">=</span> grid_knears.best_estimator_</span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-33"><a href="#cb29-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup GridSearchCV for XGBoost</span></span>
+<span id="cb29-34"><a href="#cb29-34" aria-hidden="true" tabindex="-1"></a>grid_xgb <span class="op">=</span> GridSearchCV(XGBClassifier(use_label_encoder<span class="op">=</span><span class="va">False</span>, eval_metric<span class="op">=</span><span class="st">'logloss'</span>, random_state<span class="op">=</span><span class="dv">42</span>), xgb_params, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb29-35"><a href="#cb29-35" aria-hidden="true" tabindex="-1"></a>grid_xgb.fit(X_train, y_train)</span>
+<span id="cb29-36"><a href="#cb29-36" aria-hidden="true" tabindex="-1"></a>xgb_best <span class="op">=</span> grid_xgb.best_estimator_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we evaluate the trained models based on their test dataset.</p>
+<div id="cell-29" class="cell" data-execution_count="208">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>classifiers <span class="op">=</span> {</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RandomForest"</span>: rf_best,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KNearest"</span>: knears_best,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"XGBoost"</span>: xgb_best</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, classifier <span class="kw">in</span> classifiers.items():</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> classifier.predict(X_test)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculating performance metrics</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> precision_score(y_test, y_pred)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> recall_score(y_test, y_pred)</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    f1 <span class="op">=</span> f1_score(y_test, y_pred)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the confusion matrix using Matplotlib</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    ax.matshow(cm, cmap<span class="op">=</span><span class="st">'viridis'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>]):</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>]):</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>            ax.text(x<span class="op">=</span>j, y<span class="op">=</span>i, s<span class="op">=</span>cm[i, j], va<span class="op">=</span><span class="st">'center'</span>, ha<span class="op">=</span><span class="st">'center'</span>, size<span class="op">=</span><span class="st">'xx-large'</span>)</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Correcting the axis inversion</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    ax.invert_xaxis()</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    ax.invert_yaxis()</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Setting tick positions explicitly</span></span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])  <span class="co"># Assuming there are two classes</span></span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding corrected labels</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> [<span class="st">'Non-Fraudulent'</span>, <span class="st">'Fraudulent'</span>]  <span class="co"># Correcting typo in 'Fraudulent'</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding axis labels and title</span></span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Predictions'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Observations'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    plt.title(key, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(accuracy, <span class="dv">2</span>), <span class="st">"accuracy"</span>)</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(precision, <span class="dv">2</span>), <span class="st">"precision"</span>)</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(recall, <span class="dv">2</span>), <span class="st">"recall"</span>)</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(f1, <span class="dv">2</span>), <span class="st">"f1 score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-23-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classifiers:  RandomForest has 0.95 accuracy
+Classifiers:  RandomForest has 0.98 precision
+Classifiers:  RandomForest has 0.93 recall
+Classifiers:  RandomForest has 0.95 f1 score
+Classifiers:  KNearest has 0.94 accuracy
+Classifiers:  KNearest has 1.0 precision
+Classifiers:  KNearest has 0.9 recall
+Classifiers:  KNearest has 0.95 f1 score
+Classifiers:  XGBoost has 0.95 accuracy
+Classifiers:  XGBoost has 0.97 precision
+Classifiers:  XGBoost has 0.95 recall
+Classifiers:  XGBoost has 0.96 f1 score</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-23-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-23-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Now, let’s train and evaluate the stacked model.</p>
+<div id="cell-31" class="cell" data-execution_count="212">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Meta-classifier</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LogisticRegression(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Stacking classifier</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>stack_clf <span class="op">=</span> StackingClassifier(classifiers<span class="op">=</span>[rf_best, knears_best, xgb_best], meta_classifier<span class="op">=</span>lr)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>stack_clf.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="212">
+<style>#sk-container-id-9 {color: black;background-color: white;}#sk-container-id-9 pre{padding: 0;}#sk-container-id-9 div.sk-toggleable {background-color: white;}#sk-container-id-9 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-9 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-9 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-9 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-9 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-9 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-9 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-9 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-9 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-9 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-9 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-9 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-9 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-9 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-9 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-9 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-9 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-9 div.sk-item {position: relative;z-index: 1;}#sk-container-id-9 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-9 div.sk-item::before, #sk-container-id-9 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-9 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-9 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-9 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-9 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-9 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-9 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-9 div.sk-label-container {text-align: center;}#sk-container-id-9 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-9 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-9" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>StackingClassifier(classifiers=[RandomForestClassifier(max_depth=10,
+                                                       min_samples_split=5,
+                                                       n_estimators=50,
+                                                       random_state=42),
+                                KNeighborsClassifier(n_neighbors=2),
+                                XGBClassifier(base_score=None, booster=None,
+                                              callbacks=None,
+                                              colsample_bylevel=None,
+                                              colsample_bynode=None,
+                                              colsample_bytree=None,
+                                              device=None,
+                                              early_stopping_rounds=None,
+                                              enable_categorical=False,
+                                              eval...
+                                              interaction_constraints=None,
+                                              learning_rate=0.1, max_bin=None,
+                                              max_cat_threshold=None,
+                                              max_cat_to_onehot=None,
+                                              max_delta_step=None, max_depth=3,
+                                              max_leaves=None,
+                                              min_child_weight=None,
+                                              missing=nan,
+                                              monotone_constraints=None,
+                                              multi_strategy=None,
+                                              n_estimators=200, n_jobs=None,
+                                              num_parallel_tree=None,
+                                              random_state=42, ...)],
+                   meta_classifier=LogisticRegression(random_state=42))</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item sk-dashed-wrapped"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-19" type="checkbox"><label for="sk-estimator-id-19" class="sk-toggleable__label sk-toggleable__label-arrow">StackingClassifier</label><div class="sk-toggleable__content"><pre>StackingClassifier(classifiers=[RandomForestClassifier(max_depth=10,
+                                                       min_samples_split=5,
+                                                       n_estimators=50,
+                                                       random_state=42),
+                                KNeighborsClassifier(n_neighbors=2),
+                                XGBClassifier(base_score=None, booster=None,
+                                              callbacks=None,
+                                              colsample_bylevel=None,
+                                              colsample_bynode=None,
+                                              colsample_bytree=None,
+                                              device=None,
+                                              early_stopping_rounds=None,
+                                              enable_categorical=False,
+                                              eval...
+                                              interaction_constraints=None,
+                                              learning_rate=0.1, max_bin=None,
+                                              max_cat_threshold=None,
+                                              max_cat_to_onehot=None,
+                                              max_delta_step=None, max_depth=3,
+                                              max_leaves=None,
+                                              min_child_weight=None,
+                                              missing=nan,
+                                              monotone_constraints=None,
+                                              multi_strategy=None,
+                                              n_estimators=200, n_jobs=None,
+                                              num_parallel_tree=None,
+                                              random_state=42, ...)],
+                   meta_classifier=LogisticRegression(random_state=42))</pre></div></div></div><div class="sk-parallel"><div class="sk-parallel-item"><div class="sk-item"><div class="sk-label-container"><div class="sk-label sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-20" type="checkbox"><label for="sk-estimator-id-20" class="sk-toggleable__label sk-toggleable__label-arrow">meta_classifier: LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(random_state=42)</pre></div></div></div><div class="sk-serial"><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-21" type="checkbox"><label for="sk-estimator-id-21" class="sk-toggleable__label sk-toggleable__label-arrow">LogisticRegression</label><div class="sk-toggleable__content"><pre>LogisticRegression(random_state=42)</pre></div></div></div></div></div></div></div></div></div></div>
+</div>
+</div>
+<div id="cell-32" class="cell" data-execution_count="213">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>classifiers <span class="op">=</span> {</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stacked Model"</span>: stack_clf</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, classifier <span class="kw">in</span> classifiers.items():</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> classifier.predict(X_test)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculating performance metrics</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> precision_score(y_test, y_pred)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> recall_score(y_test, y_pred)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>    f1 <span class="op">=</span> f1_score(y_test, y_pred)</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the confusion matrix using Matplotlib</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>    ax.matshow(cm, cmap<span class="op">=</span><span class="st">'viridis'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>]):</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>]):</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>            ax.text(x<span class="op">=</span>j, y<span class="op">=</span>i, s<span class="op">=</span>cm[i, j], va<span class="op">=</span><span class="st">'center'</span>, ha<span class="op">=</span><span class="st">'center'</span>, size<span class="op">=</span><span class="st">'xx-large'</span>)</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Correcting the axis inversion</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>    ax.invert_xaxis()</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>    ax.invert_yaxis()</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Setting tick positions explicitly</span></span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])  <span class="co"># Assuming there are two classes</span></span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding corrected labels</span></span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> [<span class="st">'Non-Fraudulent'</span>, <span class="st">'Fraudulent'</span>]  <span class="co"># Correcting typo in 'Fraudulent'</span></span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb33-35"><a href="#cb33-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-36"><a href="#cb33-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding axis labels and title</span></span>
+<span id="cb33-37"><a href="#cb33-37" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Predictions'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb33-38"><a href="#cb33-38" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Observations'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb33-39"><a href="#cb33-39" aria-hidden="true" tabindex="-1"></a>    plt.title(key, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb33-40"><a href="#cb33-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-41"><a href="#cb33-41" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb33-42"><a href="#cb33-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-43"><a href="#cb33-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(accuracy, <span class="dv">2</span>), <span class="st">"accuracy"</span>)</span>
+<span id="cb33-44"><a href="#cb33-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(precision, <span class="dv">2</span>), <span class="st">"precision"</span>)</span>
+<span id="cb33-45"><a href="#cb33-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(recall, <span class="dv">2</span>), <span class="st">"recall"</span>)</span>
+<span id="cb33-46"><a href="#cb33-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(f1, <span class="dv">2</span>), <span class="st">"f1 score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-25-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classifiers:  Stacked Model has 0.95 accuracy
+Classifiers:  Stacked Model has 0.97 precision
+Classifiers:  Stacked Model has 0.95 recall
+Classifiers:  Stacked Model has 0.96 f1 score</code></pre>
+</div>
+</div>
+<p>Now, let’s plot ROC curve</p>
+<div id="cell-34" class="cell" data-execution_count="214">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>rf_probs_test <span class="op">=</span> rf_best.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>knears_probs_test <span class="op">=</span> knears_best.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>xgb_probs_test <span class="op">=</span> xgb_best.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>stack_probs_test <span class="op">=</span> stack_clf.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>rf_fpr_test, rf_tpr_test, _ <span class="op">=</span> roc_curve(y_test, rf_probs_test)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>knears_fpr_test, knears_tpr_test, _ <span class="op">=</span> roc_curve(y_test, knears_probs_test)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>xgb_fpr_test, xgb_tpr_test, _ <span class="op">=</span> roc_curve(y_test, xgb_probs_test)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>stack_fpr_test, stack_tpr_test, _ <span class="op">=</span> roc_curve(y_test, stack_probs_test)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_roc_curve():</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    plt.plot(rf_fpr_test, rf_tpr_test, label<span class="op">=</span><span class="st">'Random Forest (AUC = </span><span class="sc">%0.3f</span><span class="st">)'</span> <span class="op">%</span> roc_auc_score(y_test, rf_probs_test))</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    plt.plot(knears_fpr_test, knears_tpr_test, label<span class="op">=</span><span class="st">'KNN (AUC = </span><span class="sc">%0.3f</span><span class="st">)'</span> <span class="op">%</span> roc_auc_score(y_test, knears_probs_test))</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    plt.plot(xgb_fpr_test, xgb_tpr_test, label<span class="op">=</span><span class="st">'XGBoost (AUC = </span><span class="sc">%0.3f</span><span class="st">)'</span> <span class="op">%</span> roc_auc_score(y_test, xgb_probs_test))</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>    plt.plot(stack_fpr_test, stack_tpr_test, label<span class="op">=</span><span class="st">'Stacked Classifier (AUC = </span><span class="sc">%0.3f</span><span class="st">)'</span> <span class="op">%</span> roc_auc_score(y_test, stack_probs_test))</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>    plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">'r--'</span>)</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb35-19"><a href="#cb35-19" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb35-20"><a href="#cb35-20" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">'ROC Curves for Test Data'</span>)</span>
+<span id="cb35-21"><a href="#cb35-21" aria-hidden="true" tabindex="-1"></a>    plt.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb35-22"><a href="#cb35-22" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb35-23"><a href="#cb35-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-24"><a href="#cb35-24" aria-hidden="true" tabindex="-1"></a>plot_roc_curve()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-26-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It seems like although the stacked model has higher accuracy, precision, recall, and f1_score, the Random Forest and XGBoost have higher AUC.</p>
+<p>Now, let’s apply the models to the whole dataset.</p>
+<div id="cell-37" class="cell" data-execution_count="215">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="215">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">V10</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">scaled_amount</th>
+<th data-quarto-table-cell-role="th">scaled_time</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">43470</td>
+<td>-1.288475</td>
+<td>-0.259731</td>
+<td>2.675814</td>
+<td>0.149939</td>
+<td>0.971450</td>
+<td>0.600657</td>
+<td>-0.314156</td>
+<td>0.440312</td>
+<td>0.330171</td>
+<td>-0.491381</td>
+<td>...</td>
+<td>0.038701</td>
+<td>-0.271463</td>
+<td>-0.707128</td>
+<td>0.372642</td>
+<td>-0.449845</td>
+<td>-0.098060</td>
+<td>-0.152953</td>
+<td>-0.347272</td>
+<td>-1.122216</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">280651</td>
+<td>0.199689</td>
+<td>0.860422</td>
+<td>-0.638864</td>
+<td>-0.197413</td>
+<td>0.049001</td>
+<td>-1.161767</td>
+<td>0.541627</td>
+<td>0.131042</td>
+<td>-0.068217</td>
+<td>-0.642541</td>
+<td>...</td>
+<td>1.075011</td>
+<td>-0.059455</td>
+<td>-0.086545</td>
+<td>-0.253731</td>
+<td>-0.142906</td>
+<td>-0.088865</td>
+<td>-0.073929</td>
+<td>-0.265311</td>
+<td>1.576210</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">170008</td>
+<td>1.886803</td>
+<td>-0.065455</td>
+<td>-1.824313</td>
+<td>0.593472</td>
+<td>0.108229</td>
+<td>-1.455115</td>
+<td>0.402970</td>
+<td>-0.423951</td>
+<td>0.563375</td>
+<td>-0.518014</td>
+<td>...</td>
+<td>0.693888</td>
+<td>-0.109530</td>
+<td>-0.079472</td>
+<td>0.233011</td>
+<td>-0.109771</td>
+<td>-0.018626</td>
+<td>-0.015671</td>
+<td>0.022591</td>
+<td>0.529715</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">161514</td>
+<td>-0.276694</td>
+<td>0.591388</td>
+<td>1.241006</td>
+<td>0.346149</td>
+<td>-0.503591</td>
+<td>-1.112451</td>
+<td>-0.030207</td>
+<td>-0.100015</td>
+<td>0.534450</td>
+<td>-0.751645</td>
+<td>...</td>
+<td>0.561551</td>
+<td>0.199717</td>
+<td>0.862150</td>
+<td>-1.295634</td>
+<td>0.030138</td>
+<td>-0.076791</td>
+<td>0.191510</td>
+<td>-0.274867</td>
+<td>0.409559</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">152993</td>
+<td>-0.487453</td>
+<td>1.026443</td>
+<td>2.383710</td>
+<td>4.240033</td>
+<td>0.820066</td>
+<td>1.962470</td>
+<td>0.119491</td>
+<td>0.205700</td>
+<td>-0.640505</td>
+<td>1.237434</td>
+<td>...</td>
+<td>0.378763</td>
+<td>-0.268433</td>
+<td>0.011127</td>
+<td>0.178841</td>
+<td>0.488351</td>
+<td>-0.111626</td>
+<td>-0.134272</td>
+<td>-0.090755</td>
+<td>0.061555</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+<div id="cell-38" class="cell" data-execution_count="216">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># New_df is from the random undersample data (fewer instances)</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df.drop(<span class="st">'Class'</span>, axis<span class="op">=</span><span class="dv">1</span>).values</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">'Class'</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-39" class="cell" data-execution_count="217">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>classifiers <span class="op">=</span> {</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"RandomForest"</span>: rf_best,</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"KNearest"</span>: knears_best,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"XGBoost"</span>: xgb_best,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Stacked Model"</span>: stack_clf</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, classifier <span class="kw">in</span> classifiers.items():</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> classifier.predict(X)</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculating performance metrics</span></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>    accuracy <span class="op">=</span> accuracy_score(y, y_pred)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> precision_score(y, y_pred)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> recall_score(y, y_pred)</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>    f1 <span class="op">=</span> f1_score(y, y_pred)</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    cm <span class="op">=</span> confusion_matrix(y, y_pred)</span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Plotting the confusion matrix using Matplotlib</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>    ax.matshow(cm, cmap<span class="op">=</span><span class="st">'viridis'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">0</span>]):</span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(cm.shape[<span class="dv">1</span>]):</span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>            ax.text(x<span class="op">=</span>j, y<span class="op">=</span>i, s<span class="op">=</span>cm[i, j], va<span class="op">=</span><span class="st">'center'</span>, ha<span class="op">=</span><span class="st">'center'</span>, size<span class="op">=</span><span class="st">'xx-large'</span>)</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Correcting the axis inversion</span></span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>    ax.invert_xaxis()</span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>    ax.invert_yaxis()</span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Setting tick positions explicitly</span></span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>    ax.set_xticks([<span class="dv">0</span>, <span class="dv">1</span>])  <span class="co"># Assuming there are two classes</span></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>    ax.set_yticks([<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb38-33"><a href="#cb38-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-34"><a href="#cb38-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding corrected labels</span></span>
+<span id="cb38-35"><a href="#cb38-35" aria-hidden="true" tabindex="-1"></a>    labels <span class="op">=</span> [<span class="st">'Non-Fraudulent'</span>, <span class="st">'Fraudulent'</span>] </span>
+<span id="cb38-36"><a href="#cb38-36" aria-hidden="true" tabindex="-1"></a>    ax.set_xticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb38-37"><a href="#cb38-37" aria-hidden="true" tabindex="-1"></a>    ax.set_yticklabels(labels, fontsize<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb38-38"><a href="#cb38-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-39"><a href="#cb38-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adding axis labels and title</span></span>
+<span id="cb38-40"><a href="#cb38-40" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'Predictions'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb38-41"><a href="#cb38-41" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Observations'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb38-42"><a href="#cb38-42" aria-hidden="true" tabindex="-1"></a>    plt.title(key, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="cb38-43"><a href="#cb38-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb38-46"><a href="#cb38-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(accuracy, <span class="dv">2</span>), <span class="st">"accuracy"</span>)</span>
+<span id="cb38-47"><a href="#cb38-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(precision, <span class="dv">2</span>), <span class="st">"precision"</span>)</span>
+<span id="cb38-48"><a href="#cb38-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(recall, <span class="dv">2</span>), <span class="st">"recall"</span>)</span>
+<span id="cb38-49"><a href="#cb38-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Classifiers: "</span>, key, <span class="st">"has"</span>, <span class="bu">round</span>(f1, <span class="dv">2</span>), <span class="st">"f1 score"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-29-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classifiers:  RandomForest has 0.98 accuracy
+Classifiers:  RandomForest has 0.08 precision
+Classifiers:  RandomForest has 0.96 recall
+Classifiers:  RandomForest has 0.14 f1 score
+Classifiers:  KNearest has 0.98 accuracy
+Classifiers:  KNearest has 0.08 precision
+Classifiers:  KNearest has 0.91 recall
+Classifiers:  KNearest has 0.14 f1 score
+Classifiers:  XGBoost has 0.97 accuracy
+Classifiers:  XGBoost has 0.05 precision
+Classifiers:  XGBoost has 0.99 recall
+Classifiers:  XGBoost has 0.09 f1 score
+Classifiers:  Stacked Model has 0.97 accuracy
+Classifiers:  Stacked Model has 0.05 precision
+Classifiers:  Stacked Model has 0.99 recall
+Classifiers:  Stacked Model has 0.09 f1 score</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-29-output-3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-29-output-4.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="comprehensive_code_files/figure-html/cell-29-output-5.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Fortunately, the accuracy of the models applied to the whole dataset is satisfactory.</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

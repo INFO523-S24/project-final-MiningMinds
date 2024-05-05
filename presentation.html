@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -10,8 +10,8 @@
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.4.549">
 
-  <meta name="author" content="Author names">
-  <title>Project Title - Project title</title>
+  <meta name="author" content="Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi">
+  <title>  Fraud Detection  - Fraud Detection Using Ensemble Learning</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -244,6 +244,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -320,385 +321,408 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="images/watercolour_sys02_img34_teacup-ocean.jpg" data-background-opacity="0.7" data-background-size="stretch" data-slide-number="none" class="quarto-title-block center">
-  <h1 class="title">Project title</h1>
-  <p class="subtitle">INFO 523 - Spring 2023 - Project Final</p>
+<section id="title-slide" data-background-image="images/title1.png" data-background-opacity="0.2" data-background-size="stretch" data-slide-number="none" class="quarto-title-block center">
+  <h1 class="title">Fraud Detection Using Ensemble Learning</h1>
+  <p class="subtitle">Team : Mining Minds -INFO 523- Spring 2023 - Project Final</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Author names 
+Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi 
 </div>
 </div>
 </div>
 
 </section>
-<section>
-<section id="using-quarto-for-presentations" class="title-slide slide level1 center">
-<h1>Using Quarto for presentations</h1>
-
-</section>
-<section id="quarto" class="slide level2">
-<h2>Quarto</h2>
+<section id="introduction" class="slide level2" style="font-size: 0.7em;">
+<h2>Introduction</h2>
+<div>
 <ul>
-<li><p>The presentation is created using the Quarto CLI</p></li>
-<li><p><code>##</code> sets the start of a new slide</p></li>
+<li class="fragment"><p>The primary goal of our project is to enhance machine learning models accuracy in detecting fraudulent credit card transactions using an ensemble learning technique known as stacked generalization.</p></li>
+<li class="fragment"><p>The motivation behind our project is to improve the detection of fraudulent transactions, which remains a significant challenge in financial security.</p></li>
+<li class="fragment"><p>By integrating multiple predictive models, the project aims to create a robust system that can more accurately identify fraudulent transactions, thus contributing to safer financial environments.</p></li>
+<li class="fragment"><p>Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will significantly enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.</p></li>
 </ul>
-</section>
-<section id="layouts" class="slide level2">
-<h2>Layouts</h2>
-<p>You can use plain text</p>
-<div class="columns">
-<div class="column" style="width:40%;">
-<ul>
-<li>or bullet points<sup>1</sup></li>
-</ul>
-</div><div class="column" style="width:60%;">
-<p>or in two columns</p>
-</div>
-</div>
-<ul>
-<li><p>like</p></li>
-<li><p>this</p></li>
-</ul>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>And add footnotes</p></li></ol></aside></section>
-<section id="code" class="slide level2">
-<h2>Code</h2>
-<div class="cell" data-execution_count="4">
-<div class="cell-output cell-output-stdout">
-<pre><code>                            OLS Regression Results                            
-==============================================================================
-Dep. Variable:                    mpg   R-squared:                       0.073
-Model:                            OLS   Adj. R-squared:                  0.070
-Method:                 Least Squares   F-statistic:                     30.59
-Date:                Tue, 05 Dec 2023   Prob (F-statistic):           5.84e-08
-Time:                        15:26:39   Log-Likelihood:                -1346.4
-No. Observations:                 392   AIC:                             2697.
-Df Residuals:                     390   BIC:                             2705.
-Df Model:                           1                                         
-Covariance Type:            nonrobust                                         
-==============================================================================
-                 coef    std err          t      P&gt;|t|      [0.025      0.975]
-------------------------------------------------------------------------------
-const         35.8015      2.266     15.800      0.000      31.347      40.257
-speed       -354.7055     64.129     -5.531      0.000    -480.788    -228.623
-==============================================================================
-Omnibus:                       27.687   Durbin-Watson:                   0.589
-Prob(Omnibus):                  0.000   Jarque-Bera (JB):               18.976
-Skew:                           0.420   Prob(JB):                     7.57e-05
-Kurtosis:                       2.323   Cond. No.                         169.
-==============================================================================
-
-Notes:
-[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.</code></pre>
-</div>
 </div>
 </section>
-<section id="plots" class="slide level2">
-<h2>Plots</h2>
-
-<img data-src="presentation_files/figure-revealjs/cell-6-output-1.png" class="r-stretch"></section>
-<section id="plot-and-text" class="slide level2">
-<h2>Plot and text</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="dataset-description" class="slide level2" style="font-size: 0.7em;">
+<h2>Dataset description</h2>
+<div>
 <ul>
-<li><p>Some text</p></li>
-<li><p>goes here</p></li>
+<li class="fragment"><p>The dataset comprises over 550,000 credit card transactions from European cardholders, collected in 2023.</p></li>
+<li class="fragment"><p>It includes 31 features with transaction details such as amount and time, anonymized to ensure privacy and ethical compliance.</p></li>
+<li class="fragment"><p>Features include a unique transaction ID and 28 anonymized attributes (V1-V28), representing various transaction details.</p></li>
+<li class="fragment"><p>The anonymization of features presents challenges in interpreting the data, while the class imbalance poses difficulties in model training and accuracy.</p></li>
 </ul>
-</div><div class="column" style="width:50%;">
-<div class="cell" data-fig.width="5.5" data-execution_count="6">
+</div>
+</section>
+<section id="preview-of-the-dataset-first-few-transactions" class="slide level2" style="font-size: 0.7em;">
+<h2>Preview of the Dataset: First Few Transactions</h2>
+<p><br></p>
+<div id="f68ab229" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="20">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Time</th>
+<th data-quarto-table-cell-role="th">V1</th>
+<th data-quarto-table-cell-role="th">V2</th>
+<th data-quarto-table-cell-role="th">V3</th>
+<th data-quarto-table-cell-role="th">V4</th>
+<th data-quarto-table-cell-role="th">V5</th>
+<th data-quarto-table-cell-role="th">V6</th>
+<th data-quarto-table-cell-role="th">V7</th>
+<th data-quarto-table-cell-role="th">V8</th>
+<th data-quarto-table-cell-role="th">V9</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">V21</th>
+<th data-quarto-table-cell-role="th">V22</th>
+<th data-quarto-table-cell-role="th">V23</th>
+<th data-quarto-table-cell-role="th">V24</th>
+<th data-quarto-table-cell-role="th">V25</th>
+<th data-quarto-table-cell-role="th">V26</th>
+<th data-quarto-table-cell-role="th">V27</th>
+<th data-quarto-table-cell-role="th">V28</th>
+<th data-quarto-table-cell-role="th">Amount</th>
+<th data-quarto-table-cell-role="th">Class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.0</td>
+<td>-1.359807</td>
+<td>-0.072781</td>
+<td>2.536347</td>
+<td>1.378155</td>
+<td>-0.338321</td>
+<td>0.462388</td>
+<td>0.239599</td>
+<td>0.098698</td>
+<td>0.363787</td>
+<td>...</td>
+<td>-0.018307</td>
+<td>0.277838</td>
+<td>-0.110474</td>
+<td>0.066928</td>
+<td>0.128539</td>
+<td>-0.189115</td>
+<td>0.133558</td>
+<td>-0.021053</td>
+<td>149.62</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.0</td>
+<td>1.191857</td>
+<td>0.266151</td>
+<td>0.166480</td>
+<td>0.448154</td>
+<td>0.060018</td>
+<td>-0.082361</td>
+<td>-0.078803</td>
+<td>0.085102</td>
+<td>-0.255425</td>
+<td>...</td>
+<td>-0.225775</td>
+<td>-0.638672</td>
+<td>0.101288</td>
+<td>-0.339846</td>
+<td>0.167170</td>
+<td>0.125895</td>
+<td>-0.008983</td>
+<td>0.014724</td>
+<td>2.69</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.0</td>
+<td>-1.358354</td>
+<td>-1.340163</td>
+<td>1.773209</td>
+<td>0.379780</td>
+<td>-0.503198</td>
+<td>1.800499</td>
+<td>0.791461</td>
+<td>0.247676</td>
+<td>-1.514654</td>
+<td>...</td>
+<td>0.247998</td>
+<td>0.771679</td>
+<td>0.909412</td>
+<td>-0.689281</td>
+<td>-0.327642</td>
+<td>-0.139097</td>
+<td>-0.055353</td>
+<td>-0.059752</td>
+<td>378.66</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1.0</td>
+<td>-0.966272</td>
+<td>-0.185226</td>
+<td>1.792993</td>
+<td>-0.863291</td>
+<td>-0.010309</td>
+<td>1.247203</td>
+<td>0.237609</td>
+<td>0.377436</td>
+<td>-1.387024</td>
+<td>...</td>
+<td>-0.108300</td>
+<td>0.005274</td>
+<td>-0.190321</td>
+<td>-1.175575</td>
+<td>0.647376</td>
+<td>-0.221929</td>
+<td>0.062723</td>
+<td>0.061458</td>
+<td>123.50</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>2.0</td>
+<td>-1.158233</td>
+<td>0.877737</td>
+<td>1.548718</td>
+<td>0.403034</td>
+<td>-0.407193</td>
+<td>0.095921</td>
+<td>0.592941</td>
+<td>-0.270533</td>
+<td>0.817739</td>
+<td>...</td>
+<td>-0.009431</td>
+<td>0.798278</td>
+<td>-0.137458</td>
+<td>0.141267</td>
+<td>-0.206010</td>
+<td>0.502292</td>
+<td>0.219422</td>
+<td>0.215153</td>
+<td>69.99</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>5 rows × 31 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="research-questions" class="slide level2" style="font-size: 0.7em;">
+<h2>Research Questions</h2>
+<div>
+<ul>
+<li class="fragment"><p>What is the comparative performance of anomaly detection algorithms, including Random Forest, XGBoost, KNN, for fraud detection in this specific dataset?</p></li>
+<li class="fragment"><p>How does the stacked generalization technique, implemented with the mlxtend library, improve fraud detection performance by leveraging the synergy between base classifiers?</p></li>
+</ul>
+</div>
+</section>
+<section id="question1-analysis-plan" class="slide level2" style="font-size: 0.7em;">
+<h2>Question1: Analysis Plan</h2>
+<div>
+<ul>
+<li class="fragment"><p><b>Model Training and Sampling Techniques:</b> Address dataset imbalance by oversampling the minority class and undersampling the majority. Split the data into training and testing sets, and train anomaly detection models including Random Forest, XGBoost, and KNN.</p></li>
+<li class="fragment"><p><b>Model Optimization:</b> Hypertune the models to optimize performance, ensuring the best possible settings for each algorithm.</p></li>
+<li class="fragment"><p><b>Performance Evaluation and Analysis:</b> Evaluate each model on the testing set using metrics like precision, recall, F1-score, and ROC area. Analyze performance differences to understand the impact of model complexity, feature importance, and dataset characteristics.</p></li>
+</ul>
+</div>
+</section>
+<section id="question2-analysis-plan" class="slide level2" style="font-size: 0.7em;">
+<h2>Question2: Analysis Plan</h2>
+<div>
+<ul>
+<li class="fragment"><p><b>Stacked Generalization Setup:</b> Utilize the mlxtend library to implement stacked generalization. Train base models as specified, and split their output into training and testing sets for the meta-classifier.</p></li>
+<li class="fragment"><p><b>Meta-classifier Training:</b> Combine predictions from base classifiers using the stacking method, and train a meta-classifier on these combined predictions to enhance prediction accuracy.</p></li>
+<li class="fragment"><p><b>Evaluation and Analysis:</b> Assess the performance of the stacked model, compare it to the base models, and analyze the performance gains, focusing on factors like model diversity, ensemble principles, and dataset specifics.</p></li>
+</ul>
+</div>
+</section>
+<section id="randomforest-classifier" class="slide level2" style="font-size: 0.7em;">
+<h2>RandomForest Classifier</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Plot</a></li><li><a href="#tabset-1-2">Metrics</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div id="aedd3853" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-7-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-9-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<div id="tabset-1-2">
+<div id="aab62510" class="cell" data-execution_count="9">
+<div class="cell-output cell-output-stdout">
+<pre><code>Random Forest has 0.94 accuracy
+Random Forest has 0.99 precision
+Random Forest has 0.91 recall
+Random Forest has 0.95 f1 score</code></pre>
 </div>
-</section></section>
-<section>
-<section id="a-new-section" class="title-slide slide level1 center">
-<h1>A new section…</h1>
-
-</section>
-<section id="tables" class="slide level2">
-<h2>Tables</h2>
-<p>If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,</p>
-<div class="cell" data-execution_count="7">
-<div class="cell-output cell-output-display" data-execution_count="7">
-<table border="1" class="dataframe">
-
-<thead>
-
-<tr style="text-align: right;">
-
-<th>
-</th>
-
-<th>
-species
-</th>
-
-<th>
-island
-</th>
-
-<th>
-bill_length_mm
-</th>
-
-<th>
-bill_depth_mm
-</th>
-
-<th>
-flipper_length_mm
-</th>
-
-<th>
-body_mass_g
-</th>
-
-<th>
-sex
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<th>
-0
-</th>
-
-<td>
-Adelie
-</td>
-
-<td>
-Torgersen
-</td>
-
-<td>
-39.1
-</td>
-
-<td>
-18.7
-</td>
-
-<td>
-181.0
-</td>
-
-<td>
-3750.0
-</td>
-
-<td>
-Male
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-1
-</th>
-
-<td>
-Adelie
-</td>
-
-<td>
-Torgersen
-</td>
-
-<td>
-39.5
-</td>
-
-<td>
-17.4
-</td>
-
-<td>
-186.0
-</td>
-
-<td>
-3800.0
-</td>
-
-<td>
-Female
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-2
-</th>
-
-<td>
-Adelie
-</td>
-
-<td>
-Torgersen
-</td>
-
-<td>
-40.3
-</td>
-
-<td>
-18.0
-</td>
-
-<td>
-195.0
-</td>
-
-<td>
-3250.0
-</td>
-
-<td>
-Female
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-4
-</th>
-
-<td>
-Adelie
-</td>
-
-<td>
-Torgersen
-</td>
-
-<td>
-36.7
-</td>
-
-<td>
-19.3
-</td>
-
-<td>
-193.0
-</td>
-
-<td>
-3450.0
-</td>
-
-<td>
-Female
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-5
-</th>
-
-<td>
-Adelie
-</td>
-
-<td>
-Torgersen
-</td>
-
-<td>
-39.3
-</td>
-
-<td>
-20.6
-</td>
-
-<td>
-190.0
-</td>
-
-<td>
-3650.0
-</td>
-
-<td>
-Male
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="images" class="slide level2">
-<h2>Images</h2>
-
-<img data-src="images/watercolour_sys02_img34_teacup-ocean.png" class="quarto-figure quarto-figure-center r-stretch" width="500"><p class="caption">Image credit: Danielle Navarro, Percolate.</p></section>
-<section id="math-expressions" class="slide level2 smaller">
-<h2>Math Expressions</h2>
-<p>You can write LaTeX math expressions inside a pair of dollar signs, e.g.&nbsp;$\alpha+\beta$ renders <span class="math inline">\(\alpha + \beta\)</span>. You can use the display style with double dollar signs:</p>
-<pre><code>$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$</code></pre>
-<p><span class="math display">\[
-\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i
-\]</span></p>
-<p>Limitations:</p>
-<ol type="1">
-<li><p>The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting <code>$$</code> must appear in the very beginning of a line, followed immediately by a non-space character, and the ending <code>$$</code> must be at the end of a line, led by a non-space character;</p></li>
-<li><p>There should not be spaces after the opening <code>$</code> or before the closing <code>$</code>.</p></li>
-</ol>
-</section></section>
-<section>
-<section id="wrap-up" class="title-slide slide level1 center">
-<h1>Wrap up</h1>
-
+<section id="knn-classifier" class="slide level2" style="font-size: 0.7em;">
+<h2>KNN Classifier</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li><li><a href="#tabset-2-2">Metrics</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div id="7f240254" class="cell" data-execution_count="10">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/cell-11-output-1.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div id="29d34026" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-stdout">
+<pre><code>KNN has 0.63 accuracy
+KNN has 0.69 precision
+KNN has 0.62 recall
+KNN has 0.65 f1 score</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="feeling-adventurous" class="slide level2">
-<h2>Feeling adventurous?</h2>
+<section id="xgboost-classifier" class="slide level2" style="font-size: 0.7em;">
+<h2>XGBoost Classifier</h2>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li><li><a href="#tabset-3-2">Metrics</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div id="0ceef2bc" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/cell-13-output-1.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-3-2">
+<div id="73b936d5" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-stdout">
+<pre><code>XGBoost has 0.94 accuracy
+XGBoost has 0.97 precision
+XGBoost has 0.93 recall
+XGBoost has 0.95 f1 score</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="stacked-model" class="slide level2" style="font-size: 0.7em;">
+<h2>Stacked Model</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Metrics</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div id="7b9d7460" class="cell" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/cell-15-output-1.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-4-2">
+<div id="5ac17259" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-stdout">
+<pre><code>Classifiers:  Stacked Model has 0.94 accuracy
+Classifiers:  Stacked Model has 0.97 precision
+Classifiers:  Stacked Model has 0.93 recall
+Classifiers:  Stacked Model has 0.95 f1 score</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="roc-curve" class="slide level2" style="font-size: 0.7em;">
+<h2>ROC curve</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Analysis</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div id="04eaeb88" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/cell-17-output-1.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-5-2">
+<div>
 <ul>
-<li><p>You are welcomed to use the default styling of the slides. In fact, that’s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.</p></li>
-<li><p>But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.</p></li>
+<li class="fragment"><b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.</li>
+<li class="fragment"><b>KNN Underperforms:</b> The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset.</li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p><img data-src="images/thankyou.jpg" style="width:100%;height:100%;"></p>
 
 <div class="quarto-auto-generated-content">
+<p><img src="images/credit_card_fraud.jpeg" class="slide-logo"></p>
 <div class="footer footer-default">
-
+<p><a href="https://info523-s24.github.io/project-final-MiningMinds/">💵 MiningMinds</a></p>
 </div>
 </div>
-</section></section>
-
+</section>
     </div>
   </div>
 
@@ -727,7 +751,7 @@ Male
 'previewLinksAuto': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
+'autoAnimateDuration': 1.5,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
@@ -855,14 +879,14 @@ Male
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'slide',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
 
         // Transition style for full page slide backgrounds
         // (none/fade/slide/convex/concave/zoom)
-        backgroundTransition: 'none',
+        backgroundTransition: 'fade',
 
         // Number of slides away from the current that are visible
         viewDistance: 3,
