@@ -269,7 +269,7 @@ ax.legend(handles=[blue_patch, red_patch])
 ```
 
 
-## Training and Testing ML Algorithms
+## Training and Testing Base ML Algorithms
 
 Now we will train three types of classifiers (Random Forest, K-Nearest Neighbor, and XGBoost) and combine them using stacked generalization and evaluate their accuracy in detecting fraud transactions. In the first step, we have to split our data into training and testing sets and separate the features from the labels. Then, we tune the hyperparemeters of each algorithms using grid search method. We use Accuracy, Precision, Recall, and F1_score along with ROC curve for model evaluation.
 
@@ -381,7 +381,13 @@ for key, classifier in classifiers.items():
 | Recall | 0.93 | 0.9 | 0.92 |
 | F1-Score | 0.95 | 0.94 | 0.95 |
 
-The ensemble learning approaches including XGBoost and RF are more accurate than KNN. In the next step, we train the stacking model with a logistic regression as the metalearner.
+The ensemble learning approaches including XGBoost and RF are more accurate than KNN. Random Forest seems to be the most balanced model with high marks across all metrics, making it potentially the best choice if you need a model that performs well across different aspects of classification.
+XGBoost also performs robustly, especially in balancing Precision and Recall, making it suitable for scenarios where both false positives and false negatives carry significant costs.
+KNN, while slightly lagging behind in Recall and Accuracy, still shows commendable performance and could be preferred for its simplicity and effectiveness in certain contexts where model interpretability and computational efficiency are more critical.
+
+## Stacked Generalization
+
+In the next step, we train the stacking model with a logistic regression as the metalearner.
 
 ```{python}
 #| label: Training the Stacking Model
@@ -444,7 +450,7 @@ for key, classifier in classifiers.items():
 
 Based on the performance evaluation of the stacking model, its effectiveness is comparable to that of the XGBoost technique.
 
-## ROC curve
+## Comparing Models Using ROC Curve
 
 The ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.97. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.971, but still outperforms the KNN's AUC of 0.974. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance.
 
