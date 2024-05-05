@@ -34,6 +34,8 @@ editor_options:
 # Load packages here
 import pandas as pd
 import seaborn as sns
+import joblib
+
 
 ```
 
@@ -51,16 +53,6 @@ plt.rcParams['savefig.dpi'] = 300
 plt.rcParams['figure.figsize'] = (6, 6 * 0.618)
 ```
 
-```{python}
-#| label: load-data
-#| include: false
-# Load data in Python
-mtcars = sns.load_dataset('mpg').dropna()  # mtcars dataset is similar to the mpg dataset from seaborn
-mtcars['speed'] = mtcars['horsepower'] / mtcars['weight']
-
-penguins = sns.load_dataset('penguins').dropna()
-```
-
 
 ## Introduction {style="font-size: 0.7em;"}
 ::: incremental
@@ -71,7 +63,7 @@ penguins = sns.load_dataset('penguins').dropna()
 
 -   By integrating multiple predictive models, the project aims to create a robust system that can more accurately identify fraudulent transactions, thus contributing to safer financial environments.
 
--   Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will significantly enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.
+-   Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.
 
 :::
 
@@ -80,8 +72,6 @@ penguins = sns.load_dataset('penguins').dropna()
 -   The dataset comprises over 550,000 credit card transactions from European cardholders, collected in 2023.
 
 -   It includes 31 features with transaction details such as amount and time, anonymized to ensure privacy and ethical compliance.
-
--   Features include a unique transaction ID and 28 anonymized attributes (V1-V28), representing various transaction details.
 
 -   The anonymization of features presents challenges in interpreting the data, while the class imbalance poses difficulties in model training and accuracy.
 
@@ -109,6 +99,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score, f1_score, confusion_matrix
 from sklearn.linear_model import LogisticRegression
 from mlxtend.classifier import StackingClassifier
+import joblib
 
 df = pd.read_csv('./data/creditcard.csv')
 df.head()
@@ -149,6 +140,123 @@ df.head()
 -  <b>Evaluation and Analysis:</b> Assess the performance of the stacked model, compare it to the base models, and analyze the performance gains, focusing on factors like model diversity, ensemble principles, and dataset specifics.
 
 :::
+
+
+## Random Undersampling {style="font-size: 0.7em;"}
+::: incremental
+
+```{python}
+#| label: Original dataset
+# Creating a DataFrame
+class_counts_df = pd.DataFrame({
+    'Class': ['non-fradulent', 'fradulent'],
+    'Values': [df['Class'].value_counts()[0], df['Class'].value_counts()[1]]})
+
+# Creating the barplot
+plt.figure(figsize=(8, 4))
+bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
+
+# Adding labels and title
+plt.xlabel('Categories')
+plt.ylabel('Values')
+plt.title('Comparison of the Number of Classes')
+
+# Find the maximum value to adjust y limits accordingly
+max_value = class_counts_df['Values'].max()
+plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
+
+# Annotate the number of samples in each class
+for p in bar_plot.patches:  # iterate through the list of bars
+    bar_plot.annotate(format(p.get_height(), '.0f'), 
+                       (p.get_x() + p.get_width() / 2., p.get_height()), 
+                       ha = 'center', va = 'center', 
+                       size=10, xytext = (0, 8), 
+                       textcoords = 'offset points')
+
+plt.show()
+
+```
+
+```{python}
+#| label: Undersampled dataset
+
+# Shuffling the dataset
+df = df.sample(frac=1)
+
+# amount of fraud classes 492 rows.
+fraud_df = df.loc[df['Class'] == 1]
+non_fraud_df = df.loc[df['Class'] == 0][:492]
+
+balanced_df = pd.concat([fraud_df, non_fraud_df])
+
+# Shuffle dataframe rows
+new_df = balanced_df.sample(frac=1, random_state=42)
+
+new_df.head()
+
+
+# Creating a DataFrame
+class_counts_df = pd.DataFrame({
+    'Class': ['non-fradulent', 'fradulent'],
+    'Values': [balanced_df['Class'].value_counts()[0], balanced_df['Class'].value_counts()[1]]})
+
+# Creating the barplot
+plt.figure(figsize=(8, 4))
+bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
+
+# Adding labels and title
+plt.xlabel('Categories')
+plt.ylabel('Values')
+plt.title('Comparison of the Number of Classes')
+
+# Find the maximum value to adjust y limits accordingly
+max_value = class_counts_df['Values'].max()
+plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
+
+# Annotate the number of samples in each class
+for p in bar_plot.patches:  # iterate through the list of bars
+    bar_plot.annotate(format(p.get_height(), '.0f'), 
+                       (p.get_x() + p.get_width() / 2., p.get_height()), 
+                       ha = 'center', va = 'center', 
+                       size=10, xytext = (0, 8), 
+                       textcoords = 'offset points')
+
+plt.show()
+
+```
+
+
+:::
+
+## EDA  {style="font-size: 0.7em;"}
+::: panel-tabset
+### Kernel Density Plots
+```{python}
+#| label: Kernel Density Plots
+# Pre-compute class-specific datasets
+non_fraud_df = new_df[new_df['Class'] == 0].drop('Class', axis=1)
+fraud_df = new_df[new_df['Class'] == 1].drop('Class', axis=1)
+
+# Setup the figure and axes
+fig, axes = plt.subplots(5, 6, figsize=(16, 10))  # Adjust the grid dimensions based on the number of columns
+axes = axes.flatten()  # Flatten the array for easy iteration
+
+for i, col in enumerate(new_df.columns[:-1]):  # Assuming the last column is 'Class' and it's dropped
+    sns.histplot(data=non_fraud_df[col], bins=50, kde=True, color='blue', ax=axes[i], label='Non-Fraud' if i == 0 else "")
+    sns.histplot(data=fraud_df[col], bins=50, kde=True, color='red', ax=axes[i], label='Fraud' if i == 0 else "")
+    axes[i].set_title(f'Distribution of {col}', fontsize=10)
+    axes[i].set_xlabel('')  # Clear x-labels to reduce clutter
+    axes[i].set_ylabel('')  # Optionally clear y-labels for the same reason
+    if i == 0:  # Add legend only to the first subplot
+        axes[i].legend()
+
+# Adjust layout to prevent label/title overlap
+plt.tight_layout()
+plt.show()
+
+```
+
+
 
 
 ## RandomForest Classifier  {style="font-size: 0.7em;"}
@@ -197,43 +305,53 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 ```
 ```{python}
-# Parameters for Random Forest
-rf_params = {
-    'n_estimators': [10, 50, 100, 200],
-    'max_depth': [None, 10, 20, 30],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
-}
+# # Parameters for Random Forest
+# rf_params = {
+#     'n_estimators': [10, 50, 100, 200],
+#     'max_depth': [None, 10, 20, 30],
+#     'min_samples_split': [2, 5, 10],
+#     'min_samples_leaf': [1, 2, 4]
+# }
 
-# Parameters for K-Nearest Neighbors
-knears_params = {
-    'n_neighbors': list(range(2, 5, 1)),
-    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
-}
+# # Parameters for K-Nearest Neighbors
+# knears_params = {
+#     'n_neighbors': list(range(2, 5, 1)),
+#     'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
+# }
 
-# Parameters for XGBoost
-xgb_params = {
-    'n_estimators': [100, 200],
-    'max_depth': [3, 5, 7, 9],
-    'learning_rate': [0.01, 0.1, 0.2],
-    'subsample': [0.7, 0.8, 0.9]
-}
+# # Parameters for XGBoost
+# xgb_params = {
+#     'n_estimators': [100, 200],
+#     'max_depth': [3, 5, 7, 9],
+#     'learning_rate': [0.01, 0.1, 0.2],
+#     'subsample': [0.7, 0.8, 0.9]
+# }
 
-# Setup GridSearchCV for Random Forest
-grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_rf.fit(X_train, y_train)
-rf_best = grid_rf.best_estimator_
+# # Setup GridSearchCV for Random Forest
+# grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
+# grid_rf.fit(X_train, y_train)
+# rf_best = grid_rf.best_estimator_
 
-# Setup GridSearchCV for K-Nearest Neighbors
-grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_knears.fit(X_train, y_train)
-knears_best = grid_knears.best_estimator_
+# # Setup GridSearchCV for K-Nearest Neighbors
+# grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
+# grid_knears.fit(X_train, y_train)
+# knears_best = grid_knears.best_estimator_
 
-# Setup GridSearchCV for XGBoost
-grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_xgb.fit(X_train, y_train)
-xgb_best = grid_xgb.best_estimator_
+# # Setup GridSearchCV for XGBoost
+# grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
+# grid_xgb.fit(X_train, y_train)
+# xgb_best = grid_xgb.best_estimator_
 ```
+
+```{python}
+
+rf_best = joblib.load('./_extra/rf_best.joblib')
+knears_best = joblib.load('./_extra/knears_best.joblib')
+xgb_best = joblib.load('./_extra/xgb_best.joblib')
+
+```
+
+
 ```{python}
 y_pred_rf = rf_best.predict(X_test)
 

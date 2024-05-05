@@ -8,7 +8,7 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.4.540">
 
   <meta name="author" content="Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi">
   <title>  Fraud Detection  - Fraud Detection Using Ensemble Learning</title>
@@ -349,7 +349,7 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <li class="fragment"><p>The primary goal of our project is to enhance machine learning models accuracy in detecting fraudulent credit card transactions using an ensemble learning technique known as stacked generalization.</p></li>
 <li class="fragment"><p>The motivation behind our project is to improve the detection of fraudulent transactions, which remains a significant challenge in financial security.</p></li>
 <li class="fragment"><p>By integrating multiple predictive models, the project aims to create a robust system that can more accurately identify fraudulent transactions, thus contributing to safer financial environments.</p></li>
-<li class="fragment"><p>Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will significantly enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.</p></li>
+<li class="fragment"><p>Despite challenges like data imbalance and feature anonymization, we anticipate that stacked generalization will enhance fraud detection accuracy, demonstrating the effectiveness of ensemble methods in complex scenarios.</p></li>
 </ul>
 </div>
 </section>
@@ -359,7 +359,6 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <ul>
 <li class="fragment"><p>The dataset comprises over 550,000 credit card transactions from European cardholders, collected in 2023.</p></li>
 <li class="fragment"><p>It includes 31 features with transaction details such as amount and time, anonymized to ensure privacy and ethical compliance.</p></li>
-<li class="fragment"><p>Features include a unique transaction ID and 28 anonymized attributes (V1-V28), representing various transaction details.</p></li>
 <li class="fragment"><p>The anonymization of features presents challenges in interpreting the data, while the class imbalance poses difficulties in model training and accuracy.</p></li>
 </ul>
 </div>
@@ -367,8 +366,8 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <section id="preview-of-the-dataset-first-few-transactions" class="slide level2" style="font-size: 0.7em;">
 <h2>Preview of the Dataset: First Few Transactions</h2>
 <p><br></p>
-<div id="f68ab229" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="20">
+<div id="884ae90e" class="cell" data-execution_count="3">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -569,29 +568,70 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </ul>
 </div>
 </section>
-<section id="randomforest-classifier" class="slide level2" style="font-size: 0.7em;">
-<h2>RandomForest Classifier</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Plot</a></li><li><a href="#tabset-1-2">Metrics</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div id="aedd3853" class="cell" data-execution_count="8">
+<section id="random-undersampling" class="slide level2" style="font-size: 0.7em;">
+<h2>Random Undersampling</h2>
+<div>
+<p>::: {#cell-Original dataset .cell execution_count=4}</p>
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-9-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/original-dataset-output-1.png" id="original-dataset"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>::: {#cell-Undersampled dataset .cell execution_count=5}</p>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/undersampled-dataset-output-1.png" id="undersampled-dataset"></p>
+</figure>
+</div>
+</div>
+<p>:::</p>
+<p>:::</p>
+</section>
+<section id="eda" class="slide level2" style="font-size: 0.7em;">
+<h2>EDA</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Kernel Density Plots</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p>::: {#cell-Kernel Density Plots .cell execution_count=6}</p>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/kernel-density-plots-output-1.png" id="kernel-density-plots"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-1-2">
-<div id="aab62510" class="cell" data-execution_count="9">
+</div>
+</section>
+<section id="randomforest-classifier" class="slide level2" style="font-size: 0.7em;">
+<h2>RandomForest Classifier</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li><li><a href="#tabset-2-2">Metrics</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div id="874d3f4f" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentation_files/figure-revealjs/cell-12-output-1.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-2">
+<div id="48a3011f" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
-<pre><code>Random Forest has 0.94 accuracy
-Random Forest has 0.99 precision
-Random Forest has 0.91 recall
-Random Forest has 0.95 f1 score</code></pre>
+<pre><code>Random Forest has 0.49 accuracy
+Random Forest has 0.85 precision
+Random Forest has 0.1 recall
+Random Forest has 0.18 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -601,26 +641,26 @@ Random Forest has 0.95 f1 score</code></pre>
 <section id="knn-classifier" class="slide level2" style="font-size: 0.7em;">
 <h2>KNN Classifier</h2>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li><li><a href="#tabset-2-2">Metrics</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li><li><a href="#tabset-3-2">Metrics</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1">
-<div id="7f240254" class="cell" data-execution_count="10">
+<div id="tabset-3-1">
+<div id="25d648eb" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-11-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-14-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-2-2">
-<div id="29d34026" class="cell" data-execution_count="11">
+<div id="tabset-3-2">
+<div id="a8a8b1e3" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
-<pre><code>KNN has 0.63 accuracy
-KNN has 0.69 precision
-KNN has 0.62 recall
-KNN has 0.65 f1 score</code></pre>
+<pre><code>KNN has 0.44 accuracy
+KNN has 0.0 precision
+KNN has 0.0 recall
+KNN has 0.0 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -630,26 +670,26 @@ KNN has 0.65 f1 score</code></pre>
 <section id="xgboost-classifier" class="slide level2" style="font-size: 0.7em;">
 <h2>XGBoost Classifier</h2>
 <div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li><li><a href="#tabset-3-2">Metrics</a></li></ul>
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Metrics</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1">
-<div id="0ceef2bc" class="cell" data-execution_count="12">
+<div id="tabset-4-1">
+<div id="47fe1ec3" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-13-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-16-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-3-2">
-<div id="73b936d5" class="cell" data-execution_count="13">
+<div id="tabset-4-2">
+<div id="83297ff6" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
-<pre><code>XGBoost has 0.94 accuracy
-XGBoost has 0.97 precision
-XGBoost has 0.93 recall
-XGBoost has 0.95 f1 score</code></pre>
+<pre><code>XGBoost has 0.47 accuracy
+XGBoost has 0.86 precision
+XGBoost has 0.05 recall
+XGBoost has 0.1 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -659,26 +699,26 @@ XGBoost has 0.95 f1 score</code></pre>
 <section id="stacked-model" class="slide level2" style="font-size: 0.7em;">
 <h2>Stacked Model</h2>
 <div class="panel-tabset">
-<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Metrics</a></li></ul>
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Metrics</a></li></ul>
 <div class="tab-content">
-<div id="tabset-4-1">
-<div id="7b9d7460" class="cell" data-execution_count="14">
+<div id="tabset-5-1">
+<div id="81b251de" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-15-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-18-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-4-2">
-<div id="5ac17259" class="cell" data-execution_count="15">
+<div id="tabset-5-2">
+<div id="0eefe76f" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
-<pre><code>Classifiers:  Stacked Model has 0.94 accuracy
-Classifiers:  Stacked Model has 0.97 precision
-Classifiers:  Stacked Model has 0.93 recall
-Classifiers:  Stacked Model has 0.95 f1 score</code></pre>
+<pre><code>Classifiers:  Stacked Model has 0.92 accuracy
+Classifiers:  Stacked Model has 0.98 precision
+Classifiers:  Stacked Model has 0.88 recall
+Classifiers:  Stacked Model has 0.93 f1 score</code></pre>
 </div>
 </div>
 </div>
@@ -688,20 +728,20 @@ Classifiers:  Stacked Model has 0.95 f1 score</code></pre>
 <section id="roc-curve" class="slide level2" style="font-size: 0.7em;">
 <h2>ROC curve</h2>
 <div class="panel-tabset">
-<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Analysis</a></li></ul>
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Plot</a></li><li><a href="#tabset-6-2">Analysis</a></li></ul>
 <div class="tab-content">
-<div id="tabset-5-1">
-<div id="04eaeb88" class="cell" data-execution_count="16">
+<div id="tabset-6-1">
+<div id="be8ef481" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentation_files/figure-revealjs/cell-17-output-1.png"></p>
+<p><img data-src="presentation_files/figure-revealjs/cell-20-output-1.png"></p>
 </figure>
 </div>
 </div>
 </div>
 </div>
-<div id="tabset-5-2">
+<div id="tabset-6-2">
 <div>
 <ul>
 <li class="fragment"><b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.</li>
