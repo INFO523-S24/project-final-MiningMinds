@@ -15,6 +15,7 @@ format:
     auto-animate-duration: 1.5
     scrollable: true
     logo: images/credit_card_fraud.jpeg
+    footer: "[💵 MiningMinds](https://info523-s24.github.io/project-final-MiningMinds/)"
   
 editor: visual
 jupyter: python3
@@ -135,176 +136,7 @@ df.head()
 
 :::
 
-## Plot
 
-```{python}
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-df = pd.read_csv('./data/creditcard.csv')
-# Creating a DataFrame
-class_counts_df = pd.DataFrame({
-    'Class': ['non-fradulent', 'fradulent'],
-    'Values': [df['Class'].value_counts()[0], df['Class'].value_counts()[1]]})
-
-# Creating the barplot
-plt.figure(figsize=(8, 4))
-bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
-
-# Adding labels and title
-plt.xlabel('Categories')
-plt.ylabel('Values')
-plt.title('Comparison of the Number of Classes')
-
-# Find the maximum value to adjust y limits accordingly
-max_value = class_counts_df['Values'].max()
-plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
-
-# Annotate the number of samples in each class
-for p in bar_plot.patches:  # iterate through the list of bars
-    bar_plot.annotate(format(p.get_height(), '.0f'), 
-                       (p.get_x() + p.get_width() / 2., p.get_height()), 
-                       ha = 'center', va = 'center', 
-                       size=10, xytext = (0, 8), 
-                       textcoords = 'offset points')
-
-plt.show()
-
-```
-
-
-## Plot 2
-```{python}
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-df = pd.read_csv('./data/creditcard.csv')
-# Calculate quartiles and IQR to set appropriate y-axis limits
-q1 = np.percentile(df['Amount'], 25)
-q3 = np.percentile(df['Amount'], 75)
-iqr = q3 - q1
-
-# Define bounds to zoom in closer around the quartiles, reducing the range to focus on main data
-lower_bound = q1 - 0.5 * iqr
-upper_bound = q3 + 3 * iqr
-
-# Create the boxplots without outliers
-fig, ax = plt.subplots(figsize=(8, 6))
-df.boxplot(column='Amount', by='Class', ax=ax, showfliers=False)
-
-# Adding titles and labels
-plt.title('Transaction Amount by Fraudulence')
-plt.suptitle('')  # Suppress the automatic title
-plt.ylabel('Transaction Amount')
-
-# Change x-axis labels from '0', '1' to 'Non-Fraudulent', 'Fraudulent'
-ax.set_xticklabels(['Non-Fraudulent', 'Fraudulent'])
-
-# Format y-axis to show dollar signs and set y-axis limits to focus around the IQR
-ax.set_yticklabels(['${:,.0f}'.format(y) for y in ax.get_yticks()])
-plt.ylim(lower_bound, upper_bound)
-
-# Remove vertical grid lines
-ax.xaxis.grid(False)  # Disable x-axis grid lines
-ax.yaxis.grid(True)   # Keep y-axis grid lines for better readability
-
-# Show plot
-plt.tight_layout()
-plt.show()
-```
-
-
-## Plot 3
-::: inremental
--Let's check if the number of samples in each class are equal.
-```{python}
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-df = pd.read_csv('./data/creditcard.csv')
-# amount of fraud classes 492 rows.
-fraud_df = df.loc[df['Class'] == 1]
-non_fraud_df = df.loc[df['Class'] == 0][:492]
-
-balanced_df = pd.concat([fraud_df, non_fraud_df])
-
-# Shuffle dataframe rows
-new_df = balanced_df.sample(frac=1, random_state=42)
-# Creating a DataFrame
-class_counts_df = pd.DataFrame({
-    'Class': ['non-fradulent', 'fradulent'],
-    'Values': [balanced_df['Class'].value_counts()[0], balanced_df['Class'].value_counts()[1]]})
-
-# Creating the barplot
-plt.figure(figsize=(8, 4))
-bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
-
-# Adding labels and title
-plt.xlabel('Categories')
-plt.ylabel('Values')
-plt.title('Comparison of the Number of Classes')
-
-# Find the maximum value to adjust y limits accordingly
-max_value = class_counts_df['Values'].max()
-plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
-
-# Annotate the number of samples in each class
-for p in bar_plot.patches:  # iterate through the list of bars
-    bar_plot.annotate(format(p.get_height(), '.0f'), 
-                       (p.get_x() + p.get_width() / 2., p.get_height()), 
-                       ha = 'center', va = 'center', 
-                       size=10, xytext = (0, 8), 
-                       textcoords = 'offset points')
-
-plt.show()
-```
-:::
-
-## Plot4 PCA scatter plot
-::: incremental
-```{python}
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
-import matplotlib.patches as mpatches
-import seaborn as sns
-df = pd.read_csv('./data/creditcard.csv')
-# New_df is from the random undersample data (fewer instances)
-# amount of fraud classes 492 rows.
-fraud_df = df.loc[df['Class'] == 1]
-non_fraud_df = df.loc[df['Class'] == 0][:492]
-
-balanced_df = pd.concat([fraud_df, non_fraud_df])
-
-# Shuffle dataframe rows
-new_df = balanced_df.sample(frac=1, random_state=42)
-
-new_df.head()
-X = new_df.drop('Class', axis=1)
-y = new_df['Class']
-
-# PCA Implementation
-X_reduced_pca = PCA(n_components=2, random_state=42).fit_transform(X.values)
-
-# PCA scatter plot
-f, ax = plt.subplots(1, 1, figsize=(8, 6))  # Adjust the figsize as needed for a single plot
-
-blue_patch = mpatches.Patch(color='#0A0AFF', label='No Fraud')
-red_patch = mpatches.Patch(color='#AF0000', label='Fraud')
-
-ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 0), cmap='coolwarm', label='No Fraud', linewidths=2)
-ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 1), cmap='coolwarm', label='Fraud', linewidths=2)
-ax.set_title('PCA', fontsize=14)
-
-ax.grid(True)
-
-ax.legend(handles=[blue_patch, red_patch])
-```
-- This plot shows us that classification models should perform well in distinguishing fraud cases from non-fraud cases.
-:::
 
 
 ## Question2: Analysis Plan {style="font-size: 0.7em;"}
@@ -319,70 +151,342 @@ ax.legend(handles=[blue_patch, red_patch])
 :::
 
 
-## Plots
+## RandomForest Classifier  {style="font-size: 0.7em;"}
+::: panel-tabset
+### Plot
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+import matplotlib.patches as mpatches
+import seaborn as sns
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score, f1_score, confusion_matrix
+from sklearn.linear_model import LogisticRegression
+from mlxtend.classifier import StackingClassifier 
+```
 
 ```{python}
-penguins['species'] = penguins['species'].apply(lambda x: "Adelie" if x == "Adelie" else "Other")
-sns.scatterplot(data=penguins, x='flipper_length_mm', y='body_mass_g', hue='species')
+df = pd.read_csv('./data/creditcard.csv')
+# Creating a DataFrame
+class_counts_df = pd.DataFrame({
+    'Class': ['non-fradulent', 'fradulent'],
+    'Values': [df['Class'].value_counts()[0], df['Class'].value_counts()[1]]})
+# Shuffling the dataset
+df = df.sample(frac=1)
+
+# amount of fraud classes 492 rows.
+fraud_df = df.loc[df['Class'] == 1]
+non_fraud_df = df.loc[df['Class'] == 0][:492]
+
+balanced_df = pd.concat([fraud_df, non_fraud_df])
+
+# Shuffle dataframe rows
+new_df = balanced_df.sample(frac=1, random_state=42)
+# New_df is from the random undersample data (fewer instances)
+X = new_df.drop('Class', axis=1)
+y = new_df['Class']
+
+# PCA Implementation
+X_reduced_pca = PCA(n_components=2, random_state=42).fit_transform(X.values)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+```
+```{python}
+# Parameters for Random Forest
+rf_params = {
+    'n_estimators': [10, 50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# Parameters for K-Nearest Neighbors
+knears_params = {
+    'n_neighbors': list(range(2, 5, 1)),
+    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
+}
+
+# Parameters for XGBoost
+xgb_params = {
+    'n_estimators': [100, 200],
+    'max_depth': [3, 5, 7, 9],
+    'learning_rate': [0.01, 0.1, 0.2],
+    'subsample': [0.7, 0.8, 0.9]
+}
+
+# Setup GridSearchCV for Random Forest
+grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_rf.fit(X_train, y_train)
+rf_best = grid_rf.best_estimator_
+
+# Setup GridSearchCV for K-Nearest Neighbors
+grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_knears.fit(X_train, y_train)
+knears_best = grid_knears.best_estimator_
+
+# Setup GridSearchCV for XGBoost
+grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_xgb.fit(X_train, y_train)
+xgb_best = grid_xgb.best_estimator_
+```
+```{python}
+y_pred_rf = rf_best.predict(X_test)
+
+# Calculating performance metrics for Random Forest
+accuracy_rf = accuracy_score(y_test, y_pred_rf)
+precision_rf = precision_score(y_test, y_pred_rf)
+recall_rf = recall_score(y_test, y_pred_rf)
+f1_rf = f1_score(y_test, y_pred_rf)
+cm_rf = confusion_matrix(y_test, y_pred_rf)
+# Plotting the confusion matrix for Random Forest using Matplotlib
+fig, ax = plt.subplots(figsize=(7,5))
+ax.matshow(cm_rf, cmap='viridis', alpha=0.3)
+for i in range(cm_rf.shape[0]):
+    for j in range(cm_rf.shape[1]):
+        ax.text(x=j, y=i, s=cm_rf[i, j], va='center', ha='center', size='large')
+
+# Correcting the axis inversion
+ax.invert_xaxis()
+ax.invert_yaxis()
+
+# Setting tick positions explicitly
+ax.set_xticks([0, 1])  # Assuming there are two classes
+ax.set_yticks([0, 1])
+
+# Adding corrected labels
+labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
+ax.set_xticklabels(labels, fontsize=10)
+ax.set_yticklabels(labels, fontsize=10)
+
+# Adding axis labels and title for Random Forest
+plt.xlabel('Predictions', fontsize=12)
+plt.ylabel('Observations', fontsize=12)
+plt.title('RandomForest', fontsize=12)
+plt.tight_layout()
+plt.show()
+
+```
+
+### Metrics
+```{python}
+print("Random Forest has", round(accuracy_rf, 2), "accuracy")
+print("Random Forest has", round(precision_rf, 2), "precision")
+print("Random Forest has", round(recall_rf, 2), "recall")
+print("Random Forest has", round(f1_rf, 2), "f1 score")
+```
+
+:::
+
+## KNN Classifier {style="font-size: 0.7em;"}
+::: panel-tabset
+### Plot
+```{python}
+y_pred_knn = knears_best.predict(X_test)
+
+# Calculating performance metrics for KNN
+accuracy_knn = accuracy_score(y_test, y_pred_knn)
+precision_knn = precision_score(y_test, y_pred_knn)
+recall_knn = recall_score(y_test, y_pred_knn)
+f1_knn = f1_score(y_test, y_pred_knn)
+cm_knn = confusion_matrix(y_test, y_pred_knn)
+
+# Plotting the confusion matrix for KNN using Matplotlib
+fig, ax = plt.subplots(figsize=(7,5))
+ax.matshow(cm_knn, cmap='viridis', alpha=0.3)
+for i in range(cm_knn.shape[0]):
+    for j in range(cm_knn.shape[1]):
+        ax.text(x=j, y=i, s=cm_knn[i, j], va='center', ha='center', size='large')
+
+# Correcting the axis inversion
+ax.invert_xaxis()
+ax.invert_yaxis()
+
+# Setting tick positions explicitly
+ax.set_xticks([0, 1])  # Assuming there are two classes
+ax.set_yticks([0, 1])
+
+# Adding corrected labels
+labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
+ax.set_xticklabels(labels, fontsize=10)
+ax.set_yticklabels(labels, fontsize=10)
+
+# Adding axis labels and title for KNN
+plt.xlabel('Predictions', fontsize=12)
+plt.ylabel('Observations', fontsize=12)
+plt.title('KNearest', fontsize=12)
 plt.show()
 ```
+### Metrics
+```{python}
 
-## Plot and text
+print("KNN has", round(accuracy_knn, 2), "accuracy")
+print("KNN has", round(precision_knn, 2), "precision")
+print("KNN has", round(recall_knn, 2), "recall")
+print("KNN has", round(f1_knn, 2), "f1 score")
+```
 
-::: columns
-::: {.column width="50%"}
--   Some text
-
--   goes here
 :::
 
-::: {.column width="50%"}
+## XGBoost Classifier {style="font-size: 0.7em;"}
+::: panel-tabset
+### Plot
 ```{python}
-#| warning: false
-#| fig.width: 5.5
-fig, ax = plt.subplots(figsize=(5.5, 5.5 * 0.618))
-sns.boxplot(data=penguins, x='bill_length_mm', y='species', hue='species', ax=ax)
+y_pred_xgb = xgb_best.predict(X_test)
+
+# Calculating performance metrics for XGBoost
+accuracy_xgb = accuracy_score(y_test, y_pred_xgb)
+precision_xgb = precision_score(y_test, y_pred_xgb)
+recall_xgb = recall_score(y_test, y_pred_xgb)
+f1_xgb = f1_score(y_test, y_pred_xgb)
+cm_xgb = confusion_matrix(y_test, y_pred_xgb)
+
+# Plotting the confusion matrix for XGBoost using Matplotlib
+fig, ax = plt.subplots(figsize=(7,5))
+ax.matshow(cm_xgb, cmap='viridis', alpha=0.3)
+for i in range(cm_xgb.shape[0]):
+    for j in range(cm_xgb.shape[1]):
+        ax.text(x=j, y=i, s=cm_xgb[i, j], va='center', ha='center', size='large')
+
+# Correcting the axis inversion
+ax.invert_xaxis()
+ax.invert_yaxis()
+
+# Setting tick positions explicitly
+ax.set_xticks([0, 1])  # Assuming there are two classes
+ax.set_yticks([0, 1])
+
+# Adding corrected labels
+labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
+ax.set_xticklabels(labels, fontsize=10)
+ax.set_yticklabels(labels, fontsize=10)
+
+# Adding axis labels and title for XGBoost
+plt.xlabel('Predictions', fontsize=12)
+plt.ylabel('Observations', fontsize=12)
+plt.title('XGBoost', fontsize=12)
+
 plt.show()
 ```
-:::
-:::
-
-# A new section...
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
+### Metrics
 ```{python}
-penguins.head().to_html()
+print("XGBoost has", round(accuracy_xgb, 2), "accuracy")
+print("XGBoost has", round(precision_xgb, 2), "precision")
+print("XGBoost has", round(recall_xgb, 2), "recall")
+print("XGBoost has", round(f1_xgb, 2), "f1 score")
 ```
 
-## Images
+:::
 
-![Image credit: Danielle Navarro, Percolate.](images/watercolour_sys02_img34_teacup-ocean.png){fig-align="center" width="500"}
+## Stacked Model {style="font-size: 0.7em;"}
+::: panel-tabset
+### Plot
+```{python}
+from sklearn.ensemble import StackingClassifier
+from sklearn.linear_model import LogisticRegression
 
-## Math Expressions {.smaller}
+# Assuming rf_best, knears_best, and xgb_best are previously defined models
+# Correcting the initialization of StackingClassifier
+stack_clf = StackingClassifier(
+    estimators=[
+        ('RandomForest', rf_best),
+        ('KNearest', knears_best),
+        ('XGBoost', xgb_best)
+    ],
+    final_estimator=LogisticRegression(random_state=42)
+)
 
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. \$\\alpha+\\beta\$ renders $\alpha + \beta$. You can use the display style with double dollar signs:
+# Fitting the model
+stack_clf.fit(X_train, y_train)
 
-```         
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
+# Rest of your code for predictions and evaluations
+classifiers = {
+    "Stacked Model": stack_clf
+}
+
+for key, classifier in classifiers.items():
+    y_pred = classifier.predict(X_test)
+
+    # Calculating performance metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred)
+    recall = recall_score(y_test, y_pred)
+    f1 = f1_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred)
+
+    # Plotting the confusion matrix using Matplotlib
+    fig, ax = plt.subplots(figsize=(7,5))
+    ax.matshow(cm, cmap='viridis', alpha=0.3)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='large')
+
+    # Setting tick positions and labels
+    ax.set_xticks([0, 1])  # Assuming two classes
+    ax.set_yticks([0, 1])
+    labels = ['Non-Fraudulent', 'Fraudulent']
+    ax.set_xticklabels(labels, fontsize=10)
+    ax.set_yticklabels(labels, fontsize=10)
+
+    # Adding axis labels and title
+    plt.xlabel('Predictions', fontsize=12)
+    plt.ylabel('Observations', fontsize=12)
+    plt.title(key, fontsize=18)
+
+    plt.show()
+
+
+    
 ```
+### Metrics
+```{python}
+print("Classifiers: ", key, "has", round(accuracy, 2), "accuracy")
+print("Classifiers: ", key, "has", round(precision, 2), "precision")
+print("Classifiers: ", key, "has", round(recall, 2), "recall")
+print("Classifiers: ", key, "has", round(f1, 2), "f1 score")
 
-$$
-\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i
-$$
+```
+:::
 
-Limitations:
+## ROC curve {style="font-size: 0.7em;"}
+::: panel-tabset
+### Plot
+```{python}
+rf_probs_test = rf_best.predict_proba(X_test)[:, 1]
+knears_probs_test = knears_best.predict_proba(X_test)[:, 1]
+xgb_probs_test = xgb_best.predict_proba(X_test)[:, 1]
+stack_probs_test = stack_clf.predict_proba(X_test)[:, 1]
 
-1.  The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
+rf_fpr_test, rf_tpr_test, _ = roc_curve(y_test, rf_probs_test)
+knears_fpr_test, knears_tpr_test, _ = roc_curve(y_test, knears_probs_test)
+xgb_fpr_test, xgb_tpr_test, _ = roc_curve(y_test, xgb_probs_test)
+stack_fpr_test, stack_tpr_test, _ = roc_curve(y_test, stack_probs_test)
 
-2.  There should not be spaces after the opening `$` or before the closing `$`.
+def plot_roc_curve():
+    plt.figure(figsize=(10, 6))
+    plt.plot(rf_fpr_test, rf_tpr_test, label='Random Forest (AUC = %0.3f)' % roc_auc_score(y_test, rf_probs_test))
+    plt.plot(knears_fpr_test, knears_tpr_test, label='KNN (AUC = %0.3f)' % roc_auc_score(y_test, knears_probs_test))
+    plt.plot(xgb_fpr_test, xgb_tpr_test, label='XGBoost (AUC = %0.3f)' % roc_auc_score(y_test, xgb_probs_test))
+    plt.plot(stack_fpr_test, stack_tpr_test, label='Stacked Classifier (AUC = %0.3f)' % roc_auc_score(y_test, stack_probs_test))
+    plt.plot([0, 1], [0, 1], 'r--')
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curves for Test Data')
+    plt.legend(loc="lower right")
+    plt.show()
 
-# Wrap up
+plot_roc_curve()
+```
+### Analysis
+::: incremental
+- <b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.
+- <b>KNN Underperforms:</b> The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset.
+:::
+:::
 
-## Feeling adventurous?
-
--   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
--   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.
+##
+![](images/thankyou.jpg){style="width:100%;height:100%;"}
