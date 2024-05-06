@@ -95,7 +95,7 @@
     "href": "index.html#stacked-generalization",
     "title": "Project Title",
     "section": "Stacked Generalization",
-    "text": "Stacked Generalization\nIn the next step, we train the stacking model with a logistic regression as the metalearner.\n::: {#cell-Training the Stacking Model .cell execution_count=11}\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.95 accuracy\nClassifiers:  Stacked Model has 0.96 precision\nClassifiers:  Stacked Model has 0.95 recall\nClassifiers:  Stacked Model has 0.95 f1 score\n\n:::\nBased on the performance evaluation of the stacking model, its effectiveness is comparable to that of the XGBoost technique."
+    "text": "Stacked Generalization\nIn the next step, we train the stacking model with a logistic regression as the metalearner.\n::: {#cell-Training the Stacking Model .cell execution_count=11}\n\n\n\n\n\n\n\n\nClassifiers:  Stacked Model has 0.94 accuracy\nClassifiers:  Stacked Model has 1.0 precision\nClassifiers:  Stacked Model has 0.9 recall\nClassifiers:  Stacked Model has 0.95 f1 score\n\n:::\nBased on the performance evaluation of the stacking model, its effectiveness is comparable to that of the XGBoost technique."
   },
   {
     "objectID": "index.html#comparing-models-using-roc-curve",
@@ -200,7 +200,7 @@
     "href": "presentation.html#metrics-for-classification-models",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "Metrics for Classification Models",
-    "text": "Metrics for Classification Models\n\nMetricsAnalysis\n\n\n\n\n\nMetric\nRF\nKNN\nXGBoost\n\n\n\n\nAccuracy\n0.95\n0.93\n0.94\n\n\nPrecision\n0.98\n0.98\n0.98\n\n\nRecall\n0.93\n0.9\n0.92\n\n\nF1-Score\n0.95 \n 0.94 \n 0.95 \n\n\n\n\n\n\nOverall, Random Forest demonstrates a slight edge, where all other models exhibit commendable performance in this classification task, underscoring their effectiveness in predictive modeling."
+    "text": "Metrics for Classification Models\n\nMetricsAnalysis\n\n\n\n\n\nMetric\nRF\nKNN\nXGBoost\nStacked\n\n\n\n\nAccuracy\n0.98\n0.98\n0.97\n0.97\n\n\nPrecision\n0.08\n0.08\n0.05\n0.05\n\n\nRecall\n0.96\n0.91\n0.99\n0.99\n\n\nF1-Score\n0.14\n0.14\n0.09\n0.09\n\n\n\n\n\n\nOverall, Random Forest demonstrates a slight edge, where all other models exhibit commendable performance in this classification task, underscoring their effectiveness in predictive modeling."
   },
   {
     "objectID": "presentation.html#evaluation-using-the-whole-dataset",
@@ -221,7 +221,7 @@
     "href": "presentation.html#roc",
     "title": "Fraud Detection Using Ensemble Learning",
     "section": "ROC",
-    "text": "ROC\n\nPlotAnalysis\n\n\n\n\n\n\n\nExcellent Performance: The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.\nKNN Underperforms: The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset."
+    "text": "ROC\n\nPlotAnalysis\n\n\n\n\n\n\n\nExcellent Performance: The ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.98. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.98. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance."
   },
   {
     "objectID": "presentation.html#future-implications",

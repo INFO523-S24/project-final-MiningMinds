@@ -173,12 +173,12 @@ df.head()
 ::: panel-tabset
 
 ### Metrics
-| Metric | RF | KNN | XGBoost |
-|----------|----------|----------|----------|
-| Accuracy | 0.95 | 0.93 | 0.94 |
-| Precision | 0.98 | 0.98 | 0.98 |
-| Recall | 0.93 | 0.9 | 0.92 |
-| F1-Score | 0.95 | 0.94 | 0.95 |
+ Metric | RF | KNN | XGBoost | Stacked |
+|----------|----------|----------|----------|----------|
+| Accuracy | 0.98 | 0.98 | 0.97 | 0.97 |
+| Precision | 0.08 | 0.08 | 0.05 | 0.05 |
+| Recall | 0.96 | 0.91 | 0.99 | 0.99 |
+| F1-Score | 0.14 | 0.14 | 0.09 | 0.09 |
 
 ### Analysis
 
@@ -188,6 +188,22 @@ df.head()
 
 
 
+## ROC {style="font-size: 0.7em;"}
+::: panel-tabset
+
+## Plot
+![](images/roc.png)
+
+## Analysis
+
+::: incremental
+- <b>Excellent Performance:</b> The ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.98. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.98. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance.
+
+
+
+:::
+
+:::
 
 
 
@@ -229,20 +245,6 @@ df.head()
 
 :::
 
-## ROC {style="font-size: 0.7em;"}
-::: panel-tabset
-
-## Plot
-![](images/roc.png)
-
-## Analysis
-
-::: incremental
-- <b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.
-- <b>KNN Underperforms:</b> The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset.
-:::
-
-:::
 
 ## Future Implications {style="font-size: 0.7em;"}
 ::: incremental
