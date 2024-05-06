@@ -8,7 +8,7 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.4.540">
 
   <meta name="author" content="Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi">
   <title>  Fraud Detection  - Fraud Detection Using Ensemble Learning</title>
@@ -628,32 +628,37 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <th>RF</th>
 <th>KNN</th>
 <th>XGBoost</th>
+<th>Stacked</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>Accuracy</td>
-<td>0.95</td>
-<td>0.93</td>
-<td>0.94</td>
+<td>0.98</td>
+<td>0.98</td>
+<td>0.97</td>
+<td>0.97</td>
 </tr>
 <tr class="even">
 <td>Precision</td>
-<td>0.98</td>
-<td>0.98</td>
-<td>0.98</td>
+<td>0.08</td>
+<td>0.08</td>
+<td>0.05</td>
+<td>0.05</td>
 </tr>
 <tr class="odd">
 <td>Recall</td>
-<td>0.93</td>
-<td>0.9</td>
-<td>0.92</td>
+<td>0.96</td>
+<td>0.91</td>
+<td>0.99</td>
+<td>0.99</td>
 </tr>
 <tr class="even">
 <td>F1-Score</td>
-<td>0.95&nbsp;</td>
-<td>&nbsp;0.94&nbsp;</td>
-<td>&nbsp;0.95&nbsp;</td>
+<td>0.14</td>
+<td>0.14</td>
+<td>0.09</td>
+<td>0.09</td>
 </tr>
 </tbody>
 </table>
@@ -666,21 +671,39 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 </div>
 </section>
+<section id="roc" class="slide level2" style="font-size: 0.7em;">
+<h2>ROC</h2>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Plot</a></li><li><a href="#tabset-5-2">Analysis</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<p><img data-src="images/roc.png"></p>
+</div>
+<div id="tabset-5-2">
+<div>
+<ul>
+<li class="fragment"><b>Excellent Performance:</b> The ROC curves for four classifiers—Random Forest, K-Nearest Neighbors (KNN), XGBoost, and a Stacked Classifier—indicate high performance, with AUC values all above 0.98. Random Forest and XGBoost display the best performance, both achieving an AUC of 0.989, demonstrating their high effectiveness in discriminating between classes. The Stacked Classifier, despite combining features of multiple models, performs slightly lower than the top individual models with an AUC of 0.98. This suggests that while all models are highly capable, Random Forest and XGBoost might be preferred due to their marginally superior performance.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="evaluation-using-the-whole-dataset" class="slide level2" style="font-size: 0.7em;">
 <h2>Evaluation using the Whole Dataset</h2>
 <div class="panel-tabset">
-<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">RandomForest</a></li><li><a href="#tabset-5-2">KNN</a></li><li><a href="#tabset-5-3">XGBoost</a></li><li><a href="#tabset-5-4">Stacked Model</a></li></ul>
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">RandomForest</a></li><li><a href="#tabset-6-2">KNN</a></li><li><a href="#tabset-6-3">XGBoost</a></li><li><a href="#tabset-6-4">Stacked Model</a></li></ul>
 <div class="tab-content">
-<div id="tabset-5-1">
+<div id="tabset-6-1">
 <p><img data-src="images/rff.png"></p>
 </div>
-<div id="tabset-5-2">
+<div id="tabset-6-2">
 <p><img data-src="images/knn.png"></p>
 </div>
-<div id="tabset-5-3">
+<div id="tabset-6-3">
 <p><img data-src="images/xg.png"></p>
 </div>
-<div id="tabset-5-4">
+<div id="tabset-6-4">
 <p><img data-src="images/stacked.png"></p>
 </div>
 </div>
@@ -689,9 +712,9 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 <section id="metrics-for-evaluation-using-whole-dataset" class="slide level2" style="font-size: 0.7em;">
 <h2>Metrics for Evaluation using whole dataset</h2>
 <div class="panel-tabset">
-<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Metrics</a></li><li><a href="#tabset-6-2">Analysis</a></li></ul>
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Metrics</a></li><li><a href="#tabset-7-2">Analysis</a></li></ul>
 <div class="tab-content">
-<div id="tabset-6-1">
+<div id="tabset-7-1">
 <table>
 <thead>
 <tr class="header">
@@ -734,29 +757,10 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </tbody>
 </table>
 </div>
-<div id="tabset-6-2">
+<div id="tabset-7-2">
 <ul>
 <li>Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.</li>
 </ul>
-</div>
-</div>
-</div>
-</section>
-<section id="roc" class="slide level2" style="font-size: 0.7em;">
-<h2>ROC</h2>
-<div class="panel-tabset">
-<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Plot</a></li><li><a href="#tabset-7-2">Analysis</a></li></ul>
-<div class="tab-content">
-<div id="tabset-7-1">
-<p><img data-src="images/roc.png"></p>
-</div>
-<div id="tabset-7-2">
-<div>
-<ul>
-<li class="fragment"><b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.</li>
-<li class="fragment"><b>KNN Underperforms:</b> The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset.</li>
-</ul>
-</div>
 </div>
 </div>
 </div>
