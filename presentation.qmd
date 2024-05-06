@@ -82,50 +82,27 @@ plt.rcParams['figure.figsize'] = (6, 6 * 0.618)
 ## Preview of the Dataset: First Few Transactions {style="font-size: 0.7em;"}
 
 
-<br>
 
-```{python}
-#| label: Importing Libraries
 
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA
-import matplotlib.patches as mpatches
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score, f1_score, confusion_matrix
-from sklearn.linear_model import LogisticRegression
-from mlxtend.classifier import StackingClassifier
-import joblib
-
-```
 ```{python}
 #| label: Reading the dataset
-
+import numpy as np
+import pandas as pd
 df = pd.read_csv('./data/creditcard.csv')
 df.head()
-
 ```
 
+## Exploratory Data Analysis
+::: panel-tabset
 
-```{python}
-#| label: Scaling Time and Amount
-scaler = StandardScaler()
+### Kernel Distribution
+![](images/kernel.png)
 
-df['scaled_amount'] = scaler.fit_transform(df['Amount'].values.reshape(-1,1))
-df['scaled_time'] = scaler.fit_transform(df['Time'].values.reshape(-1,1))
+### PCA
+![](images/pca.png)
 
-df.drop(['Time','Amount'], axis=1, inplace=True)
+:::
 
-# Move Class column to the end
-cols = [col for col in df if col != 'Class'] + ['Class']
-df = df[cols]
-```
 
 
 
@@ -165,269 +142,35 @@ df = df[cols]
 
 
 ## Random Undersampling {style="font-size: 0.7em;"}
-::: incremental
-
-```{python}
-#| label: Original dataset
-# Creating a DataFrame
-class_counts_df = pd.DataFrame({
-    'Class': ['non-fradulent', 'fradulent'],
-    'Values': [df['Class'].value_counts()[0], df['Class'].value_counts()[1]]})
-
-# Creating the barplot
-plt.figure(figsize=(8, 4))
-bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
-
-# Adding labels and title
-plt.xlabel('Categories')
-plt.ylabel('Values')
-plt.title('Comparison of the Number of Classes')
-
-# Find the maximum value to adjust y limits accordingly
-max_value = class_counts_df['Values'].max()
-plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
-
-# Annotate the number of samples in each class
-for p in bar_plot.patches:  # iterate through the list of bars
-    bar_plot.annotate(format(p.get_height(), '.0f'), 
-                       (p.get_x() + p.get_width() / 2., p.get_height()), 
-                       ha = 'center', va = 'center', 
-                       size=10, xytext = (0, 8), 
-                       textcoords = 'offset points')
-
-plt.show()
-
-```
-
-
-```{python}
-#| label: Undersampled dataset
-
-# Shuffling the dataset
-df = df.sample(frac=1)
-
-# amount of fraud classes 492 rows.
-fraud_df = df.loc[df['Class'] == 1]
-non_fraud_df = df.loc[df['Class'] == 0][:492]
-
-balanced_df = pd.concat([fraud_df, non_fraud_df])
-
-# Shuffle dataframe rows
-new_df = balanced_df.sample(frac=1, random_state=42)
-
-new_df.head()
-
-
-# Creating a DataFrame
-class_counts_df = pd.DataFrame({
-    'Class': ['non-fradulent', 'fradulent'],
-    'Values': [balanced_df['Class'].value_counts()[0], balanced_df['Class'].value_counts()[1]]})
-
-# Creating the barplot
-plt.figure(figsize=(8, 4))
-bar_plot = sns.barplot(x='Class', y='Values', data=class_counts_df, palette=['skyblue', 'red'])
-
-# Adding labels and title
-plt.xlabel('Categories')
-plt.ylabel('Values')
-plt.title('Comparison of the Number of Classes')
-
-# Find the maximum value to adjust y limits accordingly
-max_value = class_counts_df['Values'].max()
-plt.ylim(0, max_value + 0.1 * max_value)  # Increase upper limit by 10% of the max value
-
-# Annotate the number of samples in each class
-for p in bar_plot.patches:  # iterate through the list of bars
-    bar_plot.annotate(format(p.get_height(), '.0f'), 
-                       (p.get_x() + p.get_width() / 2., p.get_height()), 
-                       ha = 'center', va = 'center', 
-                       size=10, xytext = (0, 8), 
-                       textcoords = 'offset points')
-
-plt.show()
-
-```
-
-
-
-:::
-
-## EDA  {style="font-size: 0.7em;"}
 ::: panel-tabset
-### Kernel Density Plots
-```{python}
-#| label: Kernel Density Plots
-# Pre-compute class-specific datasets
-non_fraud_df = new_df[new_df['Class'] == 0].drop('Class', axis=1)
-fraud_df = new_df[new_df['Class'] == 1].drop('Class', axis=1)
+### PlotA
+![](images/comparision.png)
 
-# Setup the figure and axes
-fig, axes = plt.subplots(5, 6, figsize=(16, 10))  # Adjust the grid dimensions based on the number of columns
-axes = axes.flatten()  # Flatten the array for easy iteration
-
-for i, col in enumerate(new_df.columns[:-1]):  # Assuming the last column is 'Class' and it's dropped
-    sns.histplot(data=non_fraud_df[col], bins=50, kde=True, color='blue', ax=axes[i], label='Non-Fraud' if i == 0 else "")
-    sns.histplot(data=fraud_df[col], bins=50, kde=True, color='red', ax=axes[i], label='Fraud' if i == 0 else "")
-    axes[i].set_title(f'Distribution of {col}', fontsize=10)
-    axes[i].set_xlabel('')  # Clear x-labels to reduce clutter
-    axes[i].set_ylabel('')  # Optionally clear y-labels for the same reason
-    if i == 0:  # Add legend only to the first subplot
-        axes[i].legend()
-
-# Adjust layout to prevent label/title overlap
-plt.tight_layout()
-plt.show()
-
-```
-
-
-### PCA
-```{python}
-#| label: PCA
-
-# New_df is from the random undersample data (fewer instances)
-X = new_df.drop('Class', axis=1)
-y = new_df['Class']
-
-# PCA Implementation
-X_reduced_pca = PCA(n_components=2, random_state=42).fit_transform(X.values)
-
-# PCA scatter plot
-f, ax = plt.subplots(1, 1, figsize=(8, 6))  # Adjust the figsize as needed for a single plot
-
-blue_patch = mpatches.Patch(color='#0A0AFF', label='No Fraud')
-red_patch = mpatches.Patch(color='#AF0000', label='Fraud')
-
-ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 0), cmap='coolwarm', label='No Fraud', linewidths=2)
-ax.scatter(X_reduced_pca[:,0], X_reduced_pca[:,1], c=(y == 1), cmap='coolwarm', label='Fraud', linewidths=2)
-ax.set_title('PCA', fontsize=14)
-
-ax.grid(True)
-
-ax.legend(handles=[blue_patch, red_patch])
-```
+### PlotB
+![](images/undersampling.png)
 
 :::
 
 
-## Classification Models  {style="font-size: 0.7em;"}
+## Classification Models {style="font-size: 0.7em;"}
 ::: panel-tabset
-### Plot
 
-```{python}
-#| label: Train test Split
+## RandomForest
+![](images/s_rff.png)
 
-X = new_df.drop('Class', axis=1).values
-y = new_df['Class'].values
+## KNN
+![](images/s_knn.png)
 
-# Split the data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+## XGBoost
+![](images/s_xg.png)
 
-```
+## Stacked Model
+![](images/s_stacked.png)
 
-```{python}
+:::
 
-# Parameters for Random Forest
-rf_params = {
-    'n_estimators': [10, 50, 100, 200],
-    'max_depth': [None, 10, 20, 30],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
-}
-
-# Parameters for K-Nearest Neighbors
-knears_params = {
-    'n_neighbors': list(range(2, 5, 1)),
-    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
-}
-
-# Parameters for XGBoost
-xgb_params = {
-    'n_estimators': [100, 200],
-    'max_depth': [3, 5, 7, 9],
-    'learning_rate': [0.01, 0.1, 0.2],
-    'subsample': [0.7, 0.8, 0.9]
-}
-
-# Setup GridSearchCV for Random Forest
-grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_rf.fit(X_train, y_train)
-rf_best = grid_rf.best_estimator_
-
-# Setup GridSearchCV for K-Nearest Neighbors
-grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_knears.fit(X_train, y_train)
-knears_best = grid_knears.best_estimator_
-
-# Setup GridSearchCV for XGBoost
-grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
-grid_xgb.fit(X_train, y_train)
-xgb_best = grid_xgb.best_estimator_
-
-
-```
-
-```{python}
-# #| label: Importing trained hypertuned models
-# rf_best = joblib.load('./_extra/rf_best.joblib')
-# knears_best = joblib.load('./_extra/knears_best.joblib')
-# xgb_best = joblib.load('./_extra/xgb_best.joblib')
-
-```
-
-```{python}
-#| label: Confusion Matrix and Statistics
-
-classifiers = {
-    "RandomForest": rf_best,
-    "KNearest": knears_best,
-    "XGBoost": xgb_best
-}
-
-# Create a single figure with subplots arranged vertically
-fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(4, 12))  # Adjust the figure size as needed
-
-for ax, (key, classifier) in zip(axes.flatten(), classifiers.items()):
-    y_pred = classifier.predict(X_test)
-    
-    # Calculating performance metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
-
-    # Plotting the confusion matrix
-    ax.matshow(cm, cmap='viridis', alpha=0.3)
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='small')
-
-    # Setting tick positions and labels explicitly
-    ax.set_xticks([0, 1])
-    ax.set_yticks([0, 1])
-    labels = ['Non-Fraudulent', 'Fraudulent']
-    ax.set_xticklabels(labels, fontsize=4)
-    ax.set_yticklabels(labels, fontsize=4)
-
-    # Adding axis labels and title
-    ax.set_xlabel('Predictions', fontsize=4)
-    ax.set_ylabel('Observations', fontsize=4)
-    ax.set_title(f"{key}")
-
-# Display metrics below each plot
-    # print(f"{key} Metrics:")
-    # print("Accuracy:", round(accuracy, 2))
-    # print("Precision:", round(precision, 2))
-    # print("Recall:", round(recall, 2))
-    # print("F1 Score:", round(f1, 2))
-    # print("\n")  # Add a newline for better spacing
-
-plt.tight_layout()
-plt.show()
-
-```
-
+## Metrics for Classification Models {style="font-size: 0.7em;"}
+::: panel-tabset
 
 ### Metrics
 | Metric | RF | KNN | XGBoost |
@@ -435,107 +178,65 @@ plt.show()
 | Accuracy | 0.95 | 0.93 | 0.94 |
 | Precision | 0.98 | 0.98 | 0.98 |
 | Recall | 0.93 | 0.9 | 0.92 |
-| F1-Score | 0.95 | 0.94 | 0.95 |
+| F1-Score | 0.95 | 0.94 | 0.95 |
+
+### Analysis
+
+-  Overall, Random Forest demonstrates a slight edge, where all other models exhibit commendable performance in this classification task, underscoring their effectiveness in predictive modeling. 
+
 :::
 
 
-## Stacked Model {style="font-size: 0.7em;"}
+
+
+
+
+
+
+
+## Evaluation using the Whole Dataset {style="font-size: 0.7em;"}
 ::: panel-tabset
-### Plot
-```{python}
-#| label: Training the stacked model
 
-# Meta-classifier
-lr = LogisticRegression(random_state=42)
+### RandomForest
+![](images/rff.png)
 
-# Stacking classifier
-stack_clf = StackingClassifier(classifiers=[rf_best, knears_best, xgb_best], meta_classifier=lr)
-stack_clf.fit(X_train, y_train)
+### KNN
+![](images/knn.png)
 
-classifiers = {
-    "Stacked Model": stack_clf
-    }
+### XGBoost
+![](images/xg.png)
 
-for key, classifier in classifiers.items():
+### Stacked Model
+![](images/stacked.png)
 
-    y_pred = classifier.predict(X_test)
+:::
 
-    # Calculating performance metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred)
-    recall = recall_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred)
-    cm = confusion_matrix(y_test, y_pred)
+## Metrics for Evaluation using whole dataset {style="font-size: 0.7em;"}
+::: panel-tabset
 
-    # Plotting the confusion matrix using Matplotlib
-    fig, ax = plt.subplots()
-    ax.matshow(cm, cmap='viridis', alpha=0.3)
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='small')
-
-    # Correcting the axis inversion
-    ax.invert_xaxis()
-    ax.invert_yaxis()
-
-    # Setting tick positions explicitly
-    ax.set_xticks([0, 1])  # Assuming there are two classes
-    ax.set_yticks([0, 1])
-
-    # Adding corrected labels
-    labels = ['Non-Fraudulent', 'Fraudulent']  # Correcting typo in 'Fraudulent'
-    ax.set_xticklabels(labels, fontsize=4)
-    ax.set_yticklabels(labels, fontsize=4)
-
-    # Adding axis labels and title
-    plt.xlabel('Predictions', fontsize=4)
-    plt.ylabel('Observations', fontsize=4)
-    plt.title(key)
-
-    plt.show()
-
-    
-```
 ### Metrics
+
 | Metric | RF | KNN | XGBoost | Stacked |
 |----------|----------|----------|----------|----------|
 | Accuracy | 0.98 | 0.98 | 0.97 | 0.97 |
 | Precision | 0.08 | 0.08 | 0.05 | 0.05 |
 | Recall | 0.96 | 0.91 | 0.99 | 0.99 |
 | F1-Score | 0.14 | 0.14 | 0.09 | 0.09 |
+
+### Analysis
+
+-   Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.
+
 :::
 
-## ROC curve {style="font-size: 0.7em;"}
+## ROC {style="font-size: 0.7em;"}
 ::: panel-tabset
-### Plot
-```{python}
-#|  label: ROC-Curve
-rf_probs_test = rf_best.predict_proba(X_test)[:, 1]
-knears_probs_test = knears_best.predict_proba(X_test)[:, 1]
-xgb_probs_test = xgb_best.predict_proba(X_test)[:, 1]
-stack_probs_test = stack_clf.predict_proba(X_test)[:, 1]
 
-rf_fpr_test, rf_tpr_test, _ = roc_curve(y_test, rf_probs_test)
-knears_fpr_test, knears_tpr_test, _ = roc_curve(y_test, knears_probs_test)
-xgb_fpr_test, xgb_tpr_test, _ = roc_curve(y_test, xgb_probs_test)
-stack_fpr_test, stack_tpr_test, _ = roc_curve(y_test, stack_probs_test)
+## Plot
+![](images/roc.png)
 
-def plot_roc_curve():
-    plt.figure(figsize=(10, 6))
-    plt.plot(rf_fpr_test, rf_tpr_test, label='Random Forest (AUC = %0.3f)' % roc_auc_score(y_test, rf_probs_test))
-    plt.plot(knears_fpr_test, knears_tpr_test, label='KNN (AUC = %0.3f)' % roc_auc_score(y_test, knears_probs_test))
-    plt.plot(xgb_fpr_test, xgb_tpr_test, label='XGBoost (AUC = %0.3f)' % roc_auc_score(y_test, xgb_probs_test))
-    plt.plot(stack_fpr_test, stack_tpr_test, label='Stacked Classifier (AUC = %0.3f)' % roc_auc_score(y_test, stack_probs_test))
-    plt.plot([0, 1], [0, 1], 'r--')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curves for Test Data')
-    plt.legend(loc="lower right")
-    plt.show()
+## Analysis
 
-plot_roc_curve()
-```
-### Analysis
 ::: incremental
 - <b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.
 - <b>KNN Underperforms:</b> The KNN model significantly underperforms with a much lower AUC of 0.705, indicating it is less effective at class discrimination in this dataset.
@@ -543,87 +244,13 @@ plot_roc_curve()
 
 :::
 
-## Evaluation using the Whole Dataset {style="font-size: 0.7em;"}
-::: panel-tabset
-### Whole Dataset
-```{python}
-#| label: Whole Dataset
-
-classifiers = {
-    "RandomForest": rf_best,
-    "KNearest": knears_best,
-    "XGBoost": xgb_best,
-    "Stacked Model": stack_clf
-    }
-
-# New_df is from the random undersample data (fewer instances)
-X = df.drop('Class', axis=1).values
-y = df['Class'].values
-
-# Create a single figure with subplots arranged vertically
-fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(4, 12))  # Adjust the figure size as needed
-
-for ax, (key, classifier) in zip(axes.flatten(), classifiers.items()):
-    y_pred = classifier.predict(X)
-    
-    # Calculating performance metrics
-    accuracy = accuracy_score(y, y_pred)
-    precision = precision_score(y, y_pred)
-    recall = recall_score(y, y_pred)
-    f1 = f1_score(y, y_pred)
-    cm = confusion_matrix(y, y_pred)
-
-    # Plotting the confusion matrix
-    ax.matshow(cm, cmap='viridis', alpha=0.3)
-    for i in range(cm.shape[0]):
-        for j in range(cm.shape[1]):
-            ax.text(x=j, y=i, s=cm[i, j], va='center', ha='center', size='small')
-
-    # Setting tick positions and labels explicitly
-    ax.set_xticks([0, 1])
-    ax.set_yticks([0, 1])
-    labels = ['Non-Fraudulent', 'Fraudulent']
-    ax.set_xticklabels(labels, fontsize=4)
-    ax.set_yticklabels(labels, fontsize=4)
-
-    # Adding axis labels and title
-    ax.set_xlabel('Predictions', fontsize=4)
-    ax.set_ylabel('Observations', fontsize=4)
-    ax.set_title(f"{key}")
-
-# Display metrics below each plot
-    # print(f"{key} Metrics:")
-    # print("Accuracy:", round(accuracy, 2))
-    # print("Precision:", round(precision, 2))
-    # print("Recall:", round(recall, 2))
-    # print("F1 Score:", round(f1, 2))
-    # print("\n")  # Add a newline for better spacing
-
-plt.tight_layout()
-plt.show()
-
-
-
-```
-
-### Metrics
-| Metric | RF | KNN | XGBoost | Stacked |
-|----------|----------|----------|----------|----------|
-| Accuracy | 0.98 | 0.98 | 0.97 | 0.97 |
-| Precision | 0.08 | 0.08 | 0.05 | 0.05 |
-| Recall | 0.96 | 0.91 | 0.99 | 0.99 |
-| F1-Score | 0.14 | 0.14 | 0.09 | 0.09 |
-
-
-### Analysis
-::: incremental
--   Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.
-
 ## Future Implications {style="font-size: 0.7em;"}
+::: incremental
 
 -   SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.
 
 -   using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results.
+:::
 
 ##
 ![](images/thankyou.jpg){style="width:100%;height:100%;"}

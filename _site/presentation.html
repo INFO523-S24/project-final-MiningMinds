@@ -8,7 +8,7 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.540">
+  <meta name="generator" content="quarto-1.4.549">
 
   <meta name="author" content="Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxana Akbarsharifi, Deema Albluwi">
   <title>  Fraud Detection  - Fraud Detection Using Ensemble Learning</title>
@@ -365,9 +365,8 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </section>
 <section id="preview-of-the-dataset-first-few-transactions" class="slide level2" style="font-size: 0.7em;">
 <h2>Preview of the Dataset: First Few Transactions</h2>
-<p><br></p>
-<p>::: {#cell-Reading the dataset .cell execution_count=4}</p>
-<div id="reading-the-dataset" class="cell-output cell-output-display" data-execution_count="4">
+<p>::: {#cell-Reading the dataset .cell execution_count=3}</p>
+<div id="reading-the-dataset" class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <style scoped="">
     .dataframe tbody tr th:only-of-type {
@@ -539,6 +538,20 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 <p>:::</p>
 </section>
+<section id="exploratory-data-analysis" class="slide level2">
+<h2>Exploratory Data Analysis</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Kernel Distribution</a></li><li><a href="#tabset-1-2">PCA</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<p><img data-src="images/kernel.png"></p>
+</div>
+<div id="tabset-1-2">
+<p><img data-src="images/pca.png"></p>
+</div>
+</div>
+</div>
+</section>
 <section id="research-questions" class="slide level2" style="font-size: 0.7em;">
 <h2>Research Questions</h2>
 <div>
@@ -570,74 +583,44 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </section>
 <section id="random-undersampling" class="slide level2" style="font-size: 0.7em;">
 <h2>Random Undersampling</h2>
-<div>
-<p>::: {#cell-Original dataset .cell execution_count=6}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/original-dataset-output-1.png" id="original-dataset"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>::: {#cell-Undersampled dataset .cell execution_count=7}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/undersampled-dataset-output-1.png" id="undersampled-dataset"></p>
-</figure>
-</div>
-</div>
-<p>:::</p>
-<p>:::</p>
-</section>
-<section id="eda" class="slide level2" style="font-size: 0.7em;">
-<h2>EDA</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Kernel Density Plots</a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">PlotA</a></li><li><a href="#tabset-2-2">PlotB</a></li></ul>
 <div class="tab-content">
-<div id="tabset-1-1">
-<p>::: {#cell-Kernel Density Plots .cell execution_count=8}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/kernel-density-plots-output-1.png" id="kernel-density-plots"></p>
-</figure>
+<div id="tabset-2-1">
+<p><img data-src="images/comparision.png"></p>
+</div>
+<div id="tabset-2-2">
+<p><img data-src="images/undersampling.png"></p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<h3 id="pca">PCA</h3>
-<div id="cell-PCA" class="cell" data-execution_count="9">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/pca-output-1.png" id="pca"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>:::</p>
 </section>
 <section id="classification-models" class="slide level2" style="font-size: 0.7em;">
 <h2>Classification Models</h2>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Plot</a></li></ul>
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">RandomForest</a></li><li><a href="#tabset-3-2">KNN</a></li><li><a href="#tabset-3-3">XGBoost</a></li><li><a href="#tabset-3-4">Stacked Model</a></li></ul>
 <div class="tab-content">
-<div id="tabset-2-1">
-<p>::: {#cell-Confusion Matrix and Statistics .cell execution_count=12}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/confusion-matrix-and-statistics-output-1.png" id="confusion-matrix-and-statistics"></p>
-</figure>
+<div id="tabset-3-1">
+<p><img data-src="images/s_rff.png"></p>
+</div>
+<div id="tabset-3-2">
+<p><img data-src="images/s_knn.png"></p>
+</div>
+<div id="tabset-3-3">
+<p><img data-src="images/s_xg.png"></p>
+</div>
+<div id="tabset-3-4">
+<p><img data-src="images/s_stacked.png"></p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<h3 id="metrics">Metrics</h3>
+</section>
+<section id="metrics-for-classification-models" class="slide level2" style="font-size: 0.7em;">
+<h2>Metrics for Classification Models</h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Metrics</a></li><li><a href="#tabset-4-2">Analysis</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
 <table>
 <thead>
 <tr class="header">
@@ -668,32 +651,47 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </tr>
 <tr class="even">
 <td>F1-Score</td>
-<td>0.95</td>
-<td>0.94</td>
-<td>0.95</td>
+<td>0.95&nbsp;</td>
+<td>&nbsp;0.94&nbsp;</td>
+<td>&nbsp;0.95&nbsp;</td>
 </tr>
 </tbody>
 </table>
-<p>:::</p>
+</div>
+<div id="tabset-4-2">
+<ul>
+<li>Overall, Random Forest demonstrates a slight edge, where all other models exhibit commendable performance in this classification task, underscoring their effectiveness in predictive modeling.</li>
+</ul>
+</div>
+</div>
+</div>
 </section>
-<section id="stacked-model" class="slide level2" style="font-size: 0.7em;">
-<h2>Stacked Model</h2>
+<section id="evaluation-using-the-whole-dataset" class="slide level2" style="font-size: 0.7em;">
+<h2>Evaluation using the Whole Dataset</h2>
 <div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Plot</a></li></ul>
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">RandomForest</a></li><li><a href="#tabset-5-2">KNN</a></li><li><a href="#tabset-5-3">XGBoost</a></li><li><a href="#tabset-5-4">Stacked Model</a></li></ul>
 <div class="tab-content">
-<div id="tabset-3-1">
-<p>::: {#cell-Training the stacked model .cell execution_count=13}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/training-the-stacked-model-output-1.png" id="training-the-stacked-model"></p>
-</figure>
+<div id="tabset-5-1">
+<p><img data-src="images/rff.png"></p>
+</div>
+<div id="tabset-5-2">
+<p><img data-src="images/knn.png"></p>
+</div>
+<div id="tabset-5-3">
+<p><img data-src="images/xg.png"></p>
+</div>
+<div id="tabset-5-4">
+<p><img data-src="images/stacked.png"></p>
 </div>
 </div>
 </div>
-</div>
-</div>
-<h3 id="metrics-1">Metrics</h3>
+</section>
+<section id="metrics-for-evaluation-using-whole-dataset" class="slide level2" style="font-size: 0.7em;">
+<h2>Metrics for Evaluation using whole dataset</h2>
+<div class="panel-tabset">
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Metrics</a></li><li><a href="#tabset-6-2">Analysis</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1">
 <table>
 <thead>
 <tr class="header">
@@ -735,25 +733,24 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </tr>
 </tbody>
 </table>
-<p>:::</p>
+</div>
+<div id="tabset-6-2">
+<ul>
+<li>Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.</li>
+</ul>
+</div>
+</div>
+</div>
 </section>
-<section id="roc-curve" class="slide level2" style="font-size: 0.7em;">
-<h2>ROC curve</h2>
+<section id="roc" class="slide level2" style="font-size: 0.7em;">
+<h2>ROC</h2>
 <div class="panel-tabset">
-<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Plot</a></li><li><a href="#tabset-4-2">Analysis</a></li></ul>
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Plot</a></li><li><a href="#tabset-7-2">Analysis</a></li></ul>
 <div class="tab-content">
-<div id="tabset-4-1">
-<div id="cell-ROC-Curve" class="cell" data-execution_count="14">
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/roc-curve-output-1.png" id="roc-curve"></p>
-</figure>
+<div id="tabset-7-1">
+<p><img data-src="images/roc.png"></p>
 </div>
-</div>
-</div>
-</div>
-<div id="tabset-4-2">
+<div id="tabset-7-2">
 <div>
 <ul>
 <li class="fragment"><b>Excellent Performance:</b> The Random Forest, XGBoost, and Stacked Classifier show excellent performance with AUC values near 1, indicating strong ability to distinguish between classes.</li>
@@ -764,74 +761,14 @@ Omid Zandi,Nandhini Anne, Sai Navya Reddy Busireddy, Gowtham Gopalkrishnan, Roxa
 </div>
 </div>
 </section>
-<section id="evaluation-using-the-whole-dataset" class="slide level2" style="font-size: 0.7em;">
-<h2>Evaluation using the Whole Dataset</h2>
-<div class="panel-tabset">
-<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Whole Dataset</a></li></ul>
-<div class="tab-content">
-<div id="tabset-5-1">
-<p>::: {#cell-Whole Dataset .cell execution_count=15}</p>
-<div class="cell-output cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentation_files/figure-revealjs/whole-dataset-output-1.png" id="whole-dataset"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-<h3 id="metrics-2">Metrics</h3>
-<table>
-<thead>
-<tr class="header">
-<th>Metric</th>
-<th>RF</th>
-<th>KNN</th>
-<th>XGBoost</th>
-<th>Stacked</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Accuracy</td>
-<td>0.98</td>
-<td>0.98</td>
-<td>0.97</td>
-<td>0.97</td>
-</tr>
-<tr class="even">
-<td>Precision</td>
-<td>0.08</td>
-<td>0.08</td>
-<td>0.05</td>
-<td>0.05</td>
-</tr>
-<tr class="odd">
-<td>Recall</td>
-<td>0.96</td>
-<td>0.91</td>
-<td>0.99</td>
-<td>0.99</td>
-</tr>
-<tr class="even">
-<td>F1-Score</td>
-<td>0.14</td>
-<td>0.14</td>
-<td>0.09</td>
-<td>0.09</td>
-</tr>
-</tbody>
-</table>
-<h3 id="analysis-1">Analysis</h3>
-<p>::: incremental - Precision is notably low for all classifiers, ranging from 0.05 to 0.08. Precision measures the proportion of positive identifications that were actually correct. These low scores suggest that while the models are good at finding positive cases (fraudulent transactions, for example), a large proportion of these predictions are false positives.</p>
-</section>
 <section id="future-implications" class="slide level2" style="font-size: 0.7em;">
 <h2>Future Implications</h2>
+<div>
 <ul>
-<li><p>SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.</p></li>
-<li><p>using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results.</p></li>
+<li class="fragment"><p>SMOTE stands for Synthetic Minority Over-sampling Technique, a statistical technique designed to balance your dataset by increasing the number of cases. Instead of merely duplicating examples, SMOTE generates synthetic samples from the minority class—the class with fewer instances. This approach effectively addresses the overfitting issue that arises when examples from the minority class are simply replicated.</p></li>
+<li class="fragment"><p>using a more diverse set of machine learning models combined with a more sophisticated meta-learner can lead to more accurate results.</p></li>
 </ul>
+</div>
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
