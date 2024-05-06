@@ -325,12 +325,53 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 ```
 
+```{python}
+
+# Parameters for Random Forest
+rf_params = {
+    'n_estimators': [10, 50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4]
+}
+
+# Parameters for K-Nearest Neighbors
+knears_params = {
+    'n_neighbors': list(range(2, 5, 1)),
+    'algorithm': ['auto', 'ball_tree', 'kd_tree', 'brute']
+}
+
+# Parameters for XGBoost
+xgb_params = {
+    'n_estimators': [100, 200],
+    'max_depth': [3, 5, 7, 9],
+    'learning_rate': [0.01, 0.1, 0.2],
+    'subsample': [0.7, 0.8, 0.9]
+}
+
+# Setup GridSearchCV for Random Forest
+grid_rf = GridSearchCV(RandomForestClassifier(random_state=42), rf_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_rf.fit(X_train, y_train)
+rf_best = grid_rf.best_estimator_
+
+# Setup GridSearchCV for K-Nearest Neighbors
+grid_knears = GridSearchCV(KNeighborsClassifier(), knears_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_knears.fit(X_train, y_train)
+knears_best = grid_knears.best_estimator_
+
+# Setup GridSearchCV for XGBoost
+grid_xgb = GridSearchCV(XGBClassifier(use_label_encoder=False, eval_metric='logloss', random_state=42), xgb_params, cv=5, scoring='accuracy', n_jobs=-1)
+grid_xgb.fit(X_train, y_train)
+xgb_best = grid_xgb.best_estimator_
+
+
+```
 
 ```{python}
-#| label: Importing trained hypertuned models
-rf_best = joblib.load('./_extra/rf_best.joblib')
-knears_best = joblib.load('./_extra/knears_best.joblib')
-xgb_best = joblib.load('./_extra/xgb_best.joblib')
+# #| label: Importing trained hypertuned models
+# rf_best = joblib.load('./_extra/rf_best.joblib')
+# knears_best = joblib.load('./_extra/knears_best.joblib')
+# xgb_best = joblib.load('./_extra/xgb_best.joblib')
 
 ```
 
